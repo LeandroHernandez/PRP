@@ -1,0 +1,356 @@
+<div class="main-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2"></div>
+
+			<div class="col-sm-8">
+				<div class="card text-center">
+					<!-- <img src="../../../../assets/img/Landingpage/log1.png" alt="" style="width: 20vh;"> -->
+					<mat-horizontal-stepper [linear]="true">
+						<mat-step [stepControl]="representativeForm">
+							<ng-template matStepLabel>Representante</ng-template>
+							<hr>
+							<div class="row">
+								<div class="col-md-6 col-sm-12 text-justify div-info">
+									<h3>Datos del tutor legal</h3>
+									<p>
+										Te solicitamos estos datos porque necesitamos tu autorización como tutor legal
+										para poder registrar
+										al estudiante. Además, podrás recibir en tu correo electrónico información sobre
+										su actividad dentro
+										del
+										entorno.
+									</p>
+								</div>
+								<div class="col-md-6 col-sm-12 text-center" id="">
+									<!-- <div class="input-group">
+										<input  type="text" class="form-control cod" placeholder="Search">
+										<div class="input-group-btn cod">
+											<button class="btn btn-default" type="submit">
+												<i class="glyphicon glyphicon-search"></i>
+											</button>
+										</div>
+									</div> -->
+
+									<label for="inputStudentCode">AGREGAR CÓDIGO DEL ESTUDIANTE</label>
+									<div class="input-group">
+										<input class="form-control cod" id="inputStudentCode"
+											(keyup.enter)="get_student_by_id(this.studentD.student_id)"
+											[disabled]="input_enabled" [(ngModel)]="this.studentD.student_id">
+										<div *ngIf="!input_enabled" class="input-group-btn">
+											<button class="btn-cod btn btn-default btn-success btn-fill"
+												(click)="get_student_by_id(this.studentD.student_id)" type="button">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
+										<div *ngIf="input_enabled" class="input-group-btn">
+											<button class="btn-cod btn btn-default btn-success btn-fill" type="button">
+												<i class="fa fa-check"></i>
+											</button>
+										</div>
+									</div>
+									<br>
+									<!-- <input id="inputStudentCode" (keyup.enter)="get_student_by_id(this.studentD.student_id)"
+										[disabled]="input_enabled" [(ngModel)]="this.studentD.student_id"> <i class="fa fa-search"></i> -->
+									<h3><strong>Estudiante: </strong>{{this.studentD.student_name}}
+										{{this.studentD.student_lastname}}
+									</h3>
+								</div>
+							</div>
+							<form autocomplete="off" [formGroup]="representativeForm">
+								<div class="row">
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(representative_name.dirty || representative_name.touched) && representative_name.invalid">
+										<label for="inputrepresentativeName">Nombres del representante</label>
+										<input type="text" class="form-control" id="inputrepresentativeName"
+											formControlName="representative_name" [ngModel]="advisor_name">
+										<small
+											*ngIf="(representative_name.dirty || representative_name.touched) && representative_name.invalid && representative_name.errors.required"
+											class="text-danger">
+											Nombre es requerido
+										</small>
+										
+									</div>
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(representative_surname.dirty || representative_surname.touched) && representative_surname.invalid">
+										<label for="inputrepresentativeSurname">Apellidos del Representante</label>
+										<input type="text" class="form-control" id="inputrepresentativeSurname"
+											formControlName="representative_surname" [ngModel]="advisor_surname">
+										<small
+											*ngIf="(representative_surname.dirty || representative_surname.touched) && representative_surname.invalid && representative_surname.errors.required"
+											class="text-danger">
+											Apellido es requerido
+										</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(representative_email.dirty || representative_email.touched) && representative_email.invalid">
+										<label for="inputrepresentativeEmail">Correo del Representante</label>
+										<input [(ngModel)]="representative_emaill" type="email" class="form-control" id="inputrepresentativeEmail"
+											formControlName="representative_email">
+										<small
+											*ngIf="(representative_email.dirty || representative_email.touched) && representative_email.invalid && representative_email.errors.required"
+											class="text-danger">
+											Correo es requerido
+										</small>
+										<small
+											*ngIf="(representative_email.dirty || representative_email.touched) && representative_email.invalid && representative_email.errors.pattern"
+											class="text-danger">
+											Formato de correo incorrecto
+										</small>
+									</div>
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(representative_phone.dirty || representative_phone.touched) && representative_phone.invalid">
+										<label for="inputrepresentativePhone">Teléfono del Representante</label>
+										<input type="text" class="form-control" id="inputrepresentativePhone"
+											formControlName="representative_phone" [ngModel]="advisor_phone">
+										<small
+											*ngIf="(representative_phone.dirty || representative_phone.touched) && representative_phone.invalid && representative_phone.errors.required"
+											class="text-danger">
+											Teléfono es requerido
+										</small>
+										<small
+											*ngIf="(representative_phone.dirty || representative_phone.touched) && representative_phone.invalid && representative_phone.errors.pattern"
+											class="text-danger">
+											Formato de teléfono incorrecto
+										</small>
+										<small
+											*ngIf="(representative_phone.dirty || representative_phone.touched) && representative_phone.invalid && representative_phone.errors.minlength"
+											class="text-danger">
+											Teléfono demasiado corto
+										</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(representative_pass1.dirty || representative_pass1.touched) && representative_pass1.invalid">
+										<label for="inputrepresentativePass1">Contraseña para la cuenta del
+											Representante</label>
+										<input type="password" class="form-control" id="inputrepresentativePass1"
+											formControlName="representative_pass1" [ngModel]="advisor_pass1">
+										<small
+											*ngIf="(representative_pass1.dirty || representative_pass1.touched) && representative_pass1.invalid && representative_pass1.errors.required"
+											class="text-danger">
+											Contraseña es requerida
+										</small>
+									</div>
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="representative_pass2_not_valid">
+										<label for="inputrepresentativePass2">Confirmar Contraseña para la cuenta del
+											Representante</label>
+										<input type="password" class="form-control" id="inputrepresentativePass2"
+											formControlName="representative_pass2">
+										<small *ngIf="representative_pass2_not_valid" class="text-danger">
+											Contraseñas deben ser iguales
+										</small>
+									</div>
+								</div>
+								<hr>
+								<div class="text-center p-5">
+									<button type="button" class="btn btn-fill btn-primary btn-lg"
+										(click)="checkForm( representativeForm )" [disabled]="!submitted"
+										matStepperNext>Siguiente
+									</button>
+								</div>
+							</form>
+						</mat-step>
+						<mat-step [stepControl]="studentForm">
+							<ng-template matStepLabel>Estudiante</ng-template>
+							<div class="row">
+								<div class="col-md-6 col-sm-12 text-justify div-info">
+									<h3>Datos del estudiante</h3>
+									<br>
+									<p>
+										Con estos datos el estudiante podrá entrar a su cuenta, ver sus sesiones y acceder
+										al contenido de la
+										plataforma
+									</p>
+								</div>
+								<div class="col-md-6 col-sm-12"></div>
+							</div>
+							<form autocomplete="off" [formGroup]="studentForm">
+								<div class="row">
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(student_name.dirty || student_name.touched) && student_name.invalid">
+										<label for="inputStudentName">Nombres del estudiante</label>
+										<input type="text" class="form-control" id="inputStudentName"
+											formControlName="student_name" [(ngModel)]="studentD.student_name">
+										<small
+											*ngIf="(student_name.dirty || student_name.touched) && student_name.invalid && student_name.errors.required"
+											class="text-danger">
+											Nombre es requerido
+										</small>
+									</div>
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(student_lastname.dirty || student_lastname.touched) && student_lastname.invalid">
+										<label for="inputStudentSurname">Apellidos del estudiante</label>
+										<input type="text" class="form-control" id="inputStudentSurname"
+											formControlName="student_lastname" [(ngModel)]="studentD.student_lastname">
+										<small
+											*ngIf="(student_lastname.dirty || student_lastname.touched) && student_lastname.invalid && student_lastname.errors.required"
+											class="text-danger">
+											Apellido es requerido
+										</small>
+									
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(student_email.dirty || student_email.touched) && student_email.invalid">
+										<label for="inputStudentEmail">Correo del estudiante</label>
+										<input type="email" class="form-control" id="inputStudentEmail"
+											formControlName="student_email" [(ngModel)]="studentD.student_email">
+										<small
+											*ngIf="(student_email.dirty || student_email.touched) && student_email.invalid && student_email.errors.required"
+											class="text-danger">
+											Correo es requerido
+										</small>
+										<small
+											*ngIf="(student_email.dirty || student_email.touched) && student_email.invalid && student_email.errors.pattern"
+											class="text-danger">
+											Formato de correo incorrecto
+										</small>
+									</div>
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(student_phone.dirty || student_phone.touched) && student_phone.invalid">
+										<label for="inputStudentPhone">Teléfono del estudiante</label>
+										<input type="text" class="form-control" id="inputStudentPhone"
+											formControlName="student_phone" [(ngModel)]="studentD.student_phone">
+										<small
+											*ngIf="(student_phone.dirty || student_phone.touched) && student_phone.invalid && student_phone.errors.required"
+											class="text-danger">
+											Teléfono es requerido
+										</small>
+										<small
+											*ngIf="(student_phone.dirty || student_phone.touched) && student_phone.invalid && student_phone.errors.pattern"
+											class="text-danger">
+											Formato de teléfono incorrecto
+										</small>
+										<small
+											*ngIf="(student_phone.dirty || student_phone.touched) && student_phone.invalid && student_phone.errors.minlength"
+											class="text-danger">
+											Teléfono demasiado corto
+										</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-6 register-form-input">
+										<label for="inputStudentPass1">Contraseña para la cuenta del estudiante</label>
+										<input type="password" class="form-control" id="inputStudentPass1"
+											formControlName="student_pass" [(ngModel)]="studentD.student_pass">
+										<small
+											*ngIf="(student_pass.dirty || student_pass.touched) && student_pass.invalid && student_pass.errors.required"
+											class="text-danger">
+											Contraseña es requerida
+										</small>
+									</div>
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="student_pass2_not_valid">
+										<label for="inputStudentPass2">Confirmar Contraseña para la cuenta del
+											estudiante</label>
+										<input type="password" class="form-control" id="inputStudentPass2"
+											formControlName="student_pass1">
+										<small *ngIf="student_pass2_not_valid" class="text-danger">
+											Contraseñas deben ser iguales
+										</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-6 register-form-input"
+										[class.has-error]="(student_birth.dirty || student_birth.touched) && student_birth.invalid">
+										<label for="inputBirthDate">Fecha de Nacimiento</label>
+										<input type="date" class="form-control" id="inputBirthDate"
+											placeholder="dd-mm-yyyy" formControlName="student_date">
+										<small
+											*ngIf="(student_birth.dirty || student_birth.touched) && student_birth.invalid && student_birth.errors.required"
+											class="text-danger">
+											Fecha de nacimiento es requerida
+										</small>
+										<small
+											*ngIf="(student_birth.dirty || student_birth.touched) && student_birth.invalid && student_birth.errors.invalidDate"
+											class="text-danger">
+											Fecha no puede ser mayor al día actual
+										</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="custom-control text-center">
+										<input type="checkbox" class="custom-control-input" id="termsCheck"
+											formControlName="student_terms" [(ngModel)]="studentD.student_terms">
+										<label class="custom-control-label" for="termsCheck">
+											Acepto los <a href="javacript:void(0)"><button data-toggle="modal"
+												data-target="#ModalViewPdf" style="border: none; background-color: transparent;"> Terminos y condiciones </button></a> de uso y
+											<a href="javascript:void(0)">politicas de privacidad</a>
+										</label>
+									</div>
+								</div>
+								<div class="row text-center p-5">
+									<button type="button" class="btn btn-fill btn-lg" matStepperPrevious>Atrás</button>
+									<button type="button" class="btn btn-fill btn-primary btn-lg"
+										[disabled]="!studentD.student_terms" (click)="checkForm( studentForm )"
+										matStepperNext>Siguiente</button>
+								</div>
+							</form>
+						</mat-step>
+						<mat-step>
+							<ng-template matStepLabel>Finalizar</ng-template>
+							<div class="text-center">
+								<h1>Bienvenido</h1>
+								<hr>
+								<p class="text-center">
+									<span>
+										Para finalizar el registro exitosamente presione el botón Finalizar! <br>
+										Y podrás ingresar a tu cuenta para disfrutar de la experiencia dydactico.
+									</span>
+								</p>
+							</div>
+							<hr>
+							<div class="row text-center p-5">
+								<div class="col-sm-6">
+									<button class="btn btn-fill btn-lg p-3 m-3" matStepperPrevious>Atrás</button>
+								</div>
+								<div class="col-sm-6">
+									<button class="btn btn-fill btn-success btn-lg p-3"
+										(click)="saveInfo()">Finalizar</button>
+								</div>
+							</div>
+						</mat-step>
+					</mat-horizontal-stepper>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="ModalViewPdf" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span class="modal-title"> Terminos y condiciones </span>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="content modal-content-form">
+								<div class="content">
+									<embed src="https://firebasestorage.googleapis.com/v0/b/dydactico.appspot.com/o/%20termsAndConditions%2FTe%CC%81rminos%20y%20Condicionesdydactico.pdf?alt=media&token=5dac73d0-b000-47cc-8091-01c7a5fa9d9e" type="application/pdf" width="100%" height="600px" />
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon"
+					data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>

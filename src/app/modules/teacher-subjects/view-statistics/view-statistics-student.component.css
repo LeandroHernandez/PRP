@@ -1,0 +1,153 @@
+#datatablesStudents th:first-child, td:first-child
+{
+  position:sticky;
+  left:0px;
+  background-color: white;
+  width: 150px;
+}
+
+.head-table {
+    font-size: 20px;
+    background-color: rgb(227, 253, 255);
+}
+.header-class {
+    font-size: 14px; 
+    text-align: center; 
+    color: rgb(97, 141, 163);
+}
+.img-resource{
+    width: 25px;
+  }
+.student-name {
+    color: rgb(95, 162, 252)
+}
+
+/*Bar*/
+.barBackgroud {
+    height: 4px;
+    width: 90px;
+    background: #EEEEEE;
+    border-radius: 15px;
+  /*  float: right;*/
+    margin: 6px;
+}
+.barprogres {
+    height: 4px;
+    background: #10F14F;
+    border-radius: 15px;
+}
+
+.barprogresW {
+  height: 4px;
+  background: #f4c50c;
+  border-radius: 15px;
+}
+.barprogresD {
+  height: 4px;
+  background: red;
+  border-radius: 15px;
+}
+
+.badge-red{
+    background-color: red;
+    position: relative;
+    left: 15px;
+    top: 5px;
+  }
+  .badge-grey{
+    margin-bottom: 3px;
+ /*   position: relative;
+    float: right;
+    right: 27px;
+    top: 24px;
+    height: 18px;
+    min-width: 18px;
+    padding: 6px;
+    padding-block: 3px;	*/
+  }
+.cssCard {
+    background-color: #4c93ff;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    color: white;	
+    border-radius: 3px;
+    margin-left: 1rem;
+  }
+  .cssCardGray {
+    background-color: rgb(76,76,76); 
+    border-radius: 3px; 
+    color: white;
+    margin: auto;  
+    min-width: 6vh;
+  	min-height:6vh;
+  }
+  
+  /*Forum*/
+  .cssRespuestas {
+    justify-content: flex-start; 
+    display: flex; 
+    float: inline-start;
+    background-color: #109CF1;
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+.centerComponent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .testSize {
+    font-size: 125%;
+  }
+  /* Header Card SUbject**/
+  .card-header-subject {
+    padding: 1rem;
+    border-radius: 0px;
+  }
+  .cardheadermatOne {
+   
+    background: #4B93FF;
+    min-height: 45px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+  .cardheadermatTwo {
+      width: 100%;
+      background: #00ba56;
+      min-height: 45px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+  }
+  .cardheadermatThre {
+      width: 100%;
+      background: #a64bff;
+      min-height: 45px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+  }
+  .cardheadermatFour {
+      width: 100%;
+      background: #ff3370;
+      min-height: 45px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+  }
+  .img-subject {
+    width: 40px;
+  }
+  .title-subject {
+    font-weight: bold;
+    font-size: 2rem;
+    margin-top: 2rem;
+    color: white;
+  }
+  .csstext {
+    text-align: left;
+  }
+  @media (max-width: 737px) {
+    .csstext {
+      text-align: center;
+    }
+  }

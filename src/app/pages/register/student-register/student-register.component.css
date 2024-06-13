@@ -1,0 +1,33 @@
+.div-info, .register-form {
+  padding: 5vh;
+}
+
+.div-info h3{
+  font-style: normal;
+  font-weight: bold;
+  color: #4993EA;
+}
+
+.register-form-input {
+  padding: 15px 25px;
+}
+
+#div-codigo {
+  margin-top: 5vh;
+}
+
+.cod{
+  /* width: 90%; */
+  height: 53px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 3rem;
+  /* border-radius: 9px; */
+}
+
+.btn-cod{
+  height: 53px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 2rem;
+}

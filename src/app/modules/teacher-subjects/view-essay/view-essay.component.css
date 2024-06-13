@@ -1,0 +1,115 @@
+.cardSelect {
+  /* box-shadow: inset -1px 1px 13px -5px rgba(159,188,204,1); */
+  box-shadow: inset -1px 1px 11px -2px rgba(100, 153, 179, 1);
+}
+.col-avanc {
+  padding: 1.5rem;
+}
+
+.modal .modal-dialog {
+  width: 80% !important;
+  height: 80% !important;
+}
+
+.scroll-conten-modal {
+  overflow-y: auto;
+}
+
+.card-option {
+  width: 80%;
+  margin: 0 auto;
+}
+
+
+.card-is-correct {
+  background-color: #f1faf3;
+  border: solid 1px #62f27f;
+}
+
+
+.card-typePractice {
+  justify-content: space-around;
+  align-content: center;
+  margin: 30px;
+}
+
+.icon-option {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin-left: 5px;
+}
+
+.align-middle {
+  vertical-align: middle !important;
+}
+
+.card-content-practice-option {
+  min-height: 230px;
+  margin-top: 5px;
+}
+
+.border-focus .form-control:focus {
+  border: 1px solid rgb(75, 147, 255);;
+  box-shadow: 0 0 0 0.2rem rgba(88, 160, 207, 0.25);
+}
+
+.card-title-p {
+  padding-left: 2rem;
+  padding-top: 2rem;
+}
+
+.card-danger-sp {
+  height: 10vh;
+  vertical-align: middle;
+  margin-bottom: 2rem;
+}
+
+.fa-ico {
+  font-size: 4rem;
+  color: rgb(240, 159, 159);
+}
+
+.btn-input-file {
+  margin-top: 5px;
+  width: auto;
+}
+
+.card-option {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.card-is-correct {
+  background-color: #f1faf3;
+  border: solid 1px #c9e4f9;
+}
+
+.is-image-option {
+  width: 80%;
+  height: 15vh;
+  border-radius: 3px;
+}
+
+.is-image-index {
+  width: 80%;
+  height: 15vh;
+  border-radius: 3px;
+}
+
+.my_checkbox {
+  width: 4vw;
+  height: 4vh;
+  cursor: pointer;
+}
+
+.select-option {
+  background: #4993EA;
+  border: 1px solid #000000;
+  color: #ffffff;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+}

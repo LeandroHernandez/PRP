@@ -1,0 +1,114 @@
+<div class="header-title" style="max-width: 100%;">
+  <div class="card card-report">
+    <i class="fa fa-list-alt" style="font-size: 4rem; color: #fff"></i>
+  </div>
+  <h2><strong>REPORTES DE EVALUACIÓN</strong></h2>
+</div>
+<div class="main-content">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="content">
+        <div class="card-header card-header-icon card-header-info">
+          <div class="row">
+            <div class="col-sm-2">
+              Asignatura
+              <select class="form-control" (change)="OnChangeSubject($event)">
+                <option>Seleccione la materia</option>
+                <option *ngFor="let subject of arraySubjects; let i = index" [value]="i">
+                  {{subject.subject_name | uppercase}} | {{subject.level_name}} | {{subject.sublevel_name}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-2">
+              Grado
+              <select class="form-control" (change)="getSubjectUnits($event)">
+                <option *ngIf="gradeName === ''" selected>Seleccione el grado</option>
+                <option *ngFor="let grade of arrayGrades; let i = index" [value]="i">
+                  {{grade.grade_name}}
+                </option>
+              </select>
+            </div>
+            <!-- <div class="col-sm-2">
+              <button class="btn btn-block btn-primary btn-fill" (click)="onGenerateReport()">Generar reporte</button>
+            </div> -->
+          </div>
+          <hr>
+          <!-- <button (click)="exportToExcel()" class="btn btn-success btn-fill">
+            <i class="fa fa-download"></i> Excel
+          </button> -->
+          <!-- <div class="content">
+            <div class="fresh-datatables">
+              <table #datatablesEvaluation id="datatablesListStudent"
+                class="table table-striped table-bordered table-hover table-responsive" cellspacing="0" width="100%"
+                style="width:100%">
+                <thead style="font-size: 10px !important;">
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">ESTUDIANTE</th>
+                    <th *ngFor="let item of questionsFromEvaluation" class="text-center">{{item.option_description}}
+                    </th>
+                    <th class="text-center">TOTAL / <span
+                        *ngIf="evaluation[0]">{{evaluation[0].evaluation_scoring!=undefined?evaluation[0].evaluation_scoring:'0'}}
+                        Ptos</span></th>
+                    <th class="text-center">Porcentaje</th>
+                  </tr>
+                </thead>
+                <tbody style="font-size: 10px !important;" id="tBodyLevel">
+                  <tr *ngFor="let student of arrayStudentsOfGradeandParallel; let i = index ">
+                    <td class="text-center"> {{i+1}}
+                    </td>
+                    <td class="text-left">{{student.student_name}} {{student.student_lastname}}</td>
+                    <ng-container *ngIf="arrayDatailsForEstudent[student.student_id]; else elseTemplate">
+                      <td class="text-center" *ngFor="let detail of arrayDatailsForEstudent[student.student_id]">
+                        {{detail.score | number : '1.2-2'}}</td>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                      <td *ngFor="let item of questionsFromEvaluation" class="text-center">--</td>
+                    </ng-template>
+                    <ng-container *ngIf="arrayDatailsForEstudent[student.student_id]; else elseTemplate2">
+                      <td class="text-center">
+                        {{arrayDatailsForEstudent[student.student_id].totalScore | number : '1.2-2'}}
+                      </td>
+                    </ng-container>
+                    <ng-template #elseTemplate2>
+                      <td class="text-center">--</td>
+                    </ng-template>
+                    <ng-container
+                      *ngIf="arrayDatailsForEstudent[student.student_id] && evaluation[0].evaluation_scoring!=undefined; else elseTemplate3">
+                      <td  class="text-center">
+                        {{(arrayDatailsForEstudent[student.student_id].totalScore*porcentaje)/evaluation[0].evaluation_scoring | number : '1.2-2'}}
+                      </td>
+                    </ng-container>
+                    <ng-template #elseTemplate3>
+                      <td class="text-center">--</td>
+                    </ng-template>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Total por item</td>
+                    <td *ngFor="let item of questionsFromEvaluation" class="text-center">
+                      {{arrayForItem?arrayForItem[item.option_id]:''}}
+                    </td>
+                    <td colspan="2"></td>
+
+                  </tr>
+                  <tr>
+                    <td colspan="2">Porcentaje por item</td>
+                    <td *ngFor="let item of questionsFromEvaluation" class="text-center">
+                      {{arrayForItem?((arrayForItem[item.option_id]*porcentaje)/arrayStudentsOfGradeandParallel.length | number : '1.2-2'):''}}
+
+                    </td>
+                    <td colspan="2"></td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> -->
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

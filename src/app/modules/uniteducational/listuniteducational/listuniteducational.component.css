@@ -1,0 +1,77 @@
+.modal .modal-dialog {
+  width: 80% !important;
+  height: 80% !important;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  border: solid 2px #dcdcdc;
+}
+
+.is-image {
+  width: 300px;
+  height: 200px;
+}
+
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 30px;
+  transition: .4s;
+  left: 1px;
+  top: -30%;
+  transform: translateY(10%);
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .4s;
+}
+
+input:checked+.toggle-slider {
+  background-color: #04d420;
+}
+
+input:checked+.toggle-slider:before {
+  transform: translateX(26px);
+}
+
+/* Estilos para el label */
+.toggle-switch label {
+  display: inline-block;
+  margin-left: 10px;
+}
+.column-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente */
+  justify-content: center; /* Centra verticalmente */
+  text-align: center; /* Alinea el texto en el centro */
+}

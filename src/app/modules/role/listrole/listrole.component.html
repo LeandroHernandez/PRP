@@ -1,0 +1,241 @@
+<div class="main-content">
+
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="content">
+                <div class="card-header card-header-icon card-header-info">
+                    <h1 class="card-title">Rol</h1>
+                </div>
+                <div class="card-body">
+                    <div class="text-rigth">
+                        <button class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#Modaladdrole" (click)="open_modal_add_role()">
+                            <span class="btn-label">
+                                <i class="fa fa-plus"></i>
+                            </span>
+                            Agregar Rol
+                        </button>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="fresh-datatables">
+                                        <table id="datatablesRole"
+                                               class="table table-striped table-no-bordered table-hover"
+                                               cellspacing="0" width="100%" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>INDICE</th>
+                                                <th>NOMBRE</th>
+                                                <th>ESTADO</th>
+                                                <th>ACCIONES</th>
+                <!--                                <th class="disabled-sorting text-right">{{ dataTable.headerRow[5] }}</th>-->
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tBodyUnitEducational">
+                                                <tr *ngFor="let role of data_role; let i = index">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{role.role_name}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="role.role_state == true; else elseEstado">
+                                                            <button class="btn btn-success btn-fill btn-xs">
+                                                                <i class="fa fa-check"></i>
+                                                            </button>
+                                                        </ng-container>
+                                                        <ng-template #elseEstado>
+                                                            <button class="btn btn-danger btn-fill btn-xs">
+                                                                <i class="fa fa-close"></i>
+                                                            </button>
+                                                        </ng-template>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <div class="btn-group">
+                                                            <button (click)="load_data_role_for_edit(role)"
+                                                                    class="btn btn-fill btn-xs btn-warning btn-icon"
+                                                                    data-toggle="modal"
+                                                                    data-target="#Modaladdrole">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <button (click)="question_delete_role(role)"
+                                                                    *ngIf="(role.role_state == true)"
+                                                                    class="btn btn-fill btn-xs btn-danger btn-icon">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                            <button (click)="question_delete_role(role)"
+                                                                    *ngIf="(role.role_state == false)"
+                                                                    class="btn btn-fill btn-xs btn-success btn-icon">
+                                                                <i class="fa fa-check"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modaladdrole" tabindex="-1" role="dialog" aria-labelledby="Modaladdrole" aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document" style="width: 80% !important; max-width: inherit;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <br>
+            </div>
+            <div class="modal-body scroll-conten-modal">
+                <form [formGroup]="role_form">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                                <input class="form-control" id="role_name" type="text" autocomplete="off"
+                                name="role_name" placeholder="Nombre..." formControlName="role_name" maxlength="100"/>
+                                <div class="text-danger message-error"
+                                    *ngIf="role_form.controls['role_name'].hasError('required')
+                                    && (role_form.controls['role_name'].dirty
+                                    || role_form.controls['role_name'].touched)">
+                                    Por favor ingrese la Nombre
+                                </div>
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <div class="text-rigth">
+                    <button class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#Modalassingmenu">
+                        <span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        Asignar Menu
+                    </button>
+                </div>
+
+                <br>
+
+                <div class="table-responsive table-full-width">
+                    <table class="table table-bordered table-hover">
+
+                        <thead>
+                            <th class="text-center">
+                                Nombre
+                            </th>
+                            <th class="text-center">
+                                Url
+                            </th>
+                            <th class="text-center">
+                                Icono
+                            </th>
+                            <th class="text-center">
+                                Opciones
+                            </th>
+                        </thead>
+
+                        <tbody>
+
+                            <tr *ngFor="let menu of data_menu_assing_to_rol; let i=index">
+                                <td class="text-center">{{ menu.menu_name }}</td>
+                                <td class="text-center">{{ menu.menu_url }}</td>
+                                <td class="text-center">{{ menu.menu_icon }}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger btn-fill btn-sm" (click)="question_delete_menu(menu, i)">
+                                        <span class="btn-label">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <br>
+
+                <div class="text-center">
+                    <button class="btn btn-primary btn-fill btn-wd" (click)="action_role()" [disabled] = "this.role_form.invalid" data-dismiss="modal">
+                        <span class="btn-label">
+                            <i class="fa fa-save"></i>
+                        </span>
+                        Guardar
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="Modalassingmenu" tabindex="-1" role="dialog" aria-labelledby="Modalassingmenu" aria-hidden="true">
+
+    <div class="modal-dialog padding-modal" role="document" style="width: 80% !important; max-width: inherit;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <br>
+            </div>
+
+            <div class="modal-body p-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="content">
+                                <div class="table-responsive table-full-width">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <th class="text-center">
+                                            Nombre
+                                        </th>
+                                        <th class="text-center">
+                                            Url
+                                        </th>
+                                        <th class="text-center">
+                                            Icono
+                                        </th>
+                                        <th class="text-center">
+                                            Opciones
+                                        </th>
+                                        </thead>
+
+                                        <tbody>
+
+                                        <tr *ngFor="let menu of data_menu; let i=index">
+                                            <td class="text-center">{{ menu.menu_name }}</td>
+                                            <td class="text-center">{{ menu.menu_url }}</td>
+                                            <td class="text-center">{{ menu.menu_icon }}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-warning btn-fill btn-sm" (click)="assign_menu_to_role(menu)">
+                                        <span class="btn-label">
+                                            <i class="fa fa-check"></i>
+                                        </span>
+                                                    Asignar
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

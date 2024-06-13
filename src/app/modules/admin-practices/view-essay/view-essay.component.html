@@ -1,0 +1,77 @@
+<div class="modal fade" id="ModalEssayDetail" tabindex="-1" role="dialog" aria-labelledby="ModalEssayDetail"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog padding-modal" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button (click)="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<br>
+			</div>
+			<div class="main-content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<div class="card card-wizard" id="wizardCard{{count}}">
+								
+								<div class="header text-center">
+									<h3 class="title">{{essayName}}</h3>
+								</div>
+								
+								<div class="content">
+									<ul class="nav "  >
+										<li #liOptions *ngFor=" let questionOption of allOptionsFromEssay; let i = index">
+											<a href="#tab{{i}}" data-toggle="tab">Pregunta {{i+1}} </a></li>
+									</ul>
+									
+									<div class="tab-content">
+										<div class="tab-pane" id="tab{{i}}" *ngFor=" let questionOption of allOptionsFromEssay; let i = index" >
+											<div class="row" >
+												<div class="header text-center">
+													<h3 class="title">{{questionOption.option_description}}</h3>
+													<figure>
+														<img *ngIf="questionOption.question_image"
+														     class="rounded mx-auto d-block is-image" [src]="questionOption.question_image">
+													</figure>
+												</div>
+												<div class="panel panel-default" >
+													<div class="panel-body">
+														<!-- RESPUESTA PARA TEXTO-->
+														<div class="row" style="display: contents; justify-content: center;">
+															<div  class="col-md-12 align-middle" >
+																<div class="form-group border-focus">
+																	<label for="respuestaText"></label>
+																	<textarea class="form-control" id="respuestaText" rows="3"
+																	          placeholder="Escribe tu respuesta aquí..."></textarea>
+																</div>
+															
+															</div>
+														
+														</div>
+													</div>
+												</div>
+											
+											
+											
+											</div>
+										</div>
+									
+									</div>
+									<!--<div class="footer" >
+										<button [disabled]="!isCorrect"  (click)="nextQuestions()"type="button" class="btn btn-info btn-fill btn-wd btn-next btn-dis pull-right" >Siguiente</button>
+										
+										<button [disabled]="!isCorrect" (click)="onFinishWizardQuestions()" type="button" class="btn btn-info btn-fill btn-wd btn-finish pull-right" click="onFinishWizard()">Finish</button>
+										
+										<div class="clearfix"></div>
+									</div>-->
+								</div>
+							
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

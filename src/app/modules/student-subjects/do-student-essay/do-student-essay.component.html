@@ -1,0 +1,236 @@
+<div class="modal fade" id="ModalEssayDetail" tabindex="-1" role="dialog" aria-labelledby="ModalEssayDetail"
+	aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog padding-modal" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button (click)="closeModal(); saveTempAnswer(essayAnswer)" type="button" class="close"
+					data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> {{essayName}}</h4>
+			</div>
+			<div class="main-content " *ngFor=" let questionOption of allOptionsFromEssay; let i = index">
+				<!--<div class="row">
+						<div class="col-sm-9 text-center">
+							{{questionOption.option_description}}
+						</div>
+						<div class="col-sm-3">
+							<button class="{{showRubric?'btn-primary':'btn-success'}} btn btn-fill btn-block"
+								*ngIf="essayRubric.rubric_calification > 0" (click)="this.showRubric = !this.showRubric">
+								{{showRubric?'Ocultar Rúbrica':'Ver Rúbrica'}}
+							</button>
+						</div>
+					</div>-->
+				<div class="col-md-12"
+				     style=" display: flex; flex-direction: row; justify-content: space-around">
+					<div class="col-md-4 text-center" *ngIf="questionOption.question_image" class="row" style="margin: 5px;">
+						<div *ngIf="questionOption.question_image" style="justify-items: center; align-items: center; text-align: center;justify-content: center; align-content: center;">
+							<img *ngIf="questionOption.option_type !== 'application/pdf'" class="rounded mx-auto d-block is-image-index"
+							     [src]="questionOption.question_image">
+							<i class="fa fa-file-pdf-o fa-4x" aria-hidden="true"
+							   *ngIf="questionOption.option_type === 'application/pdf'"
+							   style="margin: auto;min-width: 20vh;"></i>
+							<!--<iframe
+								*ngIf="questionOption.option_type === 'application/pdf'"
+								style="width: 100%;height: 40vh" [src]="this.sanitizerUrl(questionOption.question_image)"
+								frameborder="0"></iframe>
+							<br>-->
+							<a [href]="questionOption.question_image" target="_blank" style="color: white;">
+								<button type="submit" class="btn btn-success btn-fill"
+								        style="margin-top: 10px; color: white;">
+									
+									<i class="fa fa-cloud-download"></i>Descargar
+									adjunto
+								</button></a>
+							<!-- <a href="questionOption.question_image" >
+								<i class="fa fa-download fa-lg" aria-hidden="true" style="margin-top: 5px;" ></i> Descargar.
+							</a> -->
+						</div>
+						
+						
+						<!--<img *ngIf="questionOption.question_image"
+												class="rounded mx-auto d-block is-image-index"
+												[src]="questionOption.question_image">-->
+					
+					
+					</div>
+					<div class="col-md-6"
+					     style=" margin: 5px; justify-items: center; align-items: center; text-align: center;vertical-align: middle;">
+						
+						{{questionOption.option_description}}
+					
+					
+					</div>
+					<div class="col-md-2">
+						<button class="{{showRubric?'btn-primary':'btn-success'}} btn btn-fill btn-block"
+						        *ngIf="essayRubric.rubric_calification > 0"
+						        (click)="this.showRubric = !this.showRubric">
+							{{showRubric?'Ocultar Rúbrica':'Ver Rúbrica'}}
+						</button>
+					</div>
+				
+				</div>
+				
+				<hr>
+				<div class="row">
+					<div [ngClass]="showRubric? 'col-md-6': 'col-md-12'">
+						<div class="content">
+							<!--<div *ngIf="questionOption.question_image" class="row"
+									 style="margin: 0 auto; height: 14vh;">
+								<div class="col-sm-4 text-center">
+
+								</div>
+								<div class="col-sm-4 text-center">
+									<img *ngIf="questionOption.question_image "
+											 class="rounded mx-auto d-block is-image-index"
+										 [src]="questionOption.question_image ">
+										 {{questionOption.question_image}}
+								</div>
+								<div class="col-sm-4 text-right">
+								</div>
+							</div>-->
+							<hr>
+							<div class="row">
+								<div class="panel-body">
+									<!-- RESPUESTA PARA TEXTO-->
+									<div class="row" style="display: contents; justify-content: center;">
+										<div class="col-md-12 align-middle">
+											<div class="form-group border-focus"
+											     *ngIf="questionOption.option_text_required">
+												<angular-editor [placeholder]="'Escribe aquí la respuesta'"
+												                [(ngModel)]="essayAnswer.resource_answer">
+												</angular-editor>
+												<!--<textarea [(ngModel)]="essayAnswer.resource_answer" class="form-control" id="respuestaText"
+													rows="15" [disabled]="questionOption.option_attached_required"
+													[placeholder]="questionOption.option_attached_required? 'Adjuntar archivo': 'Escribe tu respuesta aquí'"></textarea>-->
+											</div>
+										</div>
+									
+									</div>
+								</div>
+							</div>
+						
+						
+						</div>
+					</div>
+					<!-- Div show rubric -->
+					<div class="col-md-6" *ngIf="showRubric && essayRubric">
+						<br>
+						<div class="card col-avanc">
+							<div class="card-header">
+								<h3 class="card-title">
+									<h3><strong>{{essayRubric.rubric_name}}</strong></h3>
+									<hr>
+									<span style="float: right">Calificación: {{total}} |
+										{{essayRubric.rubric_calification}}</span>
+									<p>{{essayRubric.rubric_des}}</p>
+								</h3>
+							</div>
+							<div class="card-body">
+								<div class="panel-body content modal-content-form">
+									<div class="row">
+										<table class="table-responsive table-borderless font-small-l">
+											<thead>
+											<tr>
+												<th>Criterios / Puntaje</th>
+												<th *ngFor="let point of rubricPoints">
+													<input disabled type="text"
+													       class="form-control font-small-l"
+													       [(ngModel)]="point.rubric_point_calification">
+												</th>
+											</tr>
+											<tr *ngFor="let judge of rubricJudgements; let i = index">
+												<td>
+													<input disabled type="text"
+													       class="form-control font-small-l"
+													       [(ngModel)]="judge.rubric_judgement_des">
+												</td>
+												<td *ngFor="let item of judge.rubric_judgement_items">
+															<span class="form-control font-small-l"
+															      [ngClass]="item.selected ? 'select-option' : ''">
+																{{item.rubric_judgement_item_des}}
+															</span>
+												</td>
+											</tr>
+											</thead>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="footer">
+					<!-- Adjunto -->
+					<div class="row">
+						<div class="col-md-9">
+							<div *ngIf="questionOption.option_attached_required">
+								<div class="row">
+									<div class="col-sm-3">
+										<button class="btn" (click)="fileupload.click()">
+											Adjuntar <i class="fa fa-file-pdf-o"></i>
+										</button>
+										<div *ngIf="files.length > 0">
+											<div *ngFor="let fileFile of files">
+												<p [title]="fileFile.name">
+													<strong>Nombre: </strong>{{ fileFile.name | slice:0:20}}
+												</p>
+												<p>
+													<strong>Tamaño:</strong> {{fileFile.size / 1024 / 1024 | number: '.2-2'}} MB
+												</p>
+											</div>
+										</div>
+										<!-- [disabled]="!questionOption.option_attached_required || essayAnswer.resource_save" -->
+										<input (change)="onChargeDocs($event)" [multiple]="!questionOption.option_attached_multiple? false: true" accept=".doc, .docx, application/pdf, image/*" type="file"
+										       style="display:none;" class="form-control-file" #fileupload id="option_image"
+										       name="option_image">
+										<br>
+										<span *ngIf="questionOption.option_attached_required">* Tamaño máximo: 35 MB</span>
+									</div>
+									<div class="col-sm-9">
+										<div class="content modal-content-form" *ngIf="essayAnswer.hasOwnProperty('resource_url')">
+											<mat-tab-group mat-align-tabs="start" [color]="Primary" [backgroundColor]="Primary" style="padding: 0px !important;">
+												<mat-tab *ngFor="let resource of resourcesUrl; let index = index" style="padding: 0px !important;">
+													<ng-template mat-tab-label style="padding: 0px !important;">
+                        <span id="salvacion{{index}}"
+                              style="margin: 0 auto; padding-left: 1rem; padding-right: 1rem; padding-top: 1rem; padding-bottom: 1rem;">
+                            Recurso {{ index }}
+                        </span>
+													</ng-template>
+													<div class="container">
+														<iframe style="width: 100%; height: 50vh" [src]="resource" frameborder="0"></iframe>
+													</div>
+												</mat-tab>
+											</mat-tab-group>
+											<!--<iframe style="width: 100%; height: 50vh" [src]="resourceUrl" frameborder="0"></iframe>-->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div>
+								<h3>Comentario</h3>
+								<textarea rows="3" disabled class="form-control-plaintext" [value]="essayAnswer['resource_comment']"></textarea>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<button
+										[disabled]="questionOption.option_attached_required && files.length === 0"
+										class="btn btn-primary btn-fill" style="float: right;"
+										(click)="saveAnswer(essayAnswer)">
+									Enviar tarea
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

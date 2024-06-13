@@ -1,0 +1,95 @@
+.grade {
+    color: rgb(255,168, 67);
+    width: 70px;
+    height: 40px;
+
+}
+.parallel {
+    color:rgb(0, 156, 119);
+    width: 70px;
+    height: 40px;
+    margin-left:10px ;
+}
+
+.btn-assign-teacher {
+    background-color: transparent;
+    border: none;
+    color: rgb(35, 204, 239);
+    width: 180px;
+    font-size: 14px;
+    margin: 5px;
+    
+}
+
+.btn-edit-teacher {
+    float: right;
+    margin: 5px;
+    background-color: transparent;
+    border: none;
+}
+.btn-link{
+text-align: left;
+}
+.subject-btn {
+    color:white;
+    font-size: large;
+    font-weight: bold;
+}
+.subject-btn:hover {
+    text-decoration: none;
+}
+.check {
+    cursor: pointer;
+}
+.btn-addS {
+    border-style: dashed; 
+    border-width: 2px;
+    width: 100%;
+}
+.backgroundmatOne {
+    background-color: #4B93FF;
+
+}
+.backgroundmatTwo {
+    background-color: #00ba56;
+}
+.backgroundmatThre  {
+    background-color: #a64bff;
+}
+.backgroundmatFour  {
+    background-color: #ff3370;
+}
+.backgroundmatFive  {
+    background-color: #D48142;
+}
+.backgroundmatSix  {
+    background-color: #E8BA4D;
+}
+.backgroundmatSeven  {
+    background-color: #C54233;
+}
+.backgroundmatEight   {
+    background-color: #3D96CD;
+}
+.backgroundmatNine {
+    background-color: #21F2F7;
+}
+.btn-show {
+    width: 10%;
+    border: none;
+    border-radius: 3px;
+    background-color: #00BA56;
+    color: white;
+    font-weight: bold
+}
+.unit-info {
+    background-color: #939393;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+}

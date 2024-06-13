@@ -1,0 +1,84 @@
+<div id="bd-content" class="body-content">
+	<div class="row card matOne card-header-subject">
+		<div class="col-sm-8 text-left a-middle"><br>
+			<span class="title-subject">Actividades Pendientes</span>
+		</div>
+	</div>
+</div>
+
+<div class="row" *ngIf="!loading">
+	<div class="col-md-11" *ngIf="hasClasses, else noClasses">
+		<full-calendar deepChangeDetection="true" #calendar [options]="calendarOptions" ></full-calendar>
+	</div>
+	<ng-template #noClasses>
+		<div class="col-md-12 text-center">
+			<h3>No tiene pendientes.</h3>
+		</div>
+	</ng-template>
+
+</div>
+<!--<div class="row">
+	<ul class="list-unstyled">
+		<li>
+			<div class="list-item-container">
+				<span class="list-item-circle calendar-red">5</span>
+				<span class="list-item-text calendar-red">Alta</span>
+			</div>
+		</li>
+		<li>
+			<div class="list-item-container">
+				<span class="list-item-circle calendar-yellow">3</span>
+				<span class="list-item-text calendar-yellow">Media</span>
+			</div>
+		</li>
+		<li>
+			<div class="list-item-container">
+				<span class="list-item-circle calendar-green">2</span>
+				<span class="list-item-text calendar-green">Baja</span>
+			</div>
+		</li>
+	</ul>
+</div>-->
+
+<!-- MODAL NOTAS DE Sesión -->
+<div class="modal fade" id="modalCalendar" tabindex="-1" role="dialog" aria-labelledby="modalCalendar"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> Eventos
+				</h4>
+			</div>
+			<div class="modal-body" style="position: initial; overflow-y:auto;" *ngIf="selectedEvent">
+				<ul class="list-unstyled">
+					<span *ngIf="selectedEvent.hasOwnProperty('evaluation_id')">{{selectedEvent.evaluation_name}} | {{selectedEvent.evaluation_des}}</span>
+					<span *ngIf="selectedEvent.hasOwnProperty('resource_id')">{{selectedEvent.resource_name}} | {{selectedEvent.resource_des}}</span>
+					<span *ngIf="selectedEvent.hasOwnProperty('detailsVideoC')">
+							<table class="table table-responsive table-bordered">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Link</th>
+                    <th>Detalles</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{selectedEvent.toDate}}</td>
+                    <td>{{selectedEvent.toHours}}</td>
+                    <td><a target="blank" href="{{selectedEvent.urlVideoC}}"><i class="fa fa-external-link"></i>
+                        {{selectedEvent.urlVideoC}} </a>
+                    </td>
+                    <td>{{selectedEvent.detailsVideoC || 'Sin descripción' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+						</span>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

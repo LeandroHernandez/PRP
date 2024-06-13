@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.3/css/bulma.min.css">
+
+<div class="wrapper wrapper-full-page">
+	<!-- navbar -->
+	<nav class="navbar" role="navigation" aria-label="main navigation">
+		<div class="navbar-brand">
+			<a class="navbar-item" routerLink="/login">
+				<img src="../../../assets/img/Landingpage/log1.png" width="112" height="28">
+			</a>
+			
+			<a (click)="toggleNavbar()" role="button" #navBurger class="navbar-burger burger" aria-label="menu"
+			   aria-expanded="false" data-target="navbarBasicExample">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+		
+		<div id="navbarBasicExample" class="navbar-menu" #navMenu>
+			<div class="navbar-start">
+				<a class="navbar-item" *ngFor="let section of ids; let i = index"
+				   [routerLink] [fragment]="section"
+				   [routerLinkActive]="'active'"
+				   [routerLinkActiveOptions]="{exact: true}">
+					{{section}}
+				</a>
+			</div>
+			
+			<div class="navbar-end">
+				<div class="navbar-item">
+					<div class="buttons">
+						<a class="button btn-nav-blue" routerLink="/login">
+							<strong>Regístrate</strong>
+						</a>
+						<a class="button btn-nav-light" routerLink="/login">
+							Inicia Sesión
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- !navbar -->
+	
+	<!-- Inicio -->
+	<header id="Inicio">
+		<div class="row">
+			<div class="col-md-6">
+				<h1 class="inicio-titulo">
+					Haz de tu aprendizaje divertido!
+				</h1>
+				<p class="inicio-subtitulo">
+					Una plataforma que virtualiza el Aula de clases
+				</p>
+				<button class="btn-blue">Regístrate aquí</button>
+			</div>
+			<div class="col-md-6" style="display: flex;justify-content: center;align-items: center;">
+				<img class="img-inicio" src="../../../assets/img/Landingpage/landing1.png" alt="inicio">
+			</div>
+		</div>
+	</header>
+	<!-- !Inicio -->
+	
+	<!-- Que es dydactico-->
+	<section id="Cómo Funciona">
+		<div class="row" style="padding: 3rem !important;">
+			<div class="col-md-9">
+				<h1 class="title-1">¿Qué es Dydáctico?</h1>
+				<p class="content-description">
+					Es una plataforma Web que integra la comunicación efectiva entre administrativos, profesores, estudiantes y padres de familia en una Aula vitual
+					facilitando la educación a través de contenido gestionado en videos, material de lectura,
+					prácticas y evaluaciones permitiendo un aprendizaje dinámico, divertido y de gran alcance.
+					Provee al profesor las herramientas necesarias para para la fácil y eficaz enseñanza con una forma innovadora herramienta.
+				</p>
+			</div>
+			<div class="col-md-3 v-center" style="display: flex;justify-content: center;align-items: center;">
+				<img class="img-side" src="../../../assets/img/Landingpage/landing2.png" alt="laptop">
+			</div>
+		</div>
+	</section>
+	<!-- !Que es dydactico -->
+	
+	<!-- estudiantes-->
+	<section class="info-rows" id="students">
+		<div class="row">
+			<div class="col-md-3 color1">
+				<img class="img-side" src="../../../assets/img/Landingpage/landing3.png" alt="">
+			</div>
+			<div class="col-md-9 info-rows-side">
+				<div>
+					<h3>dydactico</h3>
+					<h1 class="title-2">Módulo para el estudiante</h1>
+					En este módulo el estudiante puede entrar a sus clases de las diferentes materias y acceder
+					al material que el profesor organizó como:
+					<ul>
+						<li>- Textos virtuales</li>
+						<li>- Videos</li>
+						<li>- Prácticas interactivas</li>
+						<li>- Material de apoyo proporcionado por el docente (Pdfs, Docs,Imag)</li>
+						<li>- Evaluaciones</li>
+						<li>- Notas</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- !estudiantes -->
+	
+	<!-- profesores-->
+	<section class="info-rows" id="teachers">
+		<div class="row">
+			<div class="col-md-3 color2">
+				<img class="img-side" src="../../../assets/img/Landingpage/landing5.png" alt="">
+			</div>
+			<div class="col-md-9 info-rows-side">
+				<div>
+					<h3>dydactico</h3>
+					<h1 class="title-2">Módulo para Profesores</h1>
+					En este módulo los docentes tendrán la capacidad de crear sus sesiones y clases de acuerdo a sus necesidades y metodologías con el apoyo de varias herramientas como:
+					
+					<ul>
+						<li>- Videos</li>
+						<li>- Textos</li>
+						<li>- Archivos Adjuntos, pdfs, documentos, imágenes, ect.</li>
+						<li>- Se puede adjuntar  Links o Urls de recursos externos.</li>
+						<li>- Actividades</li>
+						<li>- Cuestionarios</li>
+					</ul>
+					<br>
+					Para que el aula virtual y las actividades sean fáciles, didácticas y divertidas.
+					
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- !profesores -->
+	
+	<!-- padres-->
+	<section class="info-rows" id="parents">
+		<div class="row">
+			<div class="col-md-3 color3">
+				<img class="img-side" src="../../../assets/img/Landingpage/landing6.png" alt="">
+			</div>
+			<div class="col-md-9 info-rows-side">
+				<div>
+					<h3>dydactico</h3>
+					<h1 class="title-2">Módulo para Padres</h1>
+					En este módulo el representante puede acceder a la información del avance para el control
+					del alumno como:
+					<ul>
+						<li>- Avance y notas de cada materia</li>
+						<li>- Reporte detallado de las prácticas y evaluaciones</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- !padres -->
+	
+	<!-- planes -->
+	<section id="Planes">
+		<div class="plan-div">
+			<div class="row" style="margin-top: 50px">
+				<div class="col-md-6">
+					<div class="card card-plan">
+						<div class="header">
+							<ul class="inline-list">
+								<li>
+									<img class="img-plans" src="../../../assets/img/school.png">
+								</li>
+								<li class="v-center">
+									Institucional
+								</li>
+							</ul>
+						</div>
+						<div class="content">
+							<p class="text-justify">En ésta, los padres elijen seguir el plan de estudios
+								propuesto por Unidad Educativa. El programa curricular se basa en los principios educativos
+								de dydactico y tiene como referente las competencias establecidas por el Ministerio de
+								Educación del Ecuador.</p>
+							<br>
+							<div class="card-links">
+								<a href="#">Más información</a>
+							</div>
+						</div>
+						<div class="footer text-center">
+							<button routerLink="/login" class="btn-blue">REGISTRATE AQUI</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card card-plan">
+						<div class="header">
+							<ul class="inline-list">
+								<li>
+									<img class="img-plans" src="../../../assets/img/student.png">
+								</li>
+								<li class="v-center">
+									Individual
+								</li>
+							</ul>
+						</div>
+						<div class="content text-justify">
+							<p>Es una modalidad en la que el padre de familia, de manera
+								libre, define las competencias que desea que su hijo/a desarrolle, escoge los contenidos,
+								metodologías y ritmos según las necesidades particulares del niño.</p>
+							<br>
+							<div class="card-links">
+								<a href="#">Plan Mensual</a>
+								<a href="#">Plan Anual</a>
+							</div>
+						</div>
+						<div class="footer text-center">
+							<button routerLink="/plan" class="btn-blue">REGISTRATE AQUI</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- !planes -->
+	
+	<!-- Contactos -->
+	<section id="Contacto" class="main-text">
+		<div class="row">
+			<h2 class="title-1">
+				Contacto
+			</h2>
+			<div class="col-md-6">
+				<ul class="media-list">
+					<li class="media">
+						<div class="media-left">
+							<a href="javascript:void(0)">
+								<i class="fa fa-map-marker fa-2x"></i>
+							</a>
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">Julia Bernal, Ricaurte</h4>
+						</div>
+					</li>
+					<li class="media">
+						<div class="media-left">
+							<a href="javascript:void(0)">
+								<i class="fa fa-envelope fa-2x"></i>
+							</a>
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">info@weconnect.com</h4>
+						</div>
+					</li>
+					<li class="media">
+						<div class="media-left">
+							<a href="javascript:void(0)">
+								<i class="fa fa-phone fa-2x"></i>
+							</a>
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">+593 987938328</h4>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-6">
+				<form action="">
+					<div class="row">
+						<div class="col-xs-12 col-md-6 col-lg-6 input-form">
+							<input type="text"
+							       class="form-control input-lg" placeholder="Nombre">
+						</div>
+						<div class="col-xs-12 col-md-6 col-lg-6 input-form">
+							<input type="text"
+							       class="form-control input-lg" placeholder="Apellido">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-md-12 col-lg-12 input-form">
+							<input type="text"
+							       class="form-control input-lg" placeholder="Número de teléfono">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 input-form">
+							<input type="text"
+							       class="form-control input-lg" placeholder="Número de teléfono">
+						</div>
+					</div>
+					<div class="row">
+						<button class="btn-blue">ENVIAR</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	<!-- !Contactos-->
+	
+	<footer class="v-center text-center">
+		<ul class="footer-list">
+			<li class="footer-list-item">
+				<img src="../../../assets/img/Landingpage/logo.png" width="132" height="48">
+			</li>
+			<li class="footer-list-item">
+				<h3>
+					Copyright © We Connect Corp. Cia. Ltda. {{year}}. Designed by We Connect Corp.
+				</h3>
+				<h3 style="font-weight: bold">Términos y condiciones de uso</h3>
+			</li>
+			<!--<li class="footer-list-item">
+				<h3 style="font-weight: bold">Acerca</h3>
+				<ul>
+					<li style="margin-top: 10px">Company</li>
+					<li style="margin-top: 10px">Leadership</li>
+					<li style="margin-top: 10px">Jobs</li>
+				</ul>
+			</li>
+			<li class="footer-list-item">
+				<h3 style="font-weight: bold">Módulos</h3>
+			</li>
+			<li class="footer-list-item">
+				<h3 style="font-weight: bold">Fuentes</h3>
+			</li>
+			<li class="footer-list-item">
+				<h3 style="font-weight: bold">Términos y condiciones</h3>
+			</li>-->
+		</ul>
+	</footer>
+	
+</div>

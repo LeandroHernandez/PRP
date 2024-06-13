@@ -1,0 +1,191 @@
+<div class="header-title">
+    <img src="../../../../assets/img/iconosPractice.png" alt="" style="margin: 5px;">
+    <h3><strong>DOMINIO DE LA MATERIA </strong></h3>
+</div>
+
+<br>
+
+<div class="row" style="margin-left: 20px;">
+    <div class="modal-conten" >
+        <div class="row form-group">
+            <div class="col-xs-2">
+                <h3 class="title-select">PARALELOS</h3>
+            </div>
+            <div class="col-md-4">
+                <label>
+                    <select class="form-control"
+                            (change)="OnChangeParallel($event)">
+                        <option>SELECCIONE UN PARALELO</option>
+                        <option *ngFor="let parallel of parallelsList; let i = index"
+                                [value]="i">
+                            {{parallel.level_name | uppercase}} |
+                            {{parallel.sublevel_name | uppercase}} |
+                            PARALELO {{parallel.parallel_name | uppercase}}
+                        </option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-2 ">
+                <h3 class="title-select">MATERIA</h3>
+            </div>
+            <div class="col-md-4">
+                <label>
+                    <select class="form-control"
+                            (change)="onChangeSubject($event)">
+                        <option selected>
+                            SELECCIONE UNA MATERIA
+                        </option>
+                        <option *ngFor="let subject of subjectsList; let i = index"
+                                [value]="i">
+                            {{subject.subject_name | uppercase}}
+                        </option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" style="margin-left: 20px; ">
+    <button type="button"
+            class="btn btn-primary"
+            [disabled]="dataSelected()"
+            (click)="initGeneration()">
+        VER DOMINIO
+    </button>
+</div>
+
+
+<br>
+
+
+<div class="card">
+    <div class="main-content">
+        <div class="card-body car-table">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class=""
+                         style="overflow-y:hidden;
+                            overflow-x: scroll;">
+                        <div class="content">
+                            <div class="fresh-datatables "
+                                 *ngIf="weightUnitObjectDTOList.length > 0; else noClass">
+                                <table id="datatablesStudents"
+                                       class="table table-striped table-dark table-bordered table-hover table-responsive">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            <div style="font-weight: bold; font-size: 12px;">
+                                                UNIDADES
+                                            </div>
+                                        </th>
+
+                                        <th *ngFor="let weightUnitObjectDTO of weightUnitObjectDTOList; let i=index"
+                                            [colSpan]="getHeaderSize(weightUnitObjectDTO)"
+                                            class="header-class row text-center">
+                                                <div class="text-center">
+                                                    <span style="font-size: 12px; font-weight: bold">{{weightUnitObjectDTO.unitName? weightUnitObjectDTO.unitName : 'Sesión sin nombre'}}</span>
+                                                    <br>
+                                                    <span style="font-size: 12px;">PESO: {{weightUnitObjectDTO.unitWeight}}%</span>
+                                                </div>
+                                        </th>
+                                        <th class="text-center" rowspan="3">
+                                            DOMINIO DE
+                                            <br>
+                                            MATERIA
+                                            <br>
+                                            {{weightUnitSum(weightUnitObjectDTOList)}} = 100%
+                                        </th>
+                                    </tr>
+                                    <tr class="head-table text-center">
+                                        <th class="text-center" style="font-weight: bold; font-size: 12px;">CLASE</th>
+                                        <ng-container
+                                                id="containerSecundario"
+                                                *ngFor="let weightUnitObjectDTO of weightUnitObjectDTOList">
+                                            <th class="header-class row"
+                                                *ngFor="let weightClassObjectDTO of weightUnitObjectDTO.weightClassObjectDTOList"
+                                                [colSpan]="weightClassObjectDTO.weightComponentsObjectDTOList.length">
+                                                <div class="text-center">
+                                                    <span style="font-weight: bold; font-size: 12px;">{{weightClassObjectDTO.className}}</span>
+                                                    <br>
+                                                    <span style="font-size: 12px;">PESO: {{weightClassObjectDTO.classComponentWeightSum}}%</span>
+                                                </div>
+                                            </th>
+                                        </ng-container>
+                                    </tr>
+                                    <tr class="head-table ">
+                                        <th class="text-center" style="font-weight: bold; font-size: 12px; ">ACTIVIDADES</th>
+                                        <ng-container
+                                                id="containerTerciariaio"
+                                                *ngFor="let weightUnitObjectDTO of weightUnitObjectDTOList">
+                                            <ng-container
+                                                    id="containerCuaternario"
+                                                    *ngFor="let weightClassObjectDTO of weightUnitObjectDTO.weightClassObjectDTOList">
+                                                <th class="header-class row"
+                                                    *ngFor="let weightComponentsObjectDTO of weightClassObjectDTO.weightComponentsObjectDTOList">
+                                                    <div class="text-center">
+                                                        <span style="font-weight: bold; font-size: 12px;">{{weightComponentsObjectDTO.componentType}}</span>
+                                                        <br>
+                                                        <span style="font-size: 12px;">PESO: {{weightComponentsObjectDTO.componentWeight}}% | VALORACION: {{weightComponentsObjectDTO.componentValue}}</span>
+                                                    </div>
+                                                </th>
+                                            </ng-container>
+                                        </ng-container>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tBodyUnitEducational">
+                                    <tr *ngFor="let studentWeighDTO of studentWeighDTOList">
+                                        <th>
+                                            <div style="font-weight: bold; font-size: 12px;">
+                                                {{studentWeighDTO.studentName | uppercase}}
+                                            </div>
+                                        </th>
+                                        <ng-container
+                                                id="containerStudenTerciariaio"
+                                                *ngFor="let weightUnitObjectDTO of weightUnitObjectDTOList">
+                                            <ng-container
+                                                    id="containerStudenCuaternario"
+                                                    *ngFor="let weightClassObjectDTO of weightUnitObjectDTO.weightClassObjectDTOList">
+                                                <th class="header-class row"
+                                                    *ngFor="let weightComponentsObjectDTO of weightClassObjectDTO.weightComponentsObjectDTOList">
+                                                    <div class="text-center">
+<!--                                                        <span style="font-size: 12px;">NIVEL OBTENIDO: {{weightComponentsObjectDTO.componentWeight}}% | PUNTAJE: {{weightComponentsObjectDTO.componentValue}}</span>-->
+                                                        <span style="font-size: 12px;">{{getDataDetail(studentWeighDTO.studentID, weightUnitObjectDTO.unitID,
+                                                            weightClassObjectDTO.classID, weightComponentsObjectDTO.componentID)}}</span>
+                                                    </div>
+                                                </th>
+                                            </ng-container>
+                                        </ng-container>
+                                        <th class="text-center">
+                                            <div style="font-weight: bold; font-size: 12px;">
+                                                NIVEL DE DOMINIO
+                                                <br>
+                                                {{getDom(studentWeighDTO.studentDomainO, studentWeighDTO.studentDomain)}}%
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-template #noClass>
+                                <div
+                                        style="display: flex;flex-direction: row; align-content: center; justify-content: center; text-align: center;">
+                                    <h1 class="alert-danger"
+                                        style="color: white; width: 80%; border-radius: 3px; font-size: medium;">
+                                        NO SE HA CONFIGURADOS PESOS AUN !!!</h1>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

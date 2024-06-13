@@ -1,0 +1,94 @@
+<div class="modal fade" id="ModalSimulator" tabindex="-1" role="dialog" aria-labelledby="ModalSimulator"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog padding-modal" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button (click)="closeModal();" type="button" class="close"
+				        data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i>Listado de Recursos</h4>
+			</div>
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-2">
+						<mat-selection-list #list [multiple]="false">
+							<div mat-subheader>Actividades</div>
+							<mat-list-option *ngFor="let unitResource of unitClass.class_resources" (click)="onShow(unitResource)" style="cursor: pointer">
+								<mat-icon mat-list-icon>class</mat-icon>
+								<div mat-line>{{unitResource.resource_name}}</div>
+								<div mat-line> {{unitResource.resource_des}} </div>
+							</mat-list-option>
+							<mat-divider></mat-divider>
+							<div mat-subheader>Evaluaciones</div>
+							<mat-list-option *ngFor="let unitEvaluation of unitClass.class_evaluation" (click)="onShow(unitEvaluation)" style="cursor: pointer">
+								<mat-icon mat-list-icon>description</mat-icon>
+								<div mat-line>{{unitEvaluation.evaluation_des}}</div>
+							</mat-list-option>
+						</mat-selection-list>
+						<!--<ul class="list-unstyled" style="overflow-y: auto; max-height: 100%">
+							<li>
+								<strong>ACTIVIDADES</strong>
+							</li>
+							<li *ngFor="let unitResource of unitClass.class_resources" (click)="onShow(unitResource)" style="cursor: pointer">
+								<strong>{{unitResource.resource_name}}</strong> {{unitResource.resource_des}}
+							</li>
+							<li>
+								<strong>EVALUACIONES</strong>
+							</li>
+							<li *ngFor="let unitEvaluation of unitClass.class_evaluation" (click)="onShow(unitEvaluation)" style="cursor: pointer">
+								{{unitEvaluation.evaluation_des}}
+							</li>
+						</ul>-->
+					</div>
+					<div class="col-md-10">
+						<h1 class="text-center" *ngIf="loading">
+							Cargando...<i class="fa fa-spinner fa-spin"></i>
+						</h1>
+						<app-essay-simulator *ngIf="this.showViewEssay" [essayId]="this.essayId"></app-essay-simulator>
+						<app-practice-simulator *ngIf="this.showViewPractice" [practiceId]="this.practiceId"></app-practice-simulator>
+						<app-evaluation-simulator *ngIf="this.showViewEvaluation" [evaluationId]="this.evaluationId"></app-evaluation-simulator>
+						<div class="modal-body modal-content-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="card">
+										<div class="content modal-content-form video-responsive" style="text-align: center;"
+										     *ngIf="isResourceVideo">
+											<div width="560" height="300">
+												<div class="embed-responsive embed-responsive-16by9">
+													<youtube-player [videoId]="id" (ready)="savePlayer($event)">
+													</youtube-player>
+												</div>
+											
+											</div>
+										</div>
+										<div class="content modal-content-form" *ngIf="isResourceFile">
+											<iframe style="width: 100%;height: 72vh" [src]="resourceUrl" frameborder="0"></iframe>
+										</div>
+										<div class="content modal-content-form" *ngIf="isResourceText">
+											<iframe style="width: 100%;height: 72vh" [src]="resourceUrl" frameborder="0"></iframe>
+										</div>
+										<div class="content modal-content-form" *ngIf="isResourceUrlYoutube">
+											<iframe width="100%" height="500vh" [src]="url"></iframe>
+											<!--<div *ngIf="url === undefined" class="text-center alert-danger col-sm-4 col-sm-offset-4" style="margin-top:30px ;">
+												<i class="fa fa-info-circle"></i><br><br>
+												Este recurso se visualiza en una nueva pestaña del navegador.
+											</div>-->
+										</div>
+										<div class="content modal-content-form" *ngIf="isResourceUrl">
+											<div class="text-center alert-danger col-sm-4 col-sm-offset-4"
+											     style="margin-top:30px ;">
+												<i class="fa fa-info-circle"></i><br><br>
+												Este recurso se visualiza en una nueva pestaña del navegador.
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

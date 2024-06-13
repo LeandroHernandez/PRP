@@ -1,0 +1,83 @@
+<div class="wrapper wrapper-full-page">
+	<!--  menu-home section -->
+	<section class="nav-bar-register">
+		<app-navbar></app-navbar>
+	</section>
+	<div id="div-login">
+		<!-- Modal login-->
+		<div class="card" style="min-width: 50vh; padding: 3rem;" id=""><br>
+			<h1 class="text-center"><strong>Iniciar sesión</strong></h1>
+			<hr>
+			<div class="card-body">
+				<form autocomplete="off" class="" [formGroup]="loginForm" (ngSubmit)="login()">
+					<div class="form-group login-form-input">
+						<label for="loginEmail">Usuario</label>
+						<input type="email" class="form-control" id="loginEmail" formControlName="login_email"
+						       [class.is-invalid]="login_email.touched && login_email.invalid">
+						<small
+							*ngIf="(login_email.dirty || login_email.touched) && login_email.invalid && login_email.errors.required"
+							class="text-danger">
+							Correo es requerido
+						</small>
+						<small *ngIf="login_email.touched && login_email.invalid && login_email.errors.pattern"
+						       class="text-danger">
+							Formato de correo incorrecto
+						</small>
+					</div>
+					
+					<div class="form-group login-form-input">
+						<label for="loginPass">Contraseña</label>
+						<input type="password" class="form-control" id="loginPass" formControlName="login_pass"
+						       [class.is-invalid]="login_pass.touched && login_pass.invalid">
+						<small *ngIf="login_pass.touched && login_pass.invalid && login_pass.errors.required"
+						       class="text-danger">
+							Contraseña es requerida
+						</small>
+						<small *ngIf="login_pass.touched && login_pass.invalid && login_pass.errors.minlength"
+						       class="text-danger">
+							Contraseña debe contener al menos 6 caractéres
+						</small>
+					</div>
+					
+					<div class="clearfix">
+						<a href="javascript:void(0)"
+               class="float-right text-primary"
+               (click)="showForgotPassModal()">
+                Reestablecer contraseña
+            </a>
+					</div>
+					
+					<button type="submit" class="btn btn-fill btn-block btn-success login-form-input">Entrar</button>
+					
+					<!-- <div class="custom-control custom-switch text-center">
+							<input type="checkbox"
+										 class="custom-control-input"
+										 id="rememberSwitch">
+							<label class="custom-control-label" for="rememberSwitch">Recuérdame en este equipo</label>
+					</div> -->
+				</form>
+			</div>
+			<!-- Card footer -->
+			<br>
+			<hr>
+			<div class="card-footer text-center text-primary">
+				<div *ngIf="!registerClicked">
+					¿Nuevo por aquí y todavía no tienes una cuenta?
+					<h3 (click)="registerClicked = true"><strong>Regístrate</strong></h3>
+				</div>
+				<div class="row" *ngIf="registerClicked">
+					<div class="col-md-6 col-xs-12">
+						<button class="btn btn-fill btn-block btn-primary login-form-input"
+						        (click)="router.navigate(['register/student'])">ALUMNO
+						</button>
+					</div>
+					<div class="col-md-6 col-xs-12">
+						<button class="btn btn-fill btn-block btn-primary login-form-input"
+						        (click)="router.navigate(['register/teacher'])">PROFESOR
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

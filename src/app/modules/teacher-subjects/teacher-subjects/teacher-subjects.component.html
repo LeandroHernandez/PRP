@@ -1,0 +1,42 @@
+<!--
+	*** Modulo para mostrar las materias disponibles del profesor ***
+-->
+<div *ngIf="!showTeacherList">
+	<img src="../../../../assets/img/mat.png" width="100%" alt="Banner de página">
+	<app-view-statistics-student *ngIf="showTracking" [subjectSelect]="subjectSelect" (isReturn)="return()">
+	</app-view-statistics-student>
+	
+	<div class="main-content" *ngIf="selectedSubjects.length > 0 && !showTracking">
+		<div class="row">
+			<div class="text-center alert-danger col-sm-4 col-sm-offset-4"
+			     *ngIf="selectedSubjects.length < 0">
+				<i class="fa fa-info-circle"></i><br><br>
+				No hay asignaturas disponibles
+			</div>
+			<div class="co-xs-12 col-md-4" *ngFor="let subject of selectedSubjects">
+				<div class="card card-materia">
+					<div class="content text-center content-items">
+						<div class="card-header">
+							<i class="fa fa-edit fa-e" (click)="showDetail( subject)"></i>
+						</div>
+						<div class="body-content-items">
+							<button style="border-style: none; background-color: transparent;" (click)="seeTracking(subject)">
+								<div class="icon-container {{subject.color}}" style="margin-top: 25px; margin-bottom: 10px;">
+									<img src="{{subject.icon}}" class="img-subject" alt="">
+								</div>
+								<span
+										style="font-size: 19px; font-weight: bolder; word-wrap: break-word">{{subject.subject_name | slice:0:30}}</span>
+								<p>{{subject.grade_name}} {{subject.parallel_name}}</p>
+							</button>
+						</div>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- Componente listar unidades y sesiónes -->
+<app-list-subjects-teacher *ngIf="showTeacherList" (messageEvent)="receiveMessage($event)"
+                           [subjectInput]="selectedSubject"></app-list-subjects-teacher>

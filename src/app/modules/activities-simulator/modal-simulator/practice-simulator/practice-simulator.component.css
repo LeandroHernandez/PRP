@@ -1,0 +1,168 @@
+.pregunta{
+  font-size: 3rem;
+}
+
+
+.connecting-line {
+  height: 2px;
+  background: #e0e0e0;
+  position: absolute;
+  width: 78%;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 4.5rem;
+  /* z-index: 1; */
+}
+
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
+.div-description{
+  border: solid 1px #000;
+  height: 100%;
+  display: table;
+}
+
+
+
+li.active > a, li.active > a:hover , li.active > a:focus {
+  background-color: transparent !important;
+  color: #FFFFFF;
+}
+
+.list-group-item.active>.badge, .nav-pills>.active>a>.badge {
+  color: #fff;
+  background-color: #23CCEF;
+  border-radius: 50px !important;
+  font-size: 2.2rem !important;
+
+}
+
+.font-badge{
+  font-size: 1.8rem !important;
+  border-radius: 50px !important;
+
+}
+/* .active {
+    background-color: transparent !important;
+    tex
+} */
+
+
+.cardSelect{
+  /* box-shadow: inset -1px 1px 13px -5px rgba(159,188,204,1); */
+  /*box-shadow: inset -1px 1px 11px -2px rgba(100,153,179,1);*/
+  border: solid 0.5px rgb(45, 195, 221)
+
+}
+.cardCorrect{
+  /* box-shadow: inset -1px 1px 13px -5px rgba(159,188,204,1); */
+  box-shadow: 0px 0px 7px 2px rgba(50,179,54,1);
+
+}
+.cardFalse{
+  /* box-shadow: inset -1px 1px 13px -5px rgba(159,188,204,1); */
+  box-shadow: 0px 0px 7px 2px rgb(189, 30, 30);
+}
+
+
+.modal .modal-dialog {
+  width: 80% !important;
+  height: 80% !important;
+}
+
+.scroll-conten-modal {
+  overflow-y: auto;
+}
+
+.card-option{
+  width: 80%;
+  margin: 0 auto;
+}
+
+
+.card-is-correct {
+  background-color: #f1faf3;
+  border: solid 1px #62f27f;
+}
+
+
+.card-typePractice {
+  justify-content: space-around;
+  align-content: center;
+  margin: 30px;
+}
+
+.icon-option {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin-left: 5px;
+}
+
+.align-middle {
+  vertical-align: middle !important;
+}
+
+.card-content-practice-option {
+  min-height: 230px;
+  margin-top: 5px;
+}
+.border-focus .form-control:focus {
+  border: 1px solid  rgb(75,147,255); ;
+  box-shadow: 0 0 0 0.2rem rgba(88, 160, 207, 0.25);
+}
+
+.card-title-p{
+  padding-left: 2rem;
+  padding-top: 2rem;
+}
+
+.card-danger-sp{
+  height: 10vh;
+  vertical-align: middle;
+  margin-bottom: 2rem;
+}
+
+.fa-ico{
+  font-size: 4rem;
+  color: rgb(240, 159, 159);
+}
+
+.btn-input-file {
+  margin-top: 5px;
+  width: auto;
+}
+.card-option{
+  width: 80%;
+  margin: 0 auto;
+}
+
+
+.card-is-correct {
+  background-color: #f1faf3;
+  border: solid 1px #c9e4f9;
+}
+
+.is-image-option {
+  width: 80%;
+  height: 15vh;
+  border-radius: 3px;
+}
+
+.is-image-index{
+  width: 40%;
+  border-radius: 3px;
+  /* background-image: ; */
+}
+
+
+.my_checkbox {
+  width:4vw;
+  height:4vh;
+  cursor: pointer;
+}

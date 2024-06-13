@@ -1,0 +1,959 @@
+<div *ngIf="selected_subject!=''" class="cardheaderNames{{selected_subject.color}}">
+    <div style="margin-left: auto; margin-right: auto; display: flex; width: 90%;">
+        <img src="{{selected_subject.icon}}" class="iconMat" alt="">
+        <div class="cssNames" (click)="hideSubject()">
+            {{selected_subject.subject_name}}
+        </div>
+    </div>
+</div>
+<div class="main-content" style="padding: 0px !important;">
+    <div class="container-fluid" style="padding: 0px !important;">
+        <div class="card" *ngIf="showhome">
+            <mat-tab-group class="main-tab-group mt-2" (selectedTabChange)="setSelectedStudent($event)"
+                           [selectedIndex]="tabIndexSelect">
+                <mat-tab class="alert-danger" *ngFor="let student of tabsestudiantes; let tabIndex = index"
+                         label="{{student.student_name}} {{student.student_lastname}}">
+                    <div>
+                        <app-tab-content [tab]="tab">
+                            <div class="main-content">
+                                <div class="row card-header">
+                                    <div class=" col-sm-12 text-center">
+                                        {{student.student_name}} {{student.student_lastname}}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row" *ngIf=" student.student_grade_id !== ''">
+                                    <div *ngFor="let item of arrayMaterias[tabIndex]" (click)="showSubject(item);"
+                                         class="col-md-3">
+                                        <div class="card {{item.color}} card-materia">
+                                            <div class="content text-center ">
+                                                <br><br>
+                                                <img src="{{item.icon}}" class="img-subject" alt="">
+                                                <h2>{{item.subject_name}}</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center alert-danger col-sm-4 col-sm-offset-4"
+                                     *ngIf=" student.student_grade_id === ''" style="border-radius: 5px; color:white">
+                                    <i class="fa fa-info-circle"></i><br><br>
+                                    No hay asignaturas asignadas al estudiante.
+                                </div>
+                            </div>
+                        </app-tab-content>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="tabsestudiantes.length!=0" label="Estudiante +" [isActive]='false'>
+                    <div>
+                        <div class="col-sm-4" style="margin: 20px;">
+                            <img src="../../../../assets/img/icons/cod.png" style="padding: 4px;" alt="">
+                            <label class="control-label">Id<span class="star"></span></label>
+                            <input id="student_id" type="text" class="form-control" name="student_id" placeholder="Id"
+                                   [(ngModel)]='textInput'>
+                        </div>
+                        <button type="button" class="btn  btn-primary  btn-fill" (click)="addStudent()"
+                                style="margin: 46px; width: 155px;">
+                            Aceptar
+                        </button>
+                        <div *ngIf="StudentD.student_id!=''&&StudentD.student_name!={}" class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-justify">
+                                            <p>
+                                                <i class="fa fa-info-circle"></i>
+                                                Datos del estudiante: Con estos datos el estudiante podrá entrar a su
+                                                cuenta, ver sus clases y acceder
+                                                al contenido de la
+                                                plataforma </p>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <form #formStudent="ngForm" method="get" action="/" class="form-horizontal"
+                                                  novalidate
+                                                  (ngSubmit)="saveStudent(formStudent.value, formStudent.valid)">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="content">
+                                                                <div class="form-group">
+                                                                    <div class="row"
+                                                                         style="padding-left: 2rem; padding-right: 2rem;">
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label">ID<span
+                                                                                    class="star">*</span></label>
+                                                                            <input id="student_representant"
+                                                                                   type="hidden" class="form-control"
+                                                                                   name="student_representant"
+                                                                                   placeholder="Id"
+                                                                                   [ngModel]="StudentD.student_representant"
+                                                                                   #student_representant="ngModel">
+                                                                            <input id="student_grade_id" type="hidden"
+                                                                                   class="form-control"
+                                                                                   name="student_grade_id"
+                                                                                   placeholder="Id"
+                                                                                   [ngModel]="StudentD.student_grade_id"
+                                                                                   #student_grade_id="ngModel">
+                                                                            <input id="student_parallel_id"
+                                                                                   type="hidden" class="form-control"
+                                                                                   name="student_parallel_id"
+                                                                                   placeholder="Id"
+                                                                                   [ngModel]="StudentD.student_parallel_id"
+                                                                                   #student_parallel_id="ngModel">
+
+                                                                            <input readonly id="student_id" type="text"
+                                                                                   class="form-control"
+                                                                                   name="student_id"
+                                                                                   placeholder="Id"
+                                                                                   [ngModel]="StudentD.student_id"
+                                                                                   required
+                                                                                   #student_id="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_id.valid || (student_id.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger">
+                                                                                Obligatorio
+                                                                            </small>
+                                                                        </div>
+
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label">Cédula<span
+                                                                                    class="star">*</span></label>
+                                                                            <input id="student_identification"
+                                                                                   type="text" data-length="4"
+                                                                                   class="form-control"
+                                                                                   name="student_identification"
+                                                                                   placeholder="Cédula"
+                                                                                   [(ngModel)]="StudentD.student_identification"
+                                                                                   required
+                                                                                   #student_identification="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_identification.valid || (student_identification.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Obligatorio
+                                                                                /<i>
+                                                                                    sin carácteres especiales </i>
+                                                                            </small>
+                                                                        </div>
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label">Nombre<span
+                                                                                    class="star">*</span></label>
+                                                                            <input id="student_name" type="text"
+                                                                                   class="form-control"
+                                                                                   name="student_name"
+                                                                                   placeholder="Nombre"
+                                                                                   [(ngModel)]="StudentD.student_name"
+                                                                                   required #student_name="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_name.valid || (student_name.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Obligatorio
+                                                                                /<i>
+                                                                                    sin carácteres especiales </i>
+                                                                            </small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row"
+                                                                         style="padding-left: 2rem; padding-right: 2rem;">
+
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label">Apellido<span
+                                                                                    class="star">*</span></label>
+                                                                            <input id="student_lastname" type="text"
+                                                                                   class="form-control"
+                                                                                   name="student_lastname"
+                                                                                   placeholder="Apellidos"
+                                                                                   [(ngModel)]="StudentD.student_lastname"
+                                                                                   required #student_lastname="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_lastname.valid || (student_lastname.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Obligatorio
+                                                                                /<i>
+                                                                                    sin carácteres especiales </i>
+                                                                            </small>
+                                                                        </div>
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label">Email<span
+                                                                                    class="star">*</span></label>
+                                                                            <input id="student_email" type="email"
+                                                                                   class="form-control" required
+                                                                                   name="student_email"
+                                                                                   placeholder="Email"
+                                                                                   [(ngModel)]="StudentD.student_email"
+                                                                                   email="true"
+                                                                                   #student_email="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_email.valid || (student_email.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Se requiere
+                                                                                correo
+                                                                                electrónico ejemplo: <i>
+                                                                                    nombre@empresa.com </i>
+                                                                            </small>
+                                                                        </div>
+                                                                        <div class="col-sm-4">
+                                                                            <label
+                                                                                    class="control-label">Teléfono</label>
+                                                                            <input id="student_phone" type="text"
+                                                                                   maxlength="12" class="form-control"
+                                                                                   name="student_phone"
+                                                                                   placeholder="Teléfono"
+                                                                                   [(ngModel)]="StudentD.student_phone"
+                                                                                   #student_phone="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_phone.valid || (student_phone.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Solo ingrese
+                                                                                numero
+                                                                                /<i> Telefonico </i>
+                                                                            </small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row"
+                                                                         style="padding-left: 2rem; padding-right: 2rem;">
+
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label">Celular</label>
+                                                                            <input id="student_movil" type="text"
+                                                                                   maxlength="12" class="form-control"
+                                                                                   name="student_movil" required
+                                                                                   placeholder="Celular"
+                                                                                   [(ngModel)]="StudentD.student_movil"
+                                                                                   #student_movil="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_movil.valid || (student_movil.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Solo ingrese
+                                                                                numero
+                                                                                /<i> Celular </i>
+                                                                            </small>
+                                                                        </div>
+
+                                                                        <div class="col-sm-4">
+                                                                            <label
+                                                                                    class="control-label">Dirección</label>
+                                                                            <input id="student_address" type="text"
+                                                                                   class="form-control"
+                                                                                   name="student_address" required
+                                                                                   placeholder="Dirección"
+                                                                                   [(ngModel)]="StudentD.student_address"
+                                                                                   #student_address="ngModel">
+                                                                            <small
+                                                                                    [hidden]="student_address.valid || (student_address.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Obligatorio
+                                                                                /<i>
+                                                                                    sin carácteres especiales </i>
+                                                                            </small>
+                                                                        </div>
+                                                                        <div class="col-sm-4" hidden>
+                                                                            <label class="control-label">Estado<span
+                                                                                    class="star">*</span></label>
+                                                                            <div class="checkbox">
+                                                                                <input class="form-control"
+                                                                                       id="student_status"
+                                                                                       name="student_status"
+                                                                                       [(ngModel)]="StudentD.student_status"
+                                                                                       #student_status="ngModel"
+                                                                                       type="hidden">
+                                                                                <label class=""
+                                                                                       for="student_status"></label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row"
+                                                                         style="padding-left: 2rem; padding-right: 2rem;">
+                                                                        <div class="col-sm-4">
+                                                                            <label for="inputStudentPass1">Contraseña
+                                                                                para la cuenta del estudiante</label>
+                                                                            <input type="password" class="form-control"
+                                                                                   id="student_pass" required
+                                                                                   name="student_pass"
+                                                                                   #student_pass="ngModel"
+                                                                                   [(ngModel)]="StudentD.student_pass">
+                                                                            <small
+                                                                                    [hidden]="student_pass.valid || (student_pass.pristine && !formStudent.submitted)"
+                                                                                    class="text-danger"> Obligatorio
+                                                                                /<i>
+                                                                                    sin carácteres especiales </i>
+                                                                            </small>
+                                                                        </div>
+                                                                        <!-- <div class="col-sm-4">
+                                                                            <label for="inputStudentPass1">Contraseña   
+                                                                                para la cuenta del estudiante</label>
+                                                                            <input type="password" class="form-control"
+                                                                                id="student_pass1"
+                                                                                name="student_pass1"
+                                                                                #student_pass
+                                                                                [(ngModel)]="StudentD.student_pass">
+                                                                            <small
+                                                                                [hidden]="student_pass.valid || (student_pass.pristine && !formStudent.submitted)"
+                                                                                class="text-danger"> Obligatorio /<i>
+                                                                                    sin carácteres especiales </i>
+                                                                            </small>
+                                                                        </div> -->
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button *ngIf="StudentD.student_id!=''&&StudentD!={}" type="submit"
+                                                            class="btn btn-success btn-fill">Agregar el
+                                                        estudiante
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- <form autocomplete="off" [formGroup]="studentForm">
+                                            <div class="row">
+                                                <div class="form-group col-md-6 register-form-input"
+                                                    [class.has-error]="(student_name.dirty || student_name.touched) && student_name.invalid">
+                                                    <label for="inputStudentName">Nombres del estudiante</label>
+                                                    <input type="text" class="form-control" id="inputStudentName"
+                                                        formControlName="student_name" [(ngModel)]="studentD.student_name">
+                                                    <small
+                                                        *ngIf="(student_name.dirty || student_name.touched) && student_name.invalid && student_name.errors.required"
+                                                        class="text-danger">
+                                                        Nombre es requerido
+                                                    </small>
+                                                </div>
+                                                <div class="form-group col-md-6 register-form-input"
+                                                    [class.has-error]="(student_lastname.dirty || student_lastname.touched) && student_lastname.invalid">
+                                                    <label for="inputStudentSurname">Apellidos del estudiante</label>
+                                                    <input type="text" class="form-control" id="inputStudentSurname"
+                                                        formControlName="student_lastname" [(ngModel)]="studentD.student_lastname">
+                                                    <small
+                                                        *ngIf="(student_lastname.dirty || student_lastname.touched) && student_lastname.invalid && student_lastname.errors.required"
+                                                        class="text-danger">
+                                                        Apellido es requerido
+                                                    </small>
+                                                
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 register-form-input"
+                                                    [class.has-error]="(student_email.dirty || student_email.touched) && student_email.invalid">
+                                                    <label for="inputStudentEmail">Correo del estudiante</label>
+                                                    <input type="email" class="form-control" id="inputStudentEmail"
+                                                        formControlName="student_email" [(ngModel)]="studentD.student_email">
+                                                    <small
+                                                        *ngIf="(student_email.dirty || student_email.touched) && student_email.invalid && student_email.errors.required"
+                                                        class="text-danger">
+                                                        Correo es requerido
+                                                    </small>
+                                                    <small
+                                                        *ngIf="(student_email.dirty || student_email.touched) && student_email.invalid && student_email.errors.pattern"
+                                                        class="text-danger">
+                                                        Formato de correo incorrecto
+                                                    </small>
+                                                </div>
+                                                <div class="form-group col-md-6 register-form-input"
+                                                    [class.has-error]="(student_phone.dirty || student_phone.touched) && student_phone.invalid">
+                                                    <label for="inputStudentPhone">Teléfono del estudiante</label>
+                                                    <input type="text" class="form-control" id="inputStudentPhone"
+                                                        formControlName="student_phone" [(ngModel)]="studentD.student_phone">
+                                                    <small
+                                                        *ngIf="(student_phone.dirty || student_phone.touched) && student_phone.invalid && student_phone.errors.required"
+                                                        class="text-danger">
+                                                        Teléfono es requerido
+                                                    </small>
+                                                    <small
+                                                        *ngIf="(student_phone.dirty || student_phone.touched) && student_phone.invalid && student_phone.errors.pattern"
+                                                        class="text-danger">
+                                                        Formato de teléfono incorrecto
+                                                    </small>
+                                                    <small
+                                                        *ngIf="(student_phone.dirty || student_phone.touched) && student_phone.invalid && student_phone.errors.minlength"
+                                                        class="text-danger">
+                                                        Teléfono demasiado corto
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 register-form-input">
+                                                    <label for="inputStudentPass1">Contraseña para la cuenta del estudiante</label>
+                                                    <input type="password" class="form-control" id="inputStudentPass1"
+                                                        formControlName="student_pass" [(ngModel)]="studentD.student_pass">
+                                                    <small
+                                                        *ngIf="(student_pass.dirty || student_pass.touched) && student_pass.invalid && student_pass.errors.required"
+                                                        class="text-danger">
+                                                        Contraseña es requerida
+                                                    </small>
+                                                </div>
+                                                <div class="form-group col-md-6 register-form-input"
+                                                    [class.has-error]="student_pass2_not_valid">
+                                                    <label for="inputStudentPass2">Confirmar Contraseña para la cuenta del
+                                                        estudiante</label>
+                                                    <input type="password" class="form-control" id="inputStudentPass2"
+                                                        formControlName="student_pass1">
+                                                    <small *ngIf="student_pass2_not_valid" class="text-danger">
+                                                        Contraseñas deben ser iguales
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 register-form-input"
+                                                    [class.has-error]="(student_birth.dirty || student_birth.touched) && student_birth.invalid">
+                                                    <label for="inputBirthDate">Fecha de Nacimiento</label>
+                                                    <input type="date" class="form-control" id="inputBirthDate"
+                                                        placeholder="dd-mm-yyyy" formControlName="student_date">
+                                                    <small
+                                                        *ngIf="(student_birth.dirty || student_birth.touched) && student_birth.invalid && student_birth.errors.required"
+                                                        class="text-danger">
+                                                        Fecha de nacimiento es requerida
+                                                    </small>
+                                                    <small
+                                                        *ngIf="(student_birth.dirty || student_birth.touched) && student_birth.invalid && student_birth.errors.invalidDate"
+                                                        class="text-danger">
+                                                        Fecha no puede ser mayor al día actual
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="custom-control text-center">
+                                                    <input type="checkbox" class="custom-control-input" id="termsCheck"
+                                                        formControlName="student_terms" [(ngModel)]="studentD.student_terms">
+                                                    <label class="custom-control-label" for="termsCheck">
+                                                        Acepto los <a href="javacript:void(0)"><button data-toggle="modal"
+                                                            data-target="#ModalViewPdf" style="border: none; background-color: transparent;"> Terminos y condiciones </button></a> de uso y
+                                                        <a href="javascript:void(0)">politicas de privacidad</a>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row text-center p-5">
+                                                <button type="button" class="btn btn-fill btn-lg" matStepperPrevious>Atrás</button>
+                                                <button type="button" class="btn btn-fill btn-primary btn-lg"
+                                                    [disabled]="!studentD.student_terms" (click)="checkForm( studentForm )"
+                                                    matStepperNext>Siguiente</button>
+                                            </div>
+                                        </form> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+
+        <!-- Detalles de la asignatura -->
+        <div *ngIf="showSubject && !showhome && !showDetails">
+            <!--<button (click)="hideSubject()" class="btn btn-fill {{selected_subject.color}}">
+                <i class="fa fa-bars" aria-hidden="true"></i> Listar
+            </button>-->
+
+            <mat-tab-group mat-align-tabs="start" [color]="Primary" [backgroundColor]="Primary" style="padding: 0px !important;">
+                <mat-tab *ngFor="let unit of tabsunidades; let index = index" style="padding: 0px !important;">
+                    <ng-template mat-tab-label style="padding: 0px !important;">
+                        <span id="salvacion{{index}}"
+                              style="margin: 0 auto; padding-left: 1rem; padding-right: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+                              (click)="setSelectedUnit(index)">
+                            {{unit.unitName | uppercase}}
+                        </span>
+                    </ng-template>
+                    <div class="container">
+	                      <div class="cardheader{{selected_subject.color}}"></div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card card-details" style="font-weight: bold;">
+	                                <div class="row" style="margin-bottom: 50px">
+		                                <div class="col-xs-12 col-sm-6">
+			                                <h2>Resumen de la Unidad {{index + 1}}</h2>
+			                                Fecha de inicio
+			                                <div style="font-size:12px; color: #90A0B7;"> {{unit.fromDate}}</div>
+			                                Fecha de Finalización
+			                                <div style="font-size:12px; color: #90A0B7;"> {{unit.toDate}}</div>
+			                                <div class="cssClass">No de Sesiones: {{arrayDetail.length}}</div>
+			                                <button class="btn btn-default" alt="" data-toggle="modal"
+			                                        data-target="#modalNotesUnit"
+			                                        style="display: flex; justify-content: center; align-items: center;">
+				                                <i class="fa fa-envelope-o"></i>
+			                                </button>
+		                                </div>
+		                                <div class="col-xs-12 col-sm-6">
+			                                <div class="subject-letter cardheaderNames{{selected_subject.color}}">
+				                                <p>{{ selected_subject.subject_name | slice:0:1 }}</p>
+			                                </div>
+		                                </div>
+	                                </div>
+	                                <div class="card-footer">
+		                                <button (click)="hideSubject()" class="btn btn-fill {{selected_subject.color}}">
+			                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar
+		                                </button>
+	                                </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="card card-details {{selected_subject.color}}Border" *ngFor="let item of arrayDetail; let index = index">
+                                    <div class="row">
+                                        <div class="col-sm-4" style="font-weight: bold;">
+                                            Sesión {{index + 1}}: {{item.className}}
+                                        </div>
+                                        <div class="col-sm-5" style="margin: 0; padding: 0;"
+                                             style="flex-direction: row;">
+
+                                            {{arraypercentage[index] || 0}} %
+                                            <div class="barBackgroud">
+                                                <div [ngStyle]="{'width.%':arraypercentage[index] || 0}"
+                                                     class="barprogres">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <img src="../../../../assets/img/icons/letter.png"
+                                                 (click)="setNotes(item.class_notes)"
+                                                 style="display: flex; justify-content: flex-end; float: right; cursor: pointer;"
+                                                 alt="" data-toggle="modal" data-target="#modalNotesClass">
+                                            <span class="badge badge-red"
+                                                  style="position: relative; float: right; right: -45px; top: 23px">{{item.class_notes.length}}</span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="min-height: 95px;">
+                                        <div class="col-md-12" style="padding-top: 15px;">
+                                            <div *ngIf="item.resources; else noResources">
+                                                <div class="col-md-12" *ngFor="let resource of item.resources"
+                                                     style="display: flex;flex-direction: row;">
+                                                    <i *ngIf="!resource.resource_status" class="fa fa-circle-thin"
+                                                       aria-hidden="true" style="color:red;"></i>
+                                                    <i *ngIf="resource.resource_status" class="fa fa-check"
+                                                       aria-hidden="true" style="color: rgb(6, 185, 6);"></i>
+                                                    <span
+                                                            style="font-size:12px; margin-left: 5px; color: rgb(94, 93, 93);">
+                                                        {{resource.resource_type | uppercase}}</span>
+                                                    <span
+                                                            style="font-size: 12px; margin-left: 15px;  color: rgb(44, 43, 43);"
+                                                            *ngIf="resource.resource_type !== 'video' && resource.resource_type !== 'text'">{{resource.resource_des | uppercase}}</span>
+                                                    <span
+                                                            style="font-size: 12px; margin-left: 15px;  color: rgb(44, 43, 43);"
+                                                            *ngIf="resource.resource_type === 'video' || resource.resource_type === 'text'">{{resource.resource_name | uppercase}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div style="padding-left: 3rem; padding-right:4rem ; cursor: pointer; "
+                                             *ngFor="let evaluationClass of evaluation[index]; let indexResource = index">
+                                            <i *ngIf="!evaluationClass.evaluation_status" class="fa fa-circle-thin"
+                                               aria-hidden="true"
+                                               style="color:red;"></i>
+                                            <i *ngIf="evaluationClass.evaluation_status" class="fa fa-check"
+                                               aria-hidden="true"
+                                               style="color: rgb(6, 185, 6);"></i>
+                                            <span style="font-size: 12px; margin-left: 5px; color: rgb(94, 93, 93); cursor: pointer;">
+                                          EVALUACIÓN:
+                                        </span>
+
+                                            <span
+                                                    style="font-size: 12px; margin-left: 5px;  color: rgb(44, 43, 43); cursor: pointer;">{{evaluationClass.evaluation_name | uppercase}}</span>
+
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <div class="row ">
+                                        <div class="col-sm-6">
+                                            <span style="font-weight: bold;">Fecha de Finalización</span><br>
+                                            <span
+                                                    style="font-size:12px; margin-left: 5px;  color: #4c6c96; ">{{item.toDate }}</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <button type="submit" class="btn btn-fill {{selected_subject.color}}"
+                                                    style="width: 130px; float: right;" (click)="showDetail(item)">
+                                                Revisar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--<div class="">
+                                        {{item.resources}}ss-->
+                                    <!-- <ng-template #noResources>
+                                            No existen Recursos asignados a la Sesión
+                                        </ng-template> -->
+                                    <!-- <div *ngIf="item.resources; else noResources"
+                                            style="font-size: small; max-width: 100px; width: 100%; border-color: red">
+
+                                            <mat-checkbox style="font-family: Montserrat; font-size: 14px"
+                                                [checked]="resource.resource_status"
+                                                *ngFor="let resource of item.resources">
+                                                <strong>{{resource.resource_type}}</strong>
+                                                {{resource.resource_des}}
+                                            </mat-checkbox>
+                                        </div>
+                                    </div>-->
+                                    <!--<div *ngIf="item.resources" class=" content text-center "
+                                        style="width: 157px; float: right; margin-top: 50px; margin-right: auto; margin-left: auto; margin-bottom: inherit;">
+                                        {{item.resources.length}} / {{item.resources.length}}
+                                    </div>
+                                    <div *ngIf="item.resources" class="cssDates content text-center "
+                                        style="display: flex; justify-content: flex-end; width: 157px; float: right;">
+                                        {{item.resources.length * item.resources.length}} %
+                                        <div class="barBackgroud">
+                                            <div [ngStyle]="{'width.%':item.numTask * item.totalTask}"
+                                                class="barprogres">
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+
+        <!-- Seccion a modificar-->
+        <div *ngIf="showDetails && !showhome">
+            <button (click)="hideDetail()" class="btn btn-primary btn-fill">
+                <i class="fa fa-bars" aria-hidden="true"></i> Volver
+            </button>
+            <hr>
+            <h4>Estudiante : <span style="font-weight: bold">{{selected_student.student_name}},
+                {{selected_student.student_lastname}}.</span></h4>
+            <div class="container">
+                <table id="" style="background-color: #fff;"
+                       class="table table-striped table-no-bordered table-hover text-center" cellspacing="0">
+                    <tr>
+                        <td colspan="5">
+                            <div class="panel-group" id="accordion">
+                                <div class="row row-p">
+                                    <div class="col-sm-1 text-center">
+                                        #
+                                    </div>
+                                    <div class="col-sm-4 text-left">
+                                        Recursos de la sesión
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Ingresos
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Tiempo en el recurso
+                                    </div>
+                                    <div class="col-sm-1">
+                                        Ver
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="panel panel-default" *ngFor="let resource of resourceList;  let i = index">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <div class="row row-p">
+                                                <div class="col-sm-1 text-center">
+                                                    {{i + 1}}
+                                                </div>
+                                                <div class="col-sm-4 text-left">
+                                                    <img *ngIf="resource.resource_type=='text'"
+                                                         src="../../../../assets/img/icons/text.png"
+                                                         class="img-resource"
+                                                         alt="">
+                                                    <img *ngIf="resource.resource_type=='video'"
+                                                         src="../../../../assets/img/icons/video.png"
+                                                         class="img-resource" alt="">
+                                                    <img *ngIf="resource.resource_type=='practice' || resource.resource_type=='url' || resource.resource_type=='file'"
+                                                         src="../../../../assets/img/icons/practica.png"
+                                                         class="img-resource" alt="">
+                                                    <img *ngIf="resource.resource_type === undefined"
+                                                         src="../../../../assets/img/icons/evaluacion.png"
+                                                         class="img-resource" alt="">
+                                                    &nbsp;
+                                                    {{resource.resource_name || resource.evaluationData[0].evaluation_name | slice:0:60}}
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    {{resource.intents}}
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    {{resource.time_spend || resource.totalTime}}
+                                                </div>
+                                                <div class="col-sm-1" (click)="showTryDetail(resource)"
+                                                     data-toggle="collapse" data-parent="#accordion"
+                                                     [attr.data-target]="'#test' + [[resource.resource_id]]">
+                                                    <!-- <button (click)="showTryDetail(resource)"
+                                                            class="accordion-toggle collapsed" data-toggle="collapse"
+                                                            data-parent="#accordion"
+                                                            [attr.data-target]="'#test' + [[resource.resource_id]]"> -->
+                                                    <i class="fa fa-chevron-down"></i>
+                                                    <!-- </button> -->
+                                                </div>
+                                            </div>
+                                        </h4>
+                                    </div>
+                                    <div id="test{{resource.resource_id}}" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="card-body">
+                                                <div class="container-fluid" style="margin-top: 5px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="card">
+                                                                <div class="content">
+                                                                    <div class="fresh-datatables">
+                                                                        <table id="dataTableAttemptDetails"
+                                                                               class="table table-striped table-no-bordered table-hover text-center"
+                                                                               cellspacing="0" width="100%">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th>#</th>
+                                                                                <th *ngIf="resource.resource_type !== undefined"
+                                                                                    style="text-align: center;">
+                                                                                    HORA
+                                                                                </th>
+                                                                                <th *ngIf="resource.resource_type === undefined"
+                                                                                    style="text-align: center;">
+                                                                                    HORA INICIO / HORA FIN
+                                                                                </th>
+                                                                                <th style="text-align: center;">
+                                                                                    FECHA
+                                                                                </th>
+                                                                                <th style="text-align: center;">
+                                                                                    TIEMPO
+                                                                                </th>
+                                                                                <th style="text-align: center;">
+                                                                                    ESTADO
+                                                                                </th>
+                                                                                <th style="text-align: center;"
+                                                                                    *ngIf="resource.resource_type=='video'">
+                                                                                    COMPLETADO
+                                                                                </th>
+                                                                                <th style="text-align: center;"
+                                                                                    *ngIf="resource.resource_type === undefined">
+                                                                                    PUNTUACIÓN
+                                                                                </th>
+                                                                                <th style="text-align: center;"
+                                                                                    *ngIf="resource.resource_type === undefined ">
+                                                                                    Ver
+                                                                                </th>
+                                                                                <th style="text-align: center;"
+                                                                                    *ngIf="resource.resource_type === 'practice' ">
+                                                                                    Número de Errores / Número de
+                                                                                    intentos
+                                                                                </th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody
+                                                                                    id="tBodyUnitEducationalAttemptDetails">
+                                                                            <tr
+                                                                                    *ngFor="let attemptDetail of attemptDetailsList; let i = index">
+                                                                                <td>{{i + 1}}</td>
+                                                                                <td
+                                                                                        *ngIf="resource.resource_type !== undefined">
+                                                                                    {{attemptDetail.toTime }}
+                                                                                </td>
+                                                                                <td
+                                                                                        *ngIf="resource.resource_type === undefined">
+                                                                                    {{attemptDetail.startTime}} /
+                                                                                    {{attemptDetail.endTime || 0}}
+                                                                                </td>
+                                                                                <td>{{attemptDetail.toDate || attemptDetail.date}}
+                                                                                </td>
+                                                                                <td>{{attemptDetail.time_spend || attemptDetail.totalTime}}
+                                                                                </td>
+                                                                                <td
+                                                                                        *ngIf="resource.resource_type !== undefined">
+                                                                                    <ng-container
+                                                                                            *ngIf="attemptDetail.resource_status == true; else elseEstado">
+                                                                                        <button
+                                                                                                class="btn btn-success btn-fill btn-xs">
+                                                                                            <i
+                                                                                                    class="fa fa-check"></i>
+                                                                                        </button>
+                                                                                    </ng-container>
+                                                                                    <ng-template #elseEstado>
+                                                                                        <button
+                                                                                                class="btn btn-danger btn-fill btn-xs">
+                                                                                            <i
+                                                                                                    class="fa fa-close"></i>
+                                                                                        </button>
+                                                                                    </ng-template>
+                                                                                </td>
+                                                                                <td
+                                                                                        *ngIf="resource.resource_type === undefined">
+                                                                                    <ng-container
+                                                                                            *ngIf="attemptDetail.evaluationStatus == true  else elseEstado">
+                                                                                        <button
+                                                                                                class="btn btn-success btn-fill btn-xs">
+                                                                                            <i
+                                                                                                    class="fa fa-check"></i>
+                                                                                        </button>
+                                                                                    </ng-container>
+                                                                                    <ng-template #elseEstado>
+                                                                                        <button
+                                                                                                class="btn btn-danger btn-fill btn-xs">
+                                                                                            <i
+                                                                                                    class="fa fa-close"></i>
+                                                                                        </button>
+                                                                                    </ng-template>
+                                                                                </td>
+                                                                                <ng-container>
+                                                                                    <td
+                                                                                            *ngIf="resource.resource_type=='video'">
+                                                                                        <ng-container
+                                                                                                *ngIf="attemptDetail.completed == true; else elseEstado">
+                                                                                            <button
+                                                                                                    class="btn btn-success btn-fill btn-xs">
+                                                                                                <i
+                                                                                                        class="fa fa-check"></i>
+                                                                                            </button>
+                                                                                        </ng-container>
+                                                                                        <ng-template #elseEstado>
+                                                                                            <button
+                                                                                                    class="btn btn-danger btn-fill btn-xs">
+                                                                                                <i
+                                                                                                        class="fa fa-close"></i>
+                                                                                            </button>
+                                                                                        </ng-template>
+                                                                                    </td>
+
+                                                                                </ng-container>
+                                                                                <td
+                                                                                        *ngIf="resource.resource_type === undefined && attemptDetail.evaluationData !== undefined">
+                                                                                        <span
+                                                                                                *ngIf="attemptDetail.totalScore <=5 "
+                                                                                                style="color: red;">{{attemptDetail.totalScore  | number: '.2-2' }}</span>
+                                                                                    <span
+                                                                                            *ngIf="attemptDetail.totalScore >5 ">{{attemptDetail.totalScore | number: '.2-2'}}</span>
+                                                                                    /
+                                                                                    <span>{{attemptDetail.evaluationData[0].evaluation_scoring}}</span>
+                                                                                </td>
+                                                                                <td *ngIf="resource.resource_type === undefined">
+                                                                                    <i class="fa fa-eye"
+                                                                                       style="cursor: pointer"
+                                                                                       (click)="showEvaluation(attemptDetail)"
+                                                                                       *ngIf="resource.resource_type === undefined"
+                                                                                       data-toggle="modal"
+                                                                                       data-target="#exampleModalCenterEvaluation"
+                                                                                       style="color: rgb(37, 37, 143);"></i>
+                                                                                </td>
+                                                                                <td *ngIf="resource.resource_type === 'practice'"
+                                                                                    style="text-align: center;">{{attemptDetail.numberOfError || 0}}
+                                                                                    / {{attemptDetail.numberOfAttemps || 0}}
+                                                                                </td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </table>
+
+            </div>
+
+
+        </div>
+        <!-- SECCIÓN VISUALIZAR DETALLE DE EVALUACIÓN-->
+        <div class="modal fade" id="exampleModalCenterEvaluation" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Detalle de evaluación</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="fresh-datatables table-responsive">
+                            <table id="datatablesEvaluation" class="table table-striped table-no-bordered table-hover"
+                                   cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th> #</th>
+                                    <th>Pregunta</th>
+                                    <th> Nº de Correctas</th>
+                                    <th>Nº de Errores</th>
+                                    <th>Tiempo</th>
+                                    <th>Respuestas</th>
+                                    <th>Puntuación</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tBodyUnitEducational">
+                                <tr *ngFor="let question of arrayQuestionsFromEvaluation; let i = index">
+                                    <td class="text-center">{{i + 1}}</td>
+                                    <td class="text-center">{{question.question.option_description | uppercase}}
+                                    </td>
+                                    <td class="text-center">{{question.numberOfCorrect}}</td>
+                                    <td class="text-center">{{question.numberOfErrors}}</td>
+                                    <td class="text-center">
+                                        {{question.time}} Seg.
+                                    </td>
+                                    <td class="text-center">
+                                        <div *ngFor="let option of question.answers">
+                                                <span
+                                                        *ngIf="option.option_item_description !== undefined">{{option.option_item_description}}
+                                                </span>
+                                            <span *ngIf="option.option_item_description === undefined">{{option}}
+                                                </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        {{question.score | number: '.2-2'}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">Cerrar</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- FIN DETALLE DE EVALUACIÓN-->
+
+        <div class="modal fade" id="modalNotesClass" tabindex="-1" role="dialog" aria-labelledby="modalNotesClass"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> NOTAS DE LA SESIÓN
+                        </h4>
+                    </div>
+                    <div class="modal-body" style="position: initial; overflow-y:auto;">
+                        <div *ngFor="let note of notesClassSelected; let i = index">
+                            {{i + 1}}.- {{note.note_title}}: {{note.note_content}}
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MODAL NOTAS DE UNIDAD-->
+        <div class="modal fade" id="modalNotesUnit" tabindex="-1" role="dialog" aria-labelledby="modalNotesUnit"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel1"><i class="fa fa-plus"></i> NOTAS DE UNIDAD
+                        </h4>
+                    </div>
+                    <div class="modal-body" style="position: initial; overflow-y:auto;">
+                        <div *ngFor="let note of arrayNotesFromUnit; let i = index">
+                            {{i + 1}}.- {{note.note_title}} : {{note.note_content}}
+
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

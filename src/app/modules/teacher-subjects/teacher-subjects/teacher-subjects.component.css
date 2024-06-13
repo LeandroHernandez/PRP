@@ -1,0 +1,102 @@
+.fa-e{
+  font-size: 3rem;
+}
+
+.card-materia{
+  border-radius: 20px;
+  min-height: 27vh !important;
+  max-height: 27vh !important;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.body-content-items{
+  flex-grow: 0;
+  min-width: 28vh;
+  max-width: 28vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+  margin-left: auto;
+  margin-right: auto ;
+}
+
+.card-materia .card-header i {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+  margin: auto;
+}
+.content-items {
+  word-wrap: break-word;
+  flex-grow: 0;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  margin: 1px;
+  padding: 10px;
+  min-height: 27vh !important;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.icon-container {
+  display: grid;
+  height: 52px;
+  width: 52px;
+  margin: auto;
+  border-radius: 100%;
+  place-items: center center;
+  color: #fff;
+}
+
+.img-subject {
+  width: 20px;
+}
+
+.matOne{
+  background-color: #4c93ff;
+  color: #fff;
+}
+.matTwo{
+  background-color: #00ba56;
+  color: #fff;
+}
+.matThre{
+  background-color: #a64bff;
+  color: #fff;
+}
+.matFour{
+  background-color: #ff3370;
+  color: #fff;
+}
+.matFive  {
+  background-color: #D48142;
+  color: #fff;
+}
+.matSix  {
+  background-color: #E8BA4D;
+  color: #fff;
+}
+.matSeven  {
+  background-color: #C54233;
+  color: #fff;
+}
+.matEight   {
+  background-color: #3D96CD;
+  color: #fff;
+}
+.matNine {
+  background-color: #21F2F7;
+  color: #fff;
+}

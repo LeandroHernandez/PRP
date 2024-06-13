@@ -1,0 +1,689 @@
+<div class="header-title background{{Subject.color}}" *ngIf="Subject" >
+    <img  src="{{Subject.icon}}" alt="" style="margin: 5px; height: 50px;">
+    <h3 class="banner-title"><strong style="color: white;">{{Subject.subject_name}} </strong></h3>
+</div>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row card"><br>
+            <div class="col-sm-4">
+                <input [(ngModel)]="practice.practice_name" type="text" class="form-control" id="practice_name"
+                    name="practice_name" placeholder="Nombre de práctica">
+                <small [hidden]="practice.practice_name " class="text-danger">
+                    Campo Obligatorio
+                </small>
+            </div>
+            <div class="col-sm-2">
+                <button [disabled]="practice.practice_name == ''" (click)="addPractice()"
+                    class="btn btn-success btn-fill">{{id_practic=="" ? 'Crear práctica' : 'Editar'}}</button>
+            </div>
+            <div  style="float: right; margin-right: 5px;">
+                <button (click)="returnShowPractices()" class="btn btn-primary btn-fill">
+                    <i class="fa fa-bars" aria-hidden="true"></i> Listar</button>
+            </div>
+            <br><br><br>
+
+        </div>
+
+        <div class="card row">
+            <div class="card-header " *ngIf="id_practic!=''; else elseTemplate"
+                >
+                <div class="col-md-6" style=" min-height: 60px; padding-top: 10px;">
+                    <h3> {{practice.practice_name}}</h3>
+                </div>
+                <div class="fresh-datatables col-md-6 " style="float: right;" style=" min-height: 60px;">
+                    <div class=" nav navbar-nav navbar-right" style="width: 200px;">
+                        <li class="dropdown dropdown-with-icons" style="list-style: none;">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: large;">
+                                <i class="fa fa-plus-circle fa-md" aria-hidden="true"></i> Nueva Pregunta.
+                                <p class="hidden-md hidden-lg">More</p>
+                            </a>
+                            <ul class="dropdown-menu dropdown-with-icons" style="width: 220px;">
+                                <li *ngFor="let typePractice of arrayTypePractice" style="font-size:medium; border-bottom: solid 1px gainsboro">
+                                    <button (click)="addPracticeOption(typePractice.option_name)" data-toggle="modal"
+                                        data-target="#ModalAddPractice" [(ngModel)]="typePractice.option_name"
+                                        ngDefaultControl style="border: none; background-color: transparent;">
+                                        <i class="{{typePractice.option_icon}} fa-lg "
+                                            ></i>
+                                        {{typePractice.option_name}}
+                                    </button>
+                                </li>
+                            </ul>
+                        </li>
+                    </div>
+                </div>
+                <!--<form #formularioPractic="ngForm" action=""
+                        style="display:flex;justify-content:center;align-content: center;">
+                        <div class="col-sm-3 text-center" *ngFor="let option of arrayTypePractice">
+                            <div class="card"><br>
+                                <button class="btn btn-primary btn-practice" data-toggle="modal"
+                                    data-target="#ModalAddPractice" (click)="addPracticeOption(option.option_name)">
+                                    <i class="{{option.option_icon}} fa-3x icon-option"></i>
+                                </button> <br><br>
+                                <h3 class="card-text"><b>{{option.option_name}}</b></h3>
+                            </div>
+                        </div>
+                    </form>-->
+            </div>
+            <!--<hr>-->
+
+            <ng-template #elseTemplate>
+                <div class="col-sm-4 text-center"></div>
+                <div class="col-sm-4 text-center card-danger-sp">
+                    <i class="fa fa-info-circle fa-ico"></i><br><br>
+                    <h2>Por favor cree una nueva práctica</h2>
+                </div>
+                <div class="col-sm-4 text-center"></div>
+
+            </ng-template>
+            <br><br><br>
+            <div class="modal fade" id="ModalAddPractice" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-practice" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" (click)="cancel()">&times;</button>
+
+                            <h3 class="modal-title"><i class="fa fa-plus"></i> AGREGAR PREGUNTA </h3>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- MODAL AGREGAR PREGUNTA DE RESPUESTA ESCRITA-->
+                                <div class="col-md-6" *ngIf="optionSelect === 'Respuesta Específica' ">
+                                    <div class="card  card-content-practice-option">
+                                        <div class="panel-footer content modal-content-form">
+                                            <div class="row">
+
+                                                <div class=" col-sm-4" style="z-index: 1; color: grey;">
+                                                    <li class="dropdown dropdown-with-icons" style="list-style: none;">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-list"></i> Editar
+                                                        </a>
+                                                        <ul class="dropdown-menu dropdown-with-icons  "  style="width: 220px;">
+                                                            <li *ngFor="let typePractice of arrayTypePractice">
+                                                                <button
+                                                                    (click)="editPracticeTypeOption(typePractice.option_name)"
+                                                                    [(ngModel)]="typePractice.option_name"
+                                                                    ngDefaultControl
+                                                                    style="border: none; background-color: transparent;">
+                                                                    <i class="{{typePractice.option_icon}} "></i>
+                                                                    {{typePractice.option_name}}
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+                                                    {{optionPracticeSelect ? optionPracticeSelect.option_name : ''}}
+                                                </div>
+                                                <div class="col-sm-6 ">
+                                                    {{!optionPracticeSelect.option_description ? 'Pregunta' : optionPracticeSelect.option_description}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body content modal-content-form">
+                                            <div class="form-group col-md-10">
+                                                <input type="text" class="form-control" id="option_description"
+                                                    name="option_description"
+                                                    [(ngModel)]="optionPracticeSelect.option_description"
+                                                    aria-describedby="option_description"
+                                                    placeholder="Escribe una pregunta aquí">
+                                                    <small *ngIf="showAlert" [hidden]="optionPracticeSelect.option_description" class="text-danger">
+                                                        Campo Obligatorio
+                                                    </small>
+
+                                            </div>
+                                            <div class="form-group text-center">
+                                                <label for="fileupload"><button class="btn"
+                                                        (click)="fileupload.click()"><i class="fa fa-picture-o"
+                                                            aria-hidden="true"></i></button></label>
+                                                <input (change)="onChangeImage($event, true)" type="file"
+                                                    style="display:none;" accept="image/*" class="form-control-file"
+                                                    #fileupload id="option_image" name="option_image">
+                                            </div>
+                                            <div *ngFor="let opt of arrayOptionOfItem; let i=index" style="margin-left: 20px;">
+                                                <div class="row">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="arrayOptionOfItem[i].option_item_description"
+                                                            placeholder="Opción de respuesta {{i+1}}">
+                                                            
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <button class="btn btn-danger btn-fill"
+                                                                (click)="deleteOptionItem(i)">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <label for="fileupload">
+                                                                <button class="btn" (click)="fileupload.click()">
+                                                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                                                </button>
+                                                            </label>
+                                                            <input (change)="onChangeImage($event,false, i)" type="file"
+                                                                style="display:none;" accept="image/*"
+                                                                class="form-control-file" #fileupload>
+                                                        </div>
+                                                    </div>-->
+                                                </div>
+                                                <!-- <hr> -->
+
+                                            </div>
+                                            <div class="form-group col-md-10">
+                                                <button (click)="addOptionOfItem()" class="btn btn-success btn-fill"
+                                                    style="margin-left: 5px;">
+                                                    Agregar opción
+                                                </button>
+                                            </div>
+                                            <br><br>
+                                            <hr>
+                                            <div class="col-md-8" style="display: flex; flex-direction: row;">
+                                                <label class="control-label" for="options_attemps">Número de
+                                                    intentos.</label>
+                                                <select class="form-control" id="options_attemps" name="options_attemps"
+                                                    ngDefaultControl [(ngModel)]="optionPracticeSelect.options_attemps">
+                                                    <option value='' selected> Selecciona una opción
+                                                    </option>
+                                                    <option *ngFor="let number of numberOfAttemps">{{number}}
+                                                    </option>
+                                                </select>
+                                                <small *ngIf="showAlert" [hidden]="optionPracticeSelect.options_attemps" class="text-danger">
+                                                    Campo Obligatorio
+                                                </small>
+
+                                            </div>
+                                            <!--<button (click)="addOptionOfItem()" class="btn btn-success btn-fill">
+                                                Agregar opción
+                                            </button>-->
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- VISUALIZAR PREGUNTA RESPUESTA ESCRITA-->
+                                <div class="col-md-6" *ngIf="optionSelect === 'Respuesta Específica'">
+                                    <div class="card card-content-practice-option ">
+                                        <div class="content modal-content-form">
+                                            <div class="content text-center">
+                                                <h1><b>{{!optionPracticeSelect.option_description ? 'Pregunta' : optionPracticeSelect.option_description}}</b>
+                                                </h1>
+                                                <hr>
+                                                <figure>
+                                                    <img class="is-rounded is-image"
+                                                        *ngIf="!imageSrc && !optionPracticeSelect.question_image"
+                                                        src="assets\img\image-not-found.png">
+                                                    <img *ngIf="imageSrc && optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image" [src]="imageSrc">
+                                                    <img *ngIf="imageSrc && !optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image" [src]="imageSrc">
+                                                    <img *ngIf="!imageSrc && optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image"
+                                                        [src]="optionPracticeSelect.question_image">
+                                                </figure>
+                                            </div>
+                                            <hr>
+
+                                            <div class="row">
+                                                <div *ngFor="let opt of arrayOptionOfItem; let i = index"
+                                                    class="col-md-6 align-middle">
+                                                    <div class="card">
+                                                        <ng-container>
+                                                            <div class="card">
+                                                                <div class="text-center">
+                                                                    <i class="fa fa-check-circle fa-correct"></i>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="align-middle text-center"
+                                                                    style="min-height: 8vh;">
+                                                                    <h1>{{opt.option_item_description | uppercase}}</h1>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>                                                                                                           
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <button *ngIf="!optionPracticeSelect.option_description && !optionPracticeSelect.options_attemps || !optionPracticeSelect.options_attemps || !optionPracticeSelect.option_description"  class="btn btn-success btn-fill" (click)="validar()">
+                                                Aceptar
+                                            </button>
+                                            <button *ngIf="optionPracticeSelect.option_description && optionPracticeSelect.options_attemps " class="btn btn-success btn-fill" (click)="saveOptionItem()">
+                                                Aceptar
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- MODAL AGREGAR PREGUNTA TEXTO -->
+                                <div class="col-md-6" *ngIf="optionSelect === 'Texto' ">
+                                    <div class="card  card-content-practice-option">
+                                        <div class="panel-footer content modal-content-form">
+                                            <div class="row">
+
+                                                <div class=" col-sm-4" style="z-index: 1; color: grey;">
+                                                    <li class="dropdown dropdown-with-icons" style="list-style: none;">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-list"></i> Editar
+                                                        </a>
+                                                        <ul class="dropdown-menu dropdown-with-icons  ">
+                                                            <li *ngFor="let typePractice of arrayTypePractice">
+                                                                <button
+                                                                    (click)="editPracticeTypeOption(typePractice.option_name)"
+                                                                    [(ngModel)]="typePractice.option_name"
+                                                                    ngDefaultControl
+                                                                    style="border: none; background-color: transparent;">
+                                                                    <i class="{{typePractice.option_icon}} "></i>
+                                                                    {{typePractice.option_name}}
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+                                                    {{optionPracticeSelect ? optionPracticeSelect.option_name : ''}}
+                                                </div>
+                                                <div class="col-sm-6 ">
+                                                    {{!optionPracticeSelect.option_description ? 'Pregunta' : optionPracticeSelect.option_description}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body content modal-content-form">
+                                            <div class="form-group col-md-10">
+                                                <input type="text" class="form-control" id="option_description"
+                                                    name="option_description"
+                                                    [(ngModel)]="optionPracticeSelect.option_description"
+                                                    aria-describedby="option_description"
+                                                    placeholder="Escribe una pregunta aquí">
+                                                    <small *ngIf="showAlert" [hidden]="optionPracticeSelect.option_description" class="text-danger">
+                                                        Campo Obligatorio
+                                                    </small>
+                                            </div>
+                                            <div class="form-group text-center">
+                                                <label for="fileupload"><button class="btn"
+                                                        (click)="fileupload.click()"><i class="fa fa-picture-o"
+                                                            aria-hidden="true"></i></button></label>
+                                                <input (change)="onChangeImage($event, true)" type="file"
+                                                    style="display:none;" accept="image/*" class="form-control-file"
+                                                    #fileupload id="option_image" name="option_image">
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- VISUALIZAR PREGUNTA RESPUESTA TEXTO-->
+                                <div class="col-md-6" *ngIf="optionSelect === 'Texto'">
+                                    <div class="card card-content-practice-option ">
+                                        <div class="content modal-content-form">
+                                            <div class="content text-center">
+                                                <h1><b>{{!optionPracticeSelect.option_description ? 'Pregunta' : optionPracticeSelect.option_description}}</b>
+                                                </h1>
+                                                <hr>
+                                                <figure>
+                                                    <img class="is-rounded is-image"
+                                                        *ngIf="!imageSrc && !optionPracticeSelect.question_image"
+                                                        src="assets\img\image-not-found.png">
+                                                    <img *ngIf="imageSrc && optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image" [src]="imageSrc">
+                                                    <img *ngIf="imageSrc && !optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image" [src]="imageSrc">
+                                                    <img *ngIf="!imageSrc && optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image"
+                                                        [src]="optionPracticeSelect.question_image">
+                                                </figure>
+                                            
+                                            <hr>                                  
+                                                <div class="form-group border-focus">
+                                                    <label for="respuestaText"></label>
+                                                    <textarea class="form-control" id="respuestaText" rows="3"
+                                                        placeholder="Escribe tu respuesta aquí..."></textarea>
+                                                </div>
+
+                                            </div>
+                                            <hr>
+                                            <button *ngIf="!optionPracticeSelect.option_description"  class="btn btn-success btn-fill" (click)="validar()">
+                                                Aceptar
+                                            </button>
+                                            <button *ngIf="optionPracticeSelect.option_description" class="btn btn-success btn-fill" (click)="saveOptionItem()">
+                                                Aceptar
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- MODAL AGREGAR PREGUNTA DE SELECCIÓN-OPCION MÚLTIPLE-->
+                                <div class="col-md-6"
+                                    *ngIf="optionSelect === 'Selección Múltiple' || optionSelect === 'Opción Múltiple'">
+                                    <div class="card  card-content-practice-option">
+                                        <div class="panel-footer content modal-content-form">
+                                            <div class="row">
+
+                                                <div class=" col-sm-4" style="z-index: 1; color: grey;">
+                                                    <li class="dropdown dropdown-with-icons" style="list-style: none;">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-list"></i> Editar
+                                                        </a>
+                                                        <ul class="dropdown-menu dropdown-with-icons  ">
+                                                            <li *ngFor="let typePractice of arrayTypePractice">
+                                                                <button
+                                                                    (click)="editPracticeTypeOption(typePractice.option_name)"
+                                                                    [(ngModel)]="typePractice.option_name"
+                                                                    ngDefaultControl
+                                                                    style="border: none; background-color: transparent;">
+                                                                    <i class="{{typePractice.option_icon}} "></i>
+                                                                    {{typePractice.option_name}}
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+                                                    {{optionPracticeSelect ? optionPracticeSelect.option_name : ''}}
+                                                </div>
+                                                <div class="col-sm-6 ">
+                                                    {{!optionPracticeSelect.option_description ? 'Pregunta' : optionPracticeSelect.option_description}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body content modal-content-form">
+                                            <div class="form-group col-md-10">
+                                                <input type="text" class="form-control" id="option_description"
+                                                    name="option_description"
+                                                    [(ngModel)]="optionPracticeSelect.option_description"
+                                                    aria-describedby="option_description"
+                                                    placeholder="Escribe una pregunta aquí">
+                                                    <small *ngIf="showAlert" [hidden]="optionPracticeSelect.option_description" class="text-danger">
+                                                        Campo Obligatorio
+                                                    </small>
+                                            </div>
+                                            <div class="form-group text-center">
+                                                <label for="fileupload"><button class="btn"
+                                                        (click)="fileupload.click()"><i class="fa fa-picture-o"
+                                                            aria-hidden="true"></i></button></label>
+                                                <input (change)="onChangeImage($event, true)" type="file"
+                                                    style="display:none;" accept="image/*" class="form-control-file"
+                                                    #fileupload id="option_image" name="option_image">
+                                            </div>
+                                            <div *ngFor="let opt of arrayOptionOfItem; let i=index">
+                                                <div class="row">
+                                                    <div class="col-sm-2 text-center">
+                                                        <div class="form-group">
+                                                            <ng-container
+                                                                *ngIf="optionSelect === 'Selección Múltiple'; else elseTemplate">
+                                                                <i *ngIf="opt.option_item_is_correct"
+                                                                    (click)="optionMultipleIsCorrect(opt)"
+                                                                    class="fa fa-check-circle fa-correct"
+                                                                    aria-hidden="true"></i>
+                                                                <i *ngIf="!opt.option_item_is_correct"
+                                                                    (click)="optionMultipleIsCorrect(opt)"
+                                                                    class="fa fa-check-circle fa-incorrect"
+                                                                    aria-hidden="true"></i>
+                                                            </ng-container>
+                                                            <ng-template #elseTemplate>
+                                                                <i *ngIf="opt.option_item_is_correct"
+                                                                    (click)="optionIsCorrect(opt)"
+                                                                    class="fa fa-check-circle fa-correct"
+                                                                    aria-hidden="true"></i>
+                                                                <i *ngIf="!opt.option_item_is_correct"
+                                                                    (click)="optionIsCorrect(opt)"
+                                                                    class="fa fa-check-circle fa-incorrect"
+                                                                    aria-hidden="true"></i>
+                                                            </ng-template>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="arrayOptionOfItem[i].option_item_description"
+                                                            placeholder="Opción de respuesta {{i+1}}">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <button class="btn btn-danger btn-fill"
+                                                                (click)="deleteOptionItem(i)">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <label for="fileupload">
+                                                                <button class="btn" (click)="fileupload.click()">
+                                                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                                                </button>
+                                                            </label>
+                                                            <input (change)="onChangeImage($event,false, i)" type="file"
+                                                                style="display:none;" accept="image/*"
+                                                                class="form-control-file" #fileupload>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-10">
+                                                <button (click)="addOptionOfItem()" class="btn btn-success btn-fill"
+                                                    style="margin-left: 5px;">
+                                                    Agregar opción
+                                                </button>
+                                            </div>
+                                            <br><br>
+                                            <hr>
+                                            <div class="col-md-8" style="display: flex; flex-direction: row;">
+                                                <label class="control-label" for="options_attemps">Número de
+                                                    intentos.</label>
+                                                <select class="form-control" id="options_attemps" name="options_attemps"
+                                                    ngDefaultControl [(ngModel)]="optionPracticeSelect.options_attemps">
+                                                    <option value='' selected> Selecciona una opción
+                                                    </option>
+                                                    <option *ngFor="let number of numberOfAttemps">{{number}}
+                                                    </option>
+                                                </select>
+                                                <small *ngIf="showAlert" [hidden]="optionPracticeSelect.options_attemps" class="text-danger">
+                                                    Campo Obligatorio
+                                                </small>
+                                            </div>
+                                            <!--<button (click)="addOptionOfItem()" class="btn btn-success btn-fill">
+                                                Agregar opción
+                                            </button>-->
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- VISUALIZAR PREGUNTA SELECCIÓN-OPCION MUTIPLE-->
+                                <div class="col-md-6"
+                                    *ngIf="optionSelect === 'Selección Múltiple' || optionSelect === 'Opción Múltiple'">
+                                    <div class="card card-content-practice-option">
+                                        <div class="content modal-content-form">
+                                            <div class="content text-center">
+                                                <h1><b>{{!optionPracticeSelect.option_description ? 'Pregunta' : optionPracticeSelect.option_description}}</b>
+                                                </h1>
+                                                <hr>
+                                                <figure>
+                                                    <img class="is-rounded is-image"
+                                                        *ngIf="!imageSrc && !optionPracticeSelect.question_image"
+                                                        src="assets\img\image-not-found.png">
+                                                    <img *ngIf="imageSrc && optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image" [src]="imageSrc">
+                                                    <img *ngIf="imageSrc && !optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image" [src]="imageSrc">
+                                                    <img *ngIf="!imageSrc && optionPracticeSelect.question_image"
+                                                        class="rounded mx-auto d-block is-image"
+                                                        [src]="optionPracticeSelect.question_image">
+                                                </figure>
+                                            </div>
+                                            <hr>
+
+                                            <div class="row">
+                                                <div *ngFor="let opt of arrayOptionOfItem; let i = index"
+                                                    class="col-sm-3 align-middle">
+                                                    <div class="card">
+                                                        <ng-container
+                                                            *ngIf="opt.option_item_is_correct; else elseTemplate">
+                                                            <div class="card">
+                                                                <div class="text-center">
+                                                                    <i class="fa fa-check-circle fa-correct"></i>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="align-middle text-center"
+                                                                    style="min-height: 8vh;">
+                                                                    <figure
+                                                                        style="display: flex; justify-content: center; align-content: center;">
+                                                                        <img *ngIf="arrayImagesOptions[i] && !opt.option_item_image"
+                                                                            class="rounded mx-auto d-block is-image-option"
+                                                                            [src]="arrayImagesOptions[i] ">
+                                                                        <img *ngIf="!arrayImagesOptions[i] && opt.option_item_image"
+                                                                            class="rounded mx-auto d-block is-image-option"
+                                                                            [src]="opt.option_item_image">
+                                                                        <img *ngIf="arrayImagesOptions[i] && opt.option_item_image"
+                                                                            class="rounded mx-auto d-block is-image-option"
+                                                                            [src]="arrayImagesOptions[i] ">
+                                                                    </figure>
+                                                                    <h1>{{opt.option_item_description | uppercase}}
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-template #elseTemplate>
+                                                            <div class="card">
+                                                                <div class="text-center">
+                                                                    <i class="fa fa-check-circle fa-incorrect-i"></i>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="text-center" style="min-height: 8vh;">
+                                                                    <figure
+                                                                        style="display: flex; justify-content: center; align-content: center;">
+                                                                        <img *ngIf="arrayImagesOptions[i] && !opt.option_item_image"
+                                                                            class="rounded mx-auto d-block is-image-option"
+                                                                            [src]="arrayImagesOptions[i] ">
+                                                                        <img *ngIf="!arrayImagesOptions[i] && opt.option_item_image"
+                                                                            class="rounded mx-auto d-block is-image-option"
+                                                                            [src]="opt.option_item_image">
+                                                                        <img *ngIf="arrayImagesOptions[i] && opt.option_item_image"
+                                                                            class="rounded mx-auto d-block is-image-option"
+                                                                            [src]="arrayImagesOptions[i] ">
+                                                                    </figure>
+                                                                    <h3>{{opt.option_item_description | uppercase }}
+                                                                    </h3>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <button *ngIf="!optionPracticeSelect.option_description && !optionPracticeSelect.options_attemps || !optionPracticeSelect.options_attemps || !optionPracticeSelect.option_description"  class="btn btn-success btn-fill" (click)="validar()">
+                                                Aceptar
+                                            </button>
+                                            <button *ngIf="optionPracticeSelect.option_description && optionPracticeSelect.options_attemps " class="btn btn-success btn-fill" (click)="saveOptionItem()">
+                                                Aceptar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" (click)="cancel()"
+                                    data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngFor="let option of arrayPracticeOption; let i = index" class="row">
+                <div class="card card-option">
+                    <div class="panel panel-default">
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <span *ngFor="let optionI of arrayTypePractice"> <i
+                                            *ngIf=" optionI.option_name === option.option_name "
+                                            class="{{optionI.option_icon}}"></i>
+                                    </span>
+                                    {{option.option_description}}
+
+                                </div>
+                                <div class="col-sm-1">
+                                    <i class="fa fa-copy fa-action-option"></i>
+                                </div>
+                                <div class="col-sm-1">
+                                    <i (click)="deleteOption(option, i)" class="fa fa-trash fa-action-option"></i>
+                                </div>
+                                <div class="col-sm-1">
+                                    <i (click)="editOption(option, i)" data-toggle="modal"
+                                        data-target="#ModalAddPractice" class="fa fa-edit fa-action-option"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row" style="display: contents; justify-content: center;">
+                                <div *ngFor="let opt of arrayItemsWithOptions[i]" class="col-sm-3 align-middle">
+                                    <div class="card">
+                                        <ng-container *ngIf="opt.option_item_is_correct; else elseTemplate">
+                                            <div class="card">
+                                                <div class="text-center">
+                                                    <i class="fa fa-check-circle fa-correct"></i>
+                                                </div>
+                                                <hr>
+                                                <div class="align-middle text-center" style="min-height: 8vh;">
+                                                    <img *ngIf=" opt.option_item_image"
+                                                        class="rounded mx-auto d-block is-image-option"
+                                                        [src]="opt.option_item_image">
+                                                    <h1>{{opt.option_item_description | uppercase}}</h1>
+
+                                                </div>
+
+                                            </div>
+                                        </ng-container>
+                                        <ng-template #elseTemplate>
+                                            <div class="card">
+                                                <div class="text-center">
+                                                    <i class="fa fa-check-circle fa-incorrect-i"></i>
+                                                </div>
+                                                <hr>
+                                                <div class="text-center" style="min-height: 8vh;">
+                                                    <img *ngIf=" opt.option_item_image"
+                                                        class="rounded mx-auto d-block is-image-option"
+                                                        [src]="opt.option_item_image">
+                                                    <h3>{{opt.option_item_description | uppercase }}</h3>
+
+                                                </div>
+
+                                            </div>
+                                        </ng-template>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- <div *ngFor="let item of arrayItemsWithOptions[i]">
+                            {{item.option_item_description}}
+                        </div> -->
+                        </div>
+                    </div>
+                    <!-- <div class="card-body card-typePractice">
+                    <button [(ngModel)]="option.option_name" class="btn btn-primary btn-practice" data-toggle="modal"
+                        data-target="#ModalAddPractice">
+                        <i class="{{option.option_icon}} fa-3x icon-option"></i>
+                    </button>
+                    <p class="card-text">{{option.option_name}} </p>
+                </div> -->
+
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,6 @@
+<div class="wrapper wrapper-full-page">
+    <section id="div-registro">
+        <app-student-register *ngIf="registerType === 'student'"></app-student-register>
+        <app-teacher-register *ngIf="registerType === 'teacher'"></app-teacher-register>
+    </section>
+</div>

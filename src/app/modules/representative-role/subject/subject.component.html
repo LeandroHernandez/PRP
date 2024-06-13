@@ -1,0 +1,95 @@
+<!-- <div class="cardheaderNames{{arrayMaterias.color}}"> -->
+    <div class="cardheaderNames">
+    <div style="margin-left: auto; margin-right: auto; display: flex; width: 90%;">
+        <img src="" style="margin-top: 17px; width: 65px;" alt="">
+        <div class="cssNames">
+            <!-- {{arrayMaterias.subject_name}} -->
+        </div>
+    </div>
+
+</div>
+
+<!-- <mat-tab-group >
+
+    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+
+        <div class="cardheader"></div>
+        <div class="container">
+
+            <div class="cssRow">
+                <div class="cssColum cssColum2">
+                    <div class="cardSubject" style="float: left;">
+
+                        <div class="cardContent">Resumen de la Unidad 2
+                            <div class="dates">
+                                Fecha de inicio
+                                <div class="cssDates"> 19-feb-2020</div>
+                                Fecha de Fin
+                                <div class="cssDates"> 19-feb-2020</div>
+                                <div class="cssClass"> Sesiones </div>
+                                <div class="cssDates"> 7 </div>
+                            </div>
+                        </div>
+                        <div class="csslogo{{arrayMaterias.color}} content text-center" style="padding: 44px;">
+                            <img src="{{arrayMaterias.icon}}" class="img-subject" alt="">
+                        </div>
+
+                    </div>
+                </div>
+                <div style=" justify-content: flex-end; float: right;">
+                    <div class="cardClass" *ngFor="let item of arrayDetail ">
+                        <div class="cardSubject-title">
+                            {{item.classNumber}}
+                            <img src="../../../../assets/img/icons/letter.png"
+                                style="display: flex; justify-content: flex-end; float: right;" alt="">
+                        </div>
+                        <div class="cardContentClass">
+                            <div style="font-size: small; max-width: 100px; width: 100%; ">
+
+                                <mat-checkbox disabled="true" checked="{{item.video1}}"
+                                    style="font-family: Montserrat; font-size: 14px">
+                                    {{item.nameVideo1}} {{item.titleVideo1}}
+                                </mat-checkbox>
+                                <mat-checkbox disabled="false" checked="{{item.video1}}"
+                                    style="font-family: Montserrat; font-size: 14px">
+                                    {{item.nameVideo2}} {{item.titleVideo2}}
+                                </mat-checkbox>
+                                <mat-checkbox disabled="true" checked="true"
+                                    style="font-family: Montserrat; font-size: 14px">
+                                    Material de Apoyo Contar Numeros
+                                </mat-checkbox>
+                            </div>
+
+                        </div>
+
+                        <div class=" content text-center "
+                            style="width: 157px; float: right; margin-top: 50px; margin-right: auto; margin-left: auto; margin-bottom: inherit;">
+                            {{item.numTask}} / {{item.totalTask}}
+                        </div>
+
+                        <div class="cssDates content text-center "
+                            style="display: flex; justify-content: flex-end; width: 157px; float: right;">
+                            {{item.numTask * item.totalTask}} %
+                            <div class="barBackgroud">
+                                <div [ngStyle]="{'width.%':item.numTask * item.totalTask}" class="barprogres"> </div>
+                            </div>
+                        </div>
+
+                        <div class="cardfooter">
+                            <div class="cardContent">
+                                <div class="footer">
+                                    Fecha de Finalizacion
+                                    <div class="cssDates"> {{item.fechaFin}}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: row;justify-content: flex-end; margin: 15px;">
+                                <button type="submit" class="btn btn-primary btn-fill" style="width: 145px;"
+                                (click)="showDetail(item)">Revisar </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group> -->

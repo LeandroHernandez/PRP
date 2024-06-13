@@ -1,0 +1,197 @@
+<div class="container-fluid">
+    <!-- BOTON AGREGAR REGISTRO-->
+    <div style="display: flex; flex-direction: row;justify-content: flex-end; margin: 15px;">
+        <button type="submit" class="btn btn-success btn-fill" data-toggle="modal" data-target="#exampleModalCenter"
+            (click)="addRegisterParallel(parallel)">Agregar Registro </button>
+    </div>
+    <!-- MODAL FORM-->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ isEdit == false ? 'REGISTRAR PARALELO' : 'EDITAR PARALELO'  }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="content modal-content-form">
+                                    <form #formularioparallel="ngForm" method="get" action="/" class="form-horizontal"
+                                        novalidate
+                                        (ngSubmit)="saveParallel(formularioparallel.value, formularioparallel.valid)">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <label class="control-label">ID<span class="star">*</span></label>
+                                                    <input readonly id="parallel_id" type="text" class="form-control"
+                                                        name="parallel_id" placeholder="ej. Inicial"
+                                                        [ngModel]="parallel.parallel_id" required
+                                                        #parallel_id="ngModel">
+                                                    <small
+                                                        [hidden]="parallel_id.valid || (parallel_id.pristine && !formularioparallel.submitted)"
+                                                        class="text-danger">
+                                                        Obligatorio
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label class="control-label">Nivel<span
+                                                            class="star">*</span></label>
+                                                    <select [(ngModel)]="parallel.level_id" name="level_id"
+                                                        id="level_id" class="form-control"
+                                                        (change)="onChangeLevel(parallel.level_id)">
+                                                        <option value="" selected>Selecciona una opción</option>
+                                                        <option [selected]="parallel.level_id == parallel.level_id"
+                                                            *ngFor="let level of arrayLevels" [value]="level.level_id">
+                                                            {{level.level_name}}</option>
+                                                    </select>
+                                                    <small
+                                                    [hidden]="parallel.level_id || (parallel_id.pristine && !formularioparallel.submitted)"
+                                                    class="text-danger">
+                                                    Obligatorio
+                                                </small>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label class="control-label">Subnivel<span
+                                                            class="star">*</span></label>
+                                                    <select [(ngModel)]="parallel.sublevel_id" name="sublevel_id"
+                                                        id="sublevel_id" class="form-control"
+                                                        (change)="onChangeSublevel(parallel.sublevel_id)">
+                                                        <option value="" selected>Selecciona una opción</option>
+                                                        <option
+                                                            [selected]="parallel.sublevel_id == parallel.sublevel_id"
+                                                            *ngFor="let sublevel of arraySublevels"
+                                                            [value]="sublevel.sublevel_id">{{sublevel.sublevel_name}}
+                                                        </option>
+                                                    </select>
+                                                    <small
+                                                    [hidden]="parallel.sublevel_id || (parallel_id.pristine && !formularioparallel.submitted)"
+                                                    class="text-danger">
+                                                    Obligatorio
+                                                </small>
+                                                </div>
+
+                                                <div class="col-md-5">
+                                                    <label class="control-label">Grado<span
+                                                            class="star">*</span></label>
+                                                    <select [(ngModel)]="parallel.grade_id" name="grade_id" id="grade_id"
+                                                        class="form-control">
+                                                        <option value="" selected>Selecciona una opción</option>
+                                                        <option [selected]="parallel.grade_id == parallel.grade_id"
+                                                            *ngFor="let grade of arrayGrades" [value]="grade.grade_id">
+                                                            {{grade.grade_name}}</option>
+                                                    </select>
+                                                    <small
+                                                    [hidden]="parallel.grade_id || (parallel_id.pristine && !formularioparallel.submitted)"
+                                                    class="text-danger">
+                                                    Obligatorio
+                                                </small>
+                                                </div>
+
+                                                <div class="col-md-5">
+                                                    <label class="control-label">Paralelo<span
+                                                            class="star">*</span></label>
+                                                    <input id="parallel_name" type="text" class="form-control"
+                                                        name="parallel_name" placeholder="ej. Inicial"
+                                                        [ngModel]="parallel.parallel_name" required
+                                                        #parallel_name="ngModel">
+                                                    <small
+                                                        [hidden]="parallel_name.valid || (parallel_name.pristine && !formularioparallel.submitted)"
+                                                        class="text-danger">
+                                                        Obligatorio /<i> sin carácteres especiales </i>
+                                                    </small>
+                                                </div>
+
+                                                <label class="col-md-3 control-label">Estado<span
+                                                        class="star">*</span></label>
+                                                <div class="checkbox col-sm-2">
+                                                    <div class="checkbox">
+                                                        <input id="parallel_status" name="parallel_status"
+                                                            [ngModel]="parallel.parallel_status"
+                                                            #parallel_status="ngModel" type="checkbox">
+                                                        <label class="" for="parallel_status">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5" style="margin-top: 10px;">
+                                                <button type="submit"
+                                                    class="btn btn-success btn-fill">{{ isEdit == false ? 'AGREGAR' : 'EDITAR'  }}</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon"
+                        data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA TABLE LIST PARALLELS-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="content">
+                        <div class="fresh-datatables">
+                            <table id="datatablesLevel" class="table table-striped table-no-bordered table-hover"
+                                cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let item of dataTable.headerRow">{{ item }}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tBodyLevel">
+                                    <tr *ngFor="let parallel of arrayParallels; let i= index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{parallel.level_name}}</td>
+                                        <td>{{parallel.sublevel_name}}</td>
+                                        <td>{{parallel.grade_name}}</td>
+                                        <td>{{parallel.parallel_name}}</td>
+
+                                        <td>
+                                            <ng-container *ngIf="parallel.parallel_status==true; else elseEstado">
+                                                <button class="btn btn-success btn-fill btn-xs">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            </ng-container>
+                                            <ng-template #elseEstado>
+                                                <button class="btn btn-danger btn-fill btn-xs">
+                                                    <i class="fa fa-close"></i>
+                                                </button>
+                                            </ng-template>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="btn-group">
+                                                <button (click)="editParallel(parallel)"
+                                                    class="btn btn-fill btn-xs btn-warning btn-icon" data-toggle="modal"
+                                                    data-target="#exampleModalCenter">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button (click)="deleteParallel(parallel)"
+                                                    class="btn btn-fill btn-xs btn-danger btn-icon">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

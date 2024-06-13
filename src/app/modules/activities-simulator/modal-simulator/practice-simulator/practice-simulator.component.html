@@ -1,0 +1,179 @@
+<div class="main-content ">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card card-wizard" id="wizardCard{{count}}">
+					<div class="content ">
+						<ul class="nav">
+							<div class="connecting-line"></div>
+							<li #liOptions
+							    *ngFor=" let questionOption of allOptionsFromPractice; let i = index">
+								<a style="text-decoration:line-through;" href="#tab{{i}}" data-toggle="tab">
+									<span class="badge badge-danger font-badge">{{i+1}}</span>
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane" style="padding: 0px !important;" id="tab{{i}}"
+							     *ngFor=" let questionOption of allOptionsFromPractice; let i = index">
+								<!-- <div class="row" style="margin: 0 auto; border: solid 1px #000; vertical-align: middle;">
+										<div class="col-sm-6 text-center">
+												<img *ngIf="questionOption.question_image"
+														class="rounded mx-auto d-block is-image-index"
+														[src]="questionOption.question_image">
+										</div>
+										<div class="col-sm-4 text-center vcenter">
+												{{questionOption.option_description}}
+										</div>
+										<div class="col-sm-2 text-right"
+												*ngIf="questionOption.option_name !== 'Texto'">
+												Intentos: {{countAttempts}}/{{questionOption.options_attemps}}
+										</div>
+								</div> -->
+								
+								<div class="row">
+									<div class="col-sm-6 text-left"
+									>
+										<div class="text-left" *ngIf="questionOption.option_name !== 'Texto' &&  questionOption.option_name !== 'Respuesta Específica'">
+											<span  *ngIf="arrayIsCorrect"> Seleccionados: {{arrayOptionsReply.length}} / {{arrayIsCorrect[i]}} </span>
+										</div>
+									</div>
+									<div class="col-sm-6 text-right"
+									     *ngIf="questionOption.option_name !== 'Texto'">
+										Intentos: {{countAttempts}}/{{questionOption.options_attemps}}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 vcenter text-center">
+										<div>
+											<img *ngIf="questionOption.question_image"
+											     class="rounded mx-auto d-block is-image-index"
+											     [src]="questionOption.question_image">
+										</div>
+									</div>
+									<div class="col-sm-4 vcenter text-center">
+										<div>
+											<h2>{{questionOption.option_description}}</h2>
+										</div>
+									</div>
+								
+								</div>
+								<!-- <div *ngIf="questionOption.question_image" class="row"
+										style="margin: 0 auto; height: 14vh;">
+										<div class="col-sm-4 text-center">
+
+										</div>
+										<div class="col-sm-4 text-center">
+												<img *ngIf="questionOption.question_image"
+														class="rounded mx-auto d-block is-image-index"
+														[src]="questionOption.question_image">
+										</div>
+										<div class="col-sm-4 text-right">
+										</div>
+								</div> -->
+								<div class="row">
+									<!-- <div class="header text-center">
+											<h2 *ngIf="questionOption.options_attemps"
+													style="float: right; color: red;">
+													{{countAttempts}}/{{questionOption.options_attemps}}</h2>
+											<h3 class="title">{{questionOption.option_description}}</h3>
+													<img *ngIf="questionOption.question_image"
+															class="rounded mx-auto d-block is-image-index"
+															[src]="questionOption.question_image">
+									</div> -->
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<!-- OPCIONES DE SELECCIÓN MULTIPLE Y OPCIÓN MULTIPLE-->
+											<div class="row"
+											     style="display: contents; justify-content: center;"
+											     *ngIf="questionOption.option_name !== 'Respuesta Específica' && questionOption.option_name !== 'Texto'">
+												<div *ngFor=" let optFromQ of arrayItemsWithOptions[i]; let j = index"
+												     class="col-sm-3 align-middle">
+													<ng-container>
+														<div id="item_{{i}}_{{j}}"
+														     [disabled]="disableQuestion"
+														     [ngStyle]="disableQuestion?{'background-color': 'rgb(232,232,232)'}:{}"
+														     style="border: solid 1px #fff;" class="card"
+														     (click)="disableQuestion?null:checked.click()"
+														     style="cursor: pointer">
+															<div class="align-middle text-center"
+															     style="min-height: 8vh; padding: 1.5rem !important;">
+																<input id="{{optFromQ.option_item_id}}"
+																       class="my_checkbox " #checked
+																       (change)="onChangeReply($event.target.checked,optFromQ, i, j)"
+																       type="checkbox" [hidden]="true">
+																
+																<img *ngIf=" optFromQ.option_item_image"
+																     class="rounded mx-auto d-block is-image-option"
+																     [src]="optFromQ.option_item_image">
+																<p class="category">
+																	{{optFromQ.option_item_description}}
+																</p>
+															</div>
+														</div>
+													</ng-container>
+												</div>
+											</div>
+											<!-- OPCIONES DE RESPUESTA ESCRITA-->
+											<div class="row"
+											     style="display: contents; justify-content: center;"
+											     *ngIf="questionOption.option_name === 'Respuesta Específica'">
+												<div *ngFor=" let optFromQ of arrayItemsWithOptions[i]; let ind = index"
+												     class="col-md-6 align-middle">
+													
+													<ng-container>
+														<div class="card ">
+															<div class="text-center">
+																<input id="{{optFromQ.option_item_id}}"
+																       name="{{optFromQ.option_item_id}}"
+																       [disabled]="disableQuestion"
+																       [(ngModel)]="responseArray[ind]"
+																       type="text" class="form-control"
+																       placeholder="Escribe tu respuesta {{ind + 1}} aquí">
+															</div>
+														
+														</div>
+													</ng-container>
+												
+												
+												</div>
+												<button [disabled]="disableQuestion"
+												        (click)="validateAnswer(i)" type="button"
+												        class="btn btn-info btn-fill btn-wd ">Validar</button>
+											</div>
+											<!-- RESPUESTA PARA TEXTO-->
+											<div class="row"
+											     style="display: contents; justify-content: center;"
+											     *ngIf="questionOption.option_name === 'Texto'">
+												<div class="col-md-12 align-middle">
+													<div class="form-group border-focus">
+														<label for="respuestaText"></label>
+														<textarea class="form-control" id="respuestaText"
+														          rows="3" (keyup)="onKey($event.target.value)"
+														          placeholder="Escribe tu respuesta aquí..."></textarea>
+													</div>
+												
+												</div>
+												<button [disabled]="!replyText " (click)="validateText(i)"
+												        type="button"
+												        class="btn btn-info btn-fill btn-wd ">Guardar</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="" style="padding: 0px !important; margin: 0px !important">
+							<button [disabled]="!isCorrect" (click)="nextQuestions()" type="button"
+							        class="btn btn-info btn-fill btn-wd btn-next btn-dis pull-right">Siguiente</button>
+							<button (click)="onFinishWizardQuestions()" type="button"
+							        class="btn btn-success btn-fill btn-wd btn-finish pull-right">Finalizar</button>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+</div>

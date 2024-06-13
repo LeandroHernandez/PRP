@@ -1,0 +1,799 @@
+<div *ngIf="isShowDetails && !isShowForum && !startEvaluation">
+	<img src="../../../../assets/img/mat.png" width="100%" alt="">
+	<div class="main-content">
+		<div class="row">
+			<div class="text-center alert-danger col-sm-4 col-sm-offset-4"
+			     *ngIf="this.arrayMaterias.length === 0 || student.student_grade_id === ''; else elseTemplate">
+				<i class="fa fa-info-circle"></i><br><br>
+				No hay asignaturas disponibles
+			</div>
+			<div (click)="showSubject(item)" *ngFor="let item of arrayMaterias; let indexSubject = index"
+			     class="col-md-3">
+				<div class="card {{item.color}} card-materia">
+					<br>
+					<div class="text-center  cssAlert" *ngIf="pendingClassStatus[indexSubject]">
+						<img src="../../../../assets/img/icons/alert-circle.svg" alt="Icono de pendiente" style="height: 30px;">
+					</div>
+					<div class="content text-center ">
+						<img src="{{item.icon}}" class="img-subject" alt="">
+						<br><br>
+						<h2>
+							{{item.subject_name}}
+						</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="bd-content" *ngIf="!isShowDetails && !isShowForum && !startEvaluation" class="body-content">
+	<div class="row card {{subject.color}} card-header-subject">
+		<div class="col-sm-1 text-center">
+			<img src="{{subject.icon}}" class="img-subject-h" alt="">
+		</div>
+		<div class="col-sm-8 text-left a-middle"><br>
+			<span class="title-subject">{{subject.subject_name}}</span>
+		</div>
+	</div>
+	<div class="row row-btn">
+		<div class="col-sm-6 text-left ml-2">
+			<button (click)="showSubject(subject)" type="button" class="btn btn-primary btn-fill" data-toggle="modal"
+			        data-target="#ModalRegister">
+				<i class="fa fa-arrow-left"></i> Todas las materias
+			</button>
+		</div>
+		<div class="col-sm-6 text-right">
+		</div>
+	</div>
+	
+	<div class="main-content">
+		<div class="">
+			<div class="text-center alert-danger col-sm-4 col-sm-offset-4"
+			     *ngIf="this.units.length === 0; else elseTemplate">
+				<i class="fa fa-info-circle"></i><br><br>
+				No hay unidades disponibles
+			</div>
+			<mat-tab-group [color]="Primary"
+			               [backgroundColor]="Primary"
+			               selectedIndex="0"
+			               (selectedIndexChange)="getUnit( $event )"
+			               *ngIf="units.length > 0; else noTabs">
+				<mat-tab *ngFor="let unit of units; let index = index"
+				         label="{{units[index].unitName}}">
+					<br>
+					<div class="row row-details">
+						<div class=" col-md-4 column-fixed">
+							<div class="card row">
+								<div class="col-sm-12">
+									<div class="content text-left">
+										<h4>RESUMEN DE LA {{getUnitNumber(units[index].unitName)}}</h4>
+										<hr>
+										<!-- <div class="">
+											<label for="">Textos ({{percentageText || 0}} %)</label>
+											<div class="barBackgroud">
+												<div [ngStyle]="{'width.%':percentageText || 0}" class="barprogres"> </div>
+											</div>
+										</div>
+										<hr> -->
+										<div class="">
+											<label for=''>Videos ({{percentageVideos || 0}} %)</label>
+											<div class="barBackgroud">
+												<div [ngStyle]="{'width.%':percentageVideos || 0}"
+												     class="barprogres"></div>
+											</div>
+										</div>
+										<hr>
+										<div class="">
+											<label for=''>Prácticas ({{percentagePractice || 0}} %)</label><br>
+											<div class="barBackgroud ">
+												<div [ngStyle]="{'width.%':percentagePractice || 0}"
+												     class="barprogres"></div>
+											</div>
+										</div>
+										<hr>
+										<div>
+											<label for="">VideoConferencias de Unidad</label>
+											<div class="table-responsive">
+												<table class="table table-borderless">
+													<tbody>
+													<tr *ngFor="let video of unit['video_conferences']">
+														<td>{{video['toHours']}}</td>
+														<td>{{video['toDate']}}</td>
+														<td><a [href]="video['urlVideoC']" target="_blank">{{video['urlVideoC']}}</a></td>
+														<td>{{video['detailsVideoC']}}</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<hr>
+									</div>
+								</div>
+							</div>
+							<!--Card Textos -->
+							<div class="card row">
+								<div class="col-sm-12">
+									<div class="content text-center">
+										<h3>Textos</h3>
+										<hr>
+										<div class="card row">
+											<div *ngFor="let text of arrayText" class="col-sm-6">
+												<img src="../../../../assets/img/Book_icon.png" class="img-textos m-3"
+												     alt=""
+												     data-toggle="modal" data-target="#exampleModalSignatureText"
+												     (click)="showTextBook(text.url)">
+												<span
+														style="font-size:10px;   color: rgb(100, 98, 98); ">{{text.textbook_title | uppercase}}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Card Notas Generales -->
+							<div class="card row" *ngIf="arrayNotes.length > 0">
+								<br>
+								<div class="col-sm-6">
+									<h3>Notas Generales</h3>
+								</div>
+								<div class="col-sm-6">
+									<button class="btn btn-default" alt="" data-toggle="modal"
+									        data-target="#modalNotasUnit"
+									        style="display: flex; justify-content: center; align-items: center;"
+									        (click)="showUnitNotes(index)">
+										<i class="fa fa-envelope-o  fa-lg" aria-hidden="true"></i>
+										<span class="badge badge-red">{{arrayNotes.length}}</span>
+									
+									</button>
+								</div>
+							</div>
+						
+						</div>
+						<!-- Card Sesións -->
+						<div class="col-md-8">
+							<div class="row">
+								<div *ngFor="let classItem of class; let indexClass = index" class="col-sm-12">
+									<div class="card" style="box-shadow: 0px 0px 5px 1px rgba(59,171,227,1);">
+										<div class="row col-avanc">
+											<div class="col-sm-4" style="font-weight: bold;">
+												{{classItem.className}}
+											</div>
+											<div *ngIf="practices[indexClass]" class="col-sm-2"
+											     style="margin: 0; padding: 0;"
+											     style="flex-direction: row;">
+												<div *ngIf="practices[indexClass].length > 0">
+													{{arraypercentage[indexClass] || 0}} %
+													<div class="barBackgroud">
+														<div [ngStyle]="{'width.%':arraypercentage[indexClass] || 0}"
+														     class="barprogres">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-2 text-center">
+                        <span *ngIf="classItem.video_conference && classItem.video_conference.state_vc">
+                          <i (click)="setVideoConference(classItem.video_conference, classItem)" data-toggle="modal"
+                             data-target="#modalVideoConference" *ngIf="classItem.video_conference"
+                             class="fa fa-video-camera icon-camera active"></i>
+                        <i *ngIf="!classItem.video_conference" class="fa fa-video-camera icon-camera inactive"></i>
+                        <br>
+                        Video conferencia
+                        </span>
+											
+											</div>
+											<div class="col-sm-2 text-center">
+												<span *ngIf="classItem.video_class">
+													<i (click)="setVideoClass(classItem.video_class, classItem)"
+													   *ngIf="classItem.video_class"
+													   class="fa fa-play-circle icon-camera active"></i>
+													<i *ngIf="!classItem.video_class"
+													   class="fa fa-play-circle icon-camera inactive"></i>
+													<br>
+													Video de Sesión
+												</span>
+											</div>
+											<div *ngIf="classItem.class_notes.length > 0" class="col-sm-2">
+												<img src="../../../../assets/img/icons/letter.png"
+												     (click)="setNotes(classItem.class_notes, classItem, [indexClass])"
+												     style="display: flex; justify-content: flex-end; float: right; cursor: pointer;"
+												     alt=""
+												     data-toggle="modal" data-target="#modalNotesClass">
+												<span class="badge badge-red"
+												      *ngIf="statusNotesFromClass[indexClass] !== true"
+												      style="position: absolute; top: -2px; right: 3px;">{{classItem.class_notes.length}}</span>
+											</div>
+										</div>
+										<hr>
+										<div (click)="enableRepeatButton(practices[indexClass]) || practice.resource_status? openResource(classItem, indexClass, indexResource): openResource(classItem, indexClass, indexResource)" style="padding-left: 2rem; "
+												*ngFor="let practice of practices[indexClass]; let indexResource = index">
+											<span style="font-size:14px; font-weight: bold; color: rgb(94, 93, 93); margin-right: 1rem;">
+												{{indexResource + 1}}
+											</span>
+											<!-- IMAGEN DE VISTO O NO VISTO-->
+											<i *ngIf="!practice.resource_status"
+											   class="fa fa-circle-thin"
+											   aria-hidden="true"
+											   style="color:red;">
+											</i>
+											<i *ngIf="practice.resource_status"
+											   class="fa fa-check"
+											   aria-hidden="true"
+											   style="color: rgb(6, 185, 6);">
+											</i>
+											<!-- IMAGEN DE VISTO O NO VISTO-->
+											<!--TIPO DE PRACTICA -->
+											<span style="font-size:14px; margin-left: 5px; color: rgb(94, 93, 93); cursor: pointer;">
+												<img width="30" heigth="30"
+												     *ngIf="(practice.resource_type | uppercase) == 'ESSAY'"
+												     src="assets/img/icons/essay_icon.svg">
+												<img width="30" heigth="30"
+												     *ngIf="(practice.resource_type | uppercase) == 'URL'"
+												     src="assets/img/icons/url_icon.svg">
+												<img width="30" heigth="30"
+												     *ngIf="(practice.resource_type | uppercase) == 'PRACTICE'"
+												     src="assets/img/icons/practice_icon.svg">
+												<img width="30" heigth="30"
+												     *ngIf="(practice.resource_type | uppercase) == 'FILE'"
+												     src="assets/img/icons/file_icon.svg">
+											</span>
+											<!-- TIPO DE PRACTICA-->
+											<span style="font-size: 14px; margin-left: 15px;  color: rgb(44, 43, 43); cursor: pointer;"
+											      *ngIf="practice.resource_type !== 'video' && practice.resource_type !== 'text' && practice.resource_type !== 'url' && practice.resource_type !== 'file'">
+												{{practice.resource_des | uppercase}}
+											</span>
+											<span style="font-size: 14px; margin-left: 15px;  color: rgb(44, 43, 43); cursor: pointer;"
+											      *ngIf="practice.resource_type === 'video' || practice.resource_type === 'text' || practice.resource_type === 'url' || practice.resource_type === 'file'">
+												{{practice.resource_name | uppercase | slice:0:50}}
+											</span>
+										</div>
+										<div style="padding-left: 4rem; padding-right:4rem ; cursor: pointer; "
+										     *ngFor="let evaluationClass of evaluation[indexClass]; let indexResource = index"
+										     (click)="performEvaluation(evaluationClass, classItem, evaluationClass.evaluation_status)">
+											<hr>
+											<i *ngIf="!evaluationClass.evaluation_status" class="fa fa-circle-thin"
+											   aria-hidden="true"
+											   style="color:red;"></i>
+											<i *ngIf="evaluationClass.evaluation_status" class="fa fa-check"
+											   aria-hidden="true"
+											   style="color: rgb(6, 185, 6);"></i>
+											<span style="font-size:14px; margin-left: 5px; color: rgb(94, 93, 93); cursor: pointer;">
+												<img width="30" heigth="30" src="../../../../assets/img/icons/evaluation_icon.svg">
+											</span>
+											<span
+													style="font-size: 14px; margin-left: 15px;  color: rgb(44, 43, 43); cursor: pointer;">{{evaluationClass.evaluation_name | uppercase}}
+											</span>
+											<button class="btn btn-primary btn-fill btn-sm" style="float: right;">
+												Realizar
+											</button>
+										</div>
+										<hr>
+										<div class="row col-avanc">
+											<div class="col-sm-3">
+												<b>Fecha de Inicio</b> <br>
+												{{classItem.fromDate}}
+											</div>
+											<div class="col-sm-3">
+												<b>Fecha de finalización</b> <br>
+												{{classItem.toDate}}
+											</div>
+											
+											<div class="col-sm-3 text-center">
+												<div class="col-sm-3 text-center"
+												     *ngIf="(forumEnableValidation(classItem.class_id, unit.unit_id) == true)">
+													<button (click)="showDataForum(classItem.class_id, unit.unit_id)"
+													        style="display: flex; justify-content: flex-end; float: right; cursor: pointer;"
+													        alt=""
+													        data-toggle="modal"
+													        style="cursor: pointer ; background-color: transparent; border-style: none; font-size: 11px;">
+														<i
+																class="fa fa-forumbee active fa-2x"> </i> Foro
+													</button>
+													<!--<img src="../../../../assets/img/icons/letter.png"
+														(click)="showDataForum(classItem.class_id, unit.unit_id)"
+														style="display: flex; justify-content: flex-end; float: right; cursor: pointer;" alt=""
+														data-toggle="modal">-->
+													<span class="badge badge-red"
+													      *ngIf="(getMessagesNumber(classItem.class_id, unit.unit_id) > 0)"
+													      style="position: relative; float: right; right: -38px; top: -28px;">{{getMessagesNumber(classItem.class_id, unit.unit_id)}}
+													</span>
+													<span class="badge "
+													      *ngIf="(getMessagesNumber(classItem.class_id, unit.unit_id) === 0)"
+													      style="position: relative; float: right; right: -38px; top: -28px;">{{getMessagesNumber(classItem.class_id, unit.unit_id)}}
+													</span>
+												</div>
+											</div>
+											<div class="col-sm-3 text-right" *ngIf="practices[indexClass]">
+												<div *ngIf="practices[indexClass].length > 0 ">
+													<!-- <ng-container *ngIf="(validateInitilizedClass(classItem.class_id) === true); else elseEstado">
+
+														 <button *ngIf="(validateStatusClass(classItem.class_id) == true)" type="button"
+															 class="btn btn-success btn-fill" (click)="preOpenResource(class,indexClass)">
+															 Continuar  {{classItem.class_status}}
+														 </button>
+														 <button *ngIf="(validateStatusClass(classItem.class_id) == false)" type="button"
+															 class="btn btn-primary btn-fill" (click)="callSwal()">
+															 Repetir
+														 </button>
+													 </ng-container> -->
+													<!--  <ng-template >-->
+													<button *ngIf="enableInitButton(practices[indexClass])"
+													        type="button" class="btn btn-primary btn-fill"
+													        (click)="preOpenResource(class,indexClass, true)">
+														Comenzar
+													</button>
+													<button *ngIf="enableContinueButton(practices[indexClass])"
+													        type="button" class="btn btn-success btn-fill"
+													        (click)="preOpenResource(class,indexClass)">
+														Continuar
+													</button>
+													<button *ngIf="enableRepeatButton(practices[indexClass])"
+													        type="button" class="btn btn-primary btn-fill"
+													        (click)="callSwal()">
+														Repetir
+													</button>
+													<!--  </ng-template> -->
+												</div>
+											
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</mat-tab>
+			</mat-tab-group>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="exampleModalCenterImport" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	
+	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 90%;height: max-content;">
+		<div class="modal-content">
+			<div class="modal-header" style="max-height: 40px;  padding: 5px;">
+				<h4 class="modal-title" id="myModalLabel"> {{indexResource + 1}}
+				</h4>
+			</div>
+			<div class="modal-body modal-content-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="content modal-content-form">
+								<!-- <iframe style="width: 100%;height: 72vh" [src]="resourceUrl" frameborder="0"></iframe> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button [disabled]="lastResource" type="button" class="btn btn-fill btn-xs btn-info btn-icon"
+				        (click)="saveResource(true)">Siguiente
+				</button>
+				<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal"
+				        (click)="saveResource()">Cerrar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="exampleModalSignatureText" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 90%;height: max-content;">
+		<div class="modal-content">
+			<div class="modal-header" style="max-height: 40px;  padding: 5px;">
+				<h4 class="modal-title" id="myModalLabel"> {{indexResource + 1}}
+				</h4>
+			</div>
+			<div class="modal-body modal-content-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="content modal-content-form">
+								<!-- <iframe style="width: 100%;height: 72vh" [src]="resourceUrl" frameborder="0"></iframe> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">Cerrar
+					Texto
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="exampleModalCenterVideo" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 90%;height: max-content;">
+		<div class="modal-content">
+			<div class="modal-header" style="max-height: 40px; padding: 5px;">
+				<h4 class="modal-title"
+				    id="myModalLabel">
+					{{indexResource + 1}}
+				</h4>
+			</div>
+			<div class="modal-body modal-content-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="content modal-content-form video-responsive" style="text-align: center;"
+							     *ngIf="isResourceVideo">
+								<div width="560" height="300">
+									<div class="embed-responsive embed-responsive-16by9">
+										<youtube-player [videoId]="id" (ready)="savePlayer($event)" [playerVars]="dat"
+										                (change)="onStateChange($event)">
+										</youtube-player>
+									</div>
+								
+								</div>
+							</div>
+							<div class="content modal-content-form" *ngIf="isResourceFile">
+								<iframe style="width: 100%;height: 72vh" [src]="resourceUrl" frameborder="0"></iframe>
+							</div>
+							<div class="content modal-content-form" *ngIf="isResourceText">
+								<iframe style="width: 100%;height: 72vh" [src]="resourceUrl" frameborder="0"></iframe>
+							</div>
+							<div class="content modal-content-form" *ngIf="isResourceUrlYoutube">
+								<iframe width="100%" height="500vh" [src]="url"></iframe>
+								<!--<div *ngIf="url === undefined" class="text-center alert-danger col-sm-4 col-sm-offset-4" style="margin-top:30px ;">
+									<i class="fa fa-info-circle"></i><br><br>
+									Este recurso se visualiza en una nueva pestaña del navegador.
+								</div>-->
+							</div>
+							<div class="content modal-content-form" *ngIf="isResourceUrl">
+								<div class="text-center alert-danger col-sm-4 col-sm-offset-4"
+								     style="margin-top:30px ;">
+									<i class="fa fa-info-circle"></i><br><br>
+									Este recurso se visualiza en una nueva pestaña del navegador.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<ng-container *ngIf="!isResourceVideo; else elseEstado">
+					<button [disabled]="lastResource" type="button" class="btn btn-fill btn-xs btn-info btn-icon"
+					        (click)="saveResource(true, indexResource+1)">Siguiente
+					</button>
+					<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal"
+					        (click)="saveResource(false, true)">Cerrar
+					</button>
+				</ng-container>
+				<ng-template #elseEstado>
+					<button [disabled]="lastResource" type="button" class="btn btn-fill btn-xs btn-info btn-icon"
+					        (click)="saveResource(true, indexResource+1);  stopVideos() ">Siguiente
+					</button>
+					<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal"
+					        (click)="saveResource(false, true);  stopVideos()">Cerrar
+					</button>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- MODAL NOTAS DE UNIDAD -->
+<div class="modal fade" id="modalNotasUnit" tabindex="-1" role="dialog" aria-labelledby="modalNotasUnit"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" id="modalNotasUnit">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> NOTAS DE UNIDAD
+				</h4>
+			</div>
+			<div class="modal-body" style="position: initial; overflow-y:auto;">
+				<div *ngFor="let note of arrayNotes; let i = index">
+					{{i + 1}}.- {{note.note_title}} : {{note.note_content}}
+					<hr>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL INFO DE VIDEO CONFERENCIA -->
+<div class="modal fade" id="modalVideoConference" tabindex="-1" role="dialog" aria-labelledby="modalVideoConference"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> VIDEO CONFERENCIA
+				</h4>
+			</div>
+			<div class="modal-body" style="position: initial; overflow-y:auto;">
+				<table class="table table-responsive table-bordered">
+					<thead>
+					<tr>
+						<th>Fecha</th>
+						<th>Hora</th>
+						<th>Link</th>
+						<th>Detalles</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td>{{videoConference.toDate}}</td>
+						<td>{{videoConference.toHours}}</td>
+						<td><a target="blank" href="{{videoConference.urlVideoC}}"><i class="fa fa-external-link"></i>
+							IR </a>
+						</td>
+						<td>{{videoConference.detailsVideoC}}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL INFO DE VIDEO DE LA Sesión -->
+<div class="modal fade" id="modalVideoClass" tabindex="-1" role="dialog" aria-labelledby="modalVideoClass"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> VIDEO DE LA SESIÓN
+				</h4>
+			</div>
+			<div class="modal-body" style="position: initial; overflow-y:auto;">
+				<!-- <iframe width="420" height="315" src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=tgbNymZ7vqY&loop=1"> -->
+				<!-- </iframe> -->
+				<video width="320" height="240" controls>
+					<source src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=tgbNymZ7vqY&loop=1">
+					<source src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=tgbNymZ7vqY&loop=1">
+					Your browser does not support the video tag.
+				</video>
+				<!-- <iframe style="width: 100%;height: 72vh" src="{{videoClass.urlVideoClass}}" frameborder="0"></iframe> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL NOTAS DE Sesión -->
+<div class="modal fade" id="modalNotesClass" tabindex="-1" role="dialog" aria-labelledby="modalNotesClass"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> NOTAS DE SESIÓN
+				</h4>
+			</div>
+			<div class="modal-body" style="position: initial; overflow-y:auto;">
+				<div *ngFor="let note of notesClassSelected; let i = index">
+					{{i + 1}}.- {{note.note_title}} : {{note.note_content}}
+					
+					<hr>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--<div class="modal fade" id="exampleModalClass" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document" style="width: 70%;">
+<div class="modal-content">
+	<div class="modal-header">
+		<div *ngIf="!isEditResource" class="content text-left titleModal">
+			{{note_title}}
+		</div>
+		<div *ngIf="isEditResource" class="content text-left titleModal">
+			Notas de la Sesión
+		</div>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div *ngIf="!isEditResource" class="content modal-content-form contentModal">
+						{{note_content}}
+					</div>
+					<div *ngIf="isEditResource">
+						<div *ngFor="let note of classNotes; let i = index">
+							{{i+1}}.- {{note.note_title}}: {{note.note_content}}
+							<hr>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">Cerrar</button>
+	</div>
+</div>
+</div>
+</div>-->
+<!-- MODAL VISUALIZAR PREGUNTA-->
+<app-do-student-practice (isReturn)="return()" (isReturnFinish)="isReturnFinish()" *ngIf="showViewPractice"
+                         [practiceId]="practiceId" [showViewPractice]="showViewPractice" [student]="student"
+                         [subject]="subject"
+                         [activeUnit]="activeUnit" [resourcedocum]="resourcedocum"
+                         [idIntent]="idIntent"></app-do-student-practice>
+
+<!-- Modal-->
+<app-do-student-essay (isReturn)="return()" *ngIf="showViewEssay" [essayId]="essayId" [subject]="subject"
+                      [student]="student" [activeUnit]="activeUnit" [resourcedocum]="resourcedocum"
+                      [showViewEssay]="showViewEssay">
+</app-do-student-essay>
+
+
+<!-- SECCION DE VISUALIZACION DEL CHAT -->
+<!-- DESDE AQUI DE COPIO TODO LO QUE TENIA PABLO -->
+<div class="container" *ngIf="isShowForum" style="width: 100%;">
+	<div class="div-float-right">
+		<button (click)="hideDataForum()" type="button" class="btn btn-primary btn-fill" data-toggle="modal">
+			<i class="fa fa-search"></i> Sesiones
+		</button>
+	</div>
+	
+	<div class="container" style="width: 100%;">
+		<hr>
+		<div class="row card text-left" style="width: 70%;"><br>
+			<div class="col-sm-3 text-center card-danger-sp" style="width: 17%;">
+				<h2> Buscar </h2>
+			</div>
+			<div class="col-sm-9 text-center">
+				<input type="text" class="form-control" id="buscar" name="buscar" placeholder="Buscar"
+				       (keyup)="keyUpTimeout($event.target.value)" style="border-radius: 16px; border-color: black;">
+			</div>
+		</div>
+		
+		<div class="row card csstext" style="min-height: 77px; background-color: #E6F7FF; width: 100%;"><br>
+			<!--<div class="col-sm-2 text-center card-danger-sp" style="width: 5%; font-size: 3em;">
+				<i class="fa fa-plus-circle fa-2" aria-hidden="true"></i>
+			</div>-->
+			<form id="saveNewQuestion" class="form-horizontal">
+				<div class="col-sm-1 text-center card-danger-sp" style="width: 5%; font-size: 3em;">
+					<i class="fa fa-plus-circle fa-2" aria-hidden="true"></i>
+				</div>
+				<div class="col-sm-9 text-center" style="margin-left: 20px; margin-bottom: 10px;">
+					<input [(ngModel)]="forumQuestionDocumentSave.question" type="text" class="form-control" id="search"
+					       name="question" placeholder="Puedes añadir una nueva Consulta" style="background-color: #E6F7FF;
+                  border: 1px solid #747474;">
+				</div>
+				<div class="col-sm-2"
+				     style="justify-content: flex-end; display: flex; float: inline-end;margin-bottom: 10px;">
+					<button (click)="saveNewQuestion()" type="button" class="btn btn-primary btn-fill">
+						Añadir
+					</button>
+				</div>
+			
+			</form>
+		</div>
+		
+		<div *ngFor="let questionForum of forumQuestionDocumentList;  let i = index">
+			<!-- card preguntas -->
+			<hr style="border-color: #9E9E9E; width: 95%;">
+			<div class="row card" style="min-height: 77px; width: 100%; margin-bottom: 20px;"
+			     [ngStyle]="{'background-color':getCardColor(i)}"><br>
+				<div class="col-sm-12 testSize" style="margin-bottom: 1%; margin-top: 1%;">
+					<div class="col-sm-8 text-left card-danger-sp">
+						<i class="fa fa-star" aria-hidden="true"></i>
+						<img *ngIf="questionForum.user_type=='estudiante'"
+						     src="../../../../assets/img/icons/user-graduate-solid 1.png" class="img-resource" alt=""
+						     style="margin:10px;">
+						<img *ngIf="questionForum.user_type=='profesor'"
+						     src="../../../../assets/img/icons/user admin-01 1.png"
+						     class="img-resource" alt="" style="margin:10px;">
+						{{questionForum.question}}
+					</div>
+					<div class="col-sm-3 text-rigth card-danger-sp" style="justify-content: flex-end; display: flex; ">
+						{{questionForum.question_date}} - {{questionForum.question_time}}
+					</div>
+				</div>
+				<form id="saveNewAnswer" class="form-horizontal">
+					<div class="col-sm-10 text-center" style=" margin-bottom: 10px;">
+						<input type="text" class="form-control" id="questionId{{i}}" style="border: 1px solid #747474;">
+					</div>
+					<div class="col-sm-2"
+					     style="justify-content: flex-end; display: flex; float: inline-end; margin-bottom: 10px;">
+						<button (click)="saveContribution(questionForum, i)" type="button"
+						        class="btn btn-primary btn-fill">
+							Enviar
+						</button>
+					</div>
+				</form>
+			</div>
+			<!--      Mejor Respuesta-->
+			<div class="row card col-sm-3 cssBestAnswer centerComponent testSize text-center">
+				MEJOR RESPUESTA
+			</div>
+			<br>
+			<div class="row card" style="min-height: 57px; width: 100%;"
+			     *ngIf="questionForum.documentForumBestAnswer !== undefined"
+			     [ngStyle]="{'background-color':getCardColor(i)}">
+				<br>
+				<div class="col-sm-12" style="margin-bottom: 1%; ">
+					<div class="col-sm-8 text-left card-danger-sp testSize">
+						<i class="fa fa-star" style="color: yellow;" aria-hidden="true"></i>
+						<img *ngIf="questionForum.documentForumBestAnswer.answer_user_type=='estudiante'"
+						     src="../../../../assets/img/icons/user-graduate-solid 1.png" class="img-resource" alt=""
+						     style="margin:10px;">
+						<img *ngIf="questionForum.documentForumBestAnswer.answer_user_type=='profesor'"
+						     src="../../../../assets/img/icons/user admin-01 1.png" class="img-resource" alt=""
+						     style="margin:10px;">
+						{{questionForum.documentForumBestAnswer.answer_user_name !== undefined ? questionForum.documentForumBestAnswer.answer_user_name : 'S/N'}}
+					</div>
+					<div class="col-sm-3 text-rigth card-danger-sp  testSize"
+					     style="justify-content: flex-end; display: flex;">
+						
+						{{questionForum.documentForumBestAnswer.answer_count_like !== undefined ? questionForum.documentForumBestAnswer.answer_count_like.length : '0'}}
+						<i class="fa fa-star" style="color: yellow;"></i>
+					</div>
+				</div>
+				<hr>
+				<div class="col-sm-12" style="margin-bottom: 1%; ">
+					<div class="col-sm-8 text-left card-danger-sp testSize">
+						{{questionForum.documentForumBestAnswer.answer}}
+					</div>
+				</div>
+			</div>
+			<!--      Mejor Respuesta-->
+			
+			<!-- card respuestas -->
+			<div class="row card col-sm-3 cssRespuestas text-center centerComponent testSize"
+			     style="margin-bottom: auto;">
+				TODAS LAS RESPUESTAS
+			</div>
+			<br>
+			<div *ngFor="let answerForum of questionForum.documentForumAnswerList;  let indice = index">
+				<div class="row card" style="min-height: 57px; width: 100%; margin-bottom: 10px;"
+				     [ngStyle]="{'background-color':getCardColor(i)}"><br>
+					<div class="col-sm-12" style="margin-bottom: 1%;">
+						<div class="col-sm-8 text-left card-danger-sp testSize">
+							<ng-container *ngIf="getUserLikedAnswer(answerForum) == true; else elseEstado">
+								<i class="fa fa-star" style="color: yellow;" aria-hidden="true"></i>
+							</ng-container>
+							<ng-template #elseEstado>
+								<i class="fa fa-star-o" (click)="likeAnswer(questionForum, answerForum)"></i>
+							</ng-template>
+							<img *ngIf="answerForum.answer_user_type=='estudiante'"
+							     src="../../../../assets/img/icons/user-graduate-solid 1.png" class="img-resource"
+							     alt=""
+							     style="margin:10px;">
+							<img *ngIf="answerForum.answer_user_type=='profesor'"
+							     src="../../../../assets/img/icons/user admin-01 1.png" class="img-resource" alt=""
+							     style="margin:10px;">
+							{{answerForum.answer_user_name}}
+						
+						
+						</div>
+						<div class="col-sm-3 text-rigth card-danger-sp testSize"
+						     style="justify-content: flex-end; display: flex; float: inline-end;">
+							{{getDateAnswer(answerForum.answer_id)}}
+						</div>
+					</div>
+					<div class="col-sm-12" style="margin-bottom: 1%; ">
+						<div class="col-sm-8 text-left card-danger-sp testSize">
+							{{answerForum.answer}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- card respuestas -->
+		</div>
+	</div>
+</div>
+
+<!-- COMPONENTE PARA REALIZAR EVALUACIÓN-->
+<app-do-student-evaluation (isReturn)="returnFromEvaluation()" *ngIf="startEvaluation" [evaluationId]="evaluationId"
+                           [student]="student" [subject]="subject" [activeUnit]="activeUnit"
+                           [classSelected]="classSelected" [evaluationIDCreation]="evaluationIDCreation">
+</app-do-student-evaluation>

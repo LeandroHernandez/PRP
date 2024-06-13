@@ -1,0 +1,560 @@
+.row-p {
+  padding-top: 1.7rem;
+}
+
+.badge-red {
+  background-color: red;
+}
+
+.img-resource {
+  width: 25px;
+}
+
+.card-details {
+  padding: 1rem;
+  border: 1px solid rgba(63, 63, 68, 0.005);
+  box-shadow: 0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15);
+  border-radius: 4px;
+}
+
+.iconMat {
+  margin-top: 17px;
+  width: 5%;
+}
+
+.matOne {
+  background-color: #4c93ff;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.matTwo {
+  background-color: #00ba56;
+  color: #fff;
+}
+
+.matThre {
+  background-color: #a64bff;
+  color: #fff;
+}
+
+.matFour {
+  background-color: #ff3370;
+  color: #fff;
+}
+
+.matFive {
+  background-color: #D48142;
+  color: #fff;
+}
+
+.matSix {
+  background-color: #E8BA4D;
+  color: #fff;
+}
+
+.matSeven {
+  background-color: #C54233;
+  color: #fff;
+}
+
+.matEight {
+  background-color: #3D96CD;
+  color: #fff;
+}
+
+.matNine {
+  background-color: #21F2F7;
+  color: #fff;
+}
+
+.matOneBorder {
+  border: 1px solid #4c93ff;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matTwoBorder {
+  border: 1px solid #00ba56;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matThreBorder {
+  border: 1px solid #a64bff;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matFourBorder {
+  border: 1px solid #ff3370;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matFiveBorder {
+  border: 1px solid #D48142;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matSixBorder {
+  border: 1px solid #E8BA4D;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matSevenBorder {
+  border: 1px solid #C54233;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matEightBorder {
+  border: 1px solid #3D96CD;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.matNineBorder {
+  border: 1px solid #21F2F7;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 10px rgba(16, 156, 241, 0.2);
+  border-radius: 4px;
+}
+
+.img-subject {
+  width: 80px;
+}
+
+.card-materia {
+  height: 27vh;
+  cursor: pointer;
+}
+
+/* Show Subjects  */
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+.cssRow {
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cardheadermatOne {
+  width: 100%;
+  background: #4B93FF;
+  min-height: 45px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.cardheadermatTwo {
+  width: 100%;
+  background: #00ba56;
+  min-height: 45px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.cardheadermatThre {
+  width: 100%;
+  background: #a64bff;
+  min-height: 45px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.cardheadermatFour {
+  width: 100%;
+  background: #ff3370;
+  min-height: 45px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.cardheaderNamesmatFive {
+  background-color: #D48142;
+  color: #fff;
+  width: 100%;
+  min-height: 103px;
+}
+
+.cardheaderNamesmatSix {
+  background-color: #E8BA4D;
+  color: #fff;
+  width: 100%;
+  min-height: 103px;
+}
+
+.cardheaderNamesmatSeven {
+  background-color: #C54233;
+  color: #fff;
+  width: 100%;
+  min-height: 103px;
+}
+
+.cardheaderNamesmatEight {
+  background-color: #3D96CD;
+  color: #fff;
+  width: 100%;
+  min-height: 103px;
+}
+
+.cardheaderNamesmatNine {
+  background-color: #21F2F7;
+  color: #fff;
+  width: 100%;
+  min-height: 103px;
+}
+
+.cssNames {
+  /* font-family: Montserrat; */
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  line-height: 49px;
+  letter-spacing: 0.01em;
+  color: #FFFFFF;
+  margin: 17px 40px auto;
+}
+
+.cardheaderNamesmatOne {
+  width: 100%;
+  background: #4B93FF;
+  min-height: 103px;
+}
+
+.cardheaderNamesmatTwo {
+  width: 100%;
+  background: #00ba56;
+  min-height: 103px;
+}
+
+.cardheaderNamesmatThre {
+  width: 100%;
+  background: #a64bff;
+  min-height: 103px;
+}
+
+.cardheaderNamesmatFour {
+  width: 100%;
+  background: #ff3370;
+  min-height: 103px;
+}
+
+.cssColum {
+  width: 590px;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.cssColum2 {
+  max-width: 585px;
+}
+
+/*Cards*/
+.cardSubjectitle {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.cardSubject {
+  max-width: 400px;
+  width: 100%;
+  background: white;
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.3);
+  padding: 26px 19px;
+  min-height: 297px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+}
+
+.cardContent {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 28px;
+  max-width: 165px;
+  float: left;
+}
+
+.cardContentClass {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 28px;
+  max-width: 373px;
+  width: 100%;
+  height: 135px;
+  float: left;
+  margin: 20px;
+  margin-left: 31px;
+}
+
+.cardfooter {
+  border-top: 0.5px solid #CDCDCD;
+  height: 40px;
+  display: inline-block;
+  width: 100%;
+}
+
+.cardContent .dates {
+  margin-top: calc(50% - 20px / 2 - 20.5px);
+  height: 40px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.cssDates {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: #90A0B7;
+}
+
+.cssClass {
+  height: 24px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 20px;
+}
+
+.cardSubject:hover,
+.cardSubject:focus {
+  box-shadow: 0 1px 8px 0 #4B93FF;
+  border: 1px solid rgba(63, 63, 68, 0.005);
+}
+
+.csslogomatOne {
+  max-width: 170px;
+  width: 100%;
+  background: #4B93FF;
+  padding: 20px 19px;
+  min-height: 176px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  float: right;
+}
+
+.csslogomatTwo {
+  max-width: 170px;
+  width: 100%;
+  background: #00ba56;
+  padding: 20px 19px;
+  min-height: 176px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  float: right;
+}
+
+.csslogomatThre {
+  max-width: 170px;
+  width: 100%;
+  background: #a64bff;
+  padding: 20px 19px;
+  min-height: 176px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  float: right;
+}
+
+.csslogomatFour {
+  max-width: 170px;
+  width: 100%;
+  background: #ff3370;
+  padding: 20px 19px;
+  min-height: 176px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  float: right;
+}
+
+.img-subject {
+  width: 80px;
+}
+
+.cardClass {
+  max-width: 630px;
+  width: 100%;
+  border: 1px solid #109CF1;
+  background: white;
+  box-shadow: 0 1px 8px 0 #4B93FF;
+  padding: 9px 19px;
+  min-height: 276px;
+  margin: 20px;
+  border-radius: 4px;
+}
+
+.cardContent .footer {
+  margin-top: 23px;
+  height: 40px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px
+}
+
+/* checkbox*/
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  opacity: 0.03 !important;
+  background-color: #5DB64F !important;
+  border: none !important;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #5DB64F !important;
+  border: none !important;
+}
+
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: 1px solid #FF0000;
+  border-radius: 15px;
+}
+
+@media (min-width: 701px) {
+  .cssColum {
+    width: 45%;
+  }
+}
+
+
+/*Bar*/
+.barBackgroud {
+  height: 4px;
+  width: 118px;
+  background: #EEEEEE;
+  border-radius: 15px;
+  float: right;
+  margin: 6px;
+}
+
+.barprogres {
+  height: 4px;
+  background: #10F14F;
+  border-radius: 15px;
+}
+
+/* Show Detail Subjects*/
+.cssfooterNames {
+  font-family: Montserrat;
+  line-height: 49px;
+  letter-spacing: 0.01em;
+  font-style: normal;
+  margin-top: auto;
+  font-weight: 500;
+  font-size: initial;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-cell, .mat-footer-cell {
+  color: rgba(0, 0, 0, .87);
+  background-color: #ECE7E7;
+  text-align: center;
+}
+
+.tableFooter {
+  width: 100%;
+  background: #ECE7E7;
+  min-height: 45px;
+  margin-bottom: 15px;
+}
+
+.mat-header-cell {
+  color: rgba(0, 0, 0, .54);
+  background-color: #E3FDFF;
+}
+
+.cssColumTable {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 21px;
+  color: #334D6E;
+  font-family: Montserrat;
+}
+
+/*Bar*/
+.barBackgroudDetail {
+  height: 4px;
+  background: #888888;
+  border-radius: 15px;
+  margin: 6px;
+}
+
+.barprogresDetail {
+  height: 4px;
+  background: #109CF1;
+  border-radius: 15px;
+}
+
+
+.closeButton {
+  float: right;
+  font-size: 25px;
+  font-weight: 700;
+  color: #000;
+
+}
+
+/*Modal*/
+.titleModal {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 88px;
+  letter-spacing: 0.01em;
+  color: #000000;
+}
+
+.contentModal {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 29px;
+  letter-spacing: 0.01em;
+  color: #000000;
+  width: 90%;
+  margin: 10px;
+}
+
+.subject-letter {
+  width: 100%;
+  border-radius: 13px;
+  font-weight: bolder;
+  text-align: center;
+  color: #ffffff;
+}
+
+.subject-letter p {
+  font-size: 95px;
+}

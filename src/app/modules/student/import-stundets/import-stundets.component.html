@@ -1,0 +1,208 @@
+<!--
+<div class="container-fluid">
+    <div style="margin-top: 10px;">
+        <button type="submit" class="btn btn-success btn-fill" data-toggle="modal"
+            data-target="#exampleModalCenterImport">
+            <i class="fa fa-folder-open" aria-hidden="true">
+            </i> Importar Listado de Estudiante
+        </button>
+    </div>
+
+    <div class="modal fade" id="exampleModalCenterImport" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">IMPORTAR LISTADO DE DOCENTES' </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="content modal-content-form">
+                                    <div>
+                                        <small>DESCARGAR PLANTILLA DE FORMATO PARA IMPORTACIÓN.</small>
+                                        <br>
+                                        <br>
+                                        <button type="submit" class="btn btn-success btn-fill">
+                                            <a 
+                                                href="https://firebasestorage.googleapis.com/v0/b/dydactico.appspot.com/o/%20TemplatesToImport%2FplantillaEstudiante.csv?alt=media&token=93df7acc-4c32-4043-9b83-06aac879b44a | async"><i
+                                                    class="fa fa-cloud-download" aria-hidden="true"></i>Descargar
+                                                plantilla</a>
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <small>SELECCIONAR ARCHIVO PARA IMPORTACIÓN.</small>
+                                    <br>
+                                    <br>
+                                    <div class="custom-file">
+                                        <input class="upload" type="file" accept=".csv" file-reader="fileContent"
+                                            (change)="onSelectFile($event.target.files)">
+                                    </div>
+                                    <div *ngIf="fileContent" class="content">
+                                        <div class="content">
+                                            <div class="fresh-datatables">
+                                                <table id="datatablesLevel"
+                                                    class="table table-striped table-no-bordered table-hover"
+                                                    cellspacing="0" width="100%" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th *ngFor="let item of dataTable.headerRow">{{ item }}</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody id="tBodyLevel">
+                                                        <tr *ngFor="let student of arrayDataFile">
+                                                            <td>{{student.student_identification}}</td>
+                                                            <td>{{student.student_name}}</td>
+                                                            <td>{{student.student_lastname}}</td>
+                                                            <td>{{student.student_email}}</td>
+                                                            <td>{{student.student_phone}}</td>
+                                                            <td>{{student.student_grade_id}}</td>
+                                                            <td>{{student.student_parallel_id}}</td>
+                                                            <td>
+                                                                <ng-container
+                                                                    *ngIf="student.student_status==true; else elseEstado">
+                                                                    <button class="btn btn-success btn-fill btn-xs">
+                                                                        <i class="fa fa-check"></i>
+                                                                    </button>
+                                                                </ng-container>
+                                                                <ng-template #elseEstado>
+                                                                    <button class="btn btn-danger btn-fill btn-xs">
+                                                                        <i class="fa fa-close"></i>
+                                                                    </button>
+                                                                </ng-template>
+                                                            </td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="col-sm-3" style="margin-top: 10px; float: right;">
+                                                    <button type="submit" (click)="sendFileData()"
+                                                        class="btn btn-success btn-fill">Finalizar Importación.
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>-->
+<div style="margin: 15px">
+	<button type="submit" class="btn btn-success btn-fill" data-toggle="modal"
+	        data-target="#exampleModalCenterImport">
+		<i class="fa fa-folder-open" aria-hidden="true">
+		</i> Importar Listado de Estudiante
+	</button>
+</div>
+
+<div class="modal fade" id="exampleModalCenterImport" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">IMPORTAR LISTADO DE DOCENTES' </h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="content modal-content-form">
+								<div>
+									<small>DESCARGAR PLANTILLA DE FORMATO PARA IMPORTACIÓN.</small>
+									<br>
+									<br>
+									<button type="submit" class="btn btn-success btn-fill">
+										<a
+												href="https://firebasestorage.googleapis.com/v0/b/dydactico.appspot.com/o/%20TemplatesToImport%2FplantillaEstudiante.csv?alt=media&token=93df7acc-4c32-4043-9b83-06aac879b44a | async"><i
+												class="fa fa-cloud-download" aria-hidden="true"></i>Descargar
+											plantilla</a>
+									</button>
+								</div>
+								<br>
+								<br>
+								<small>SELECCIONAR ARCHIVO PARA IMPORTACIÓN.</small>
+								<br>
+								<br>
+								<div class="custom-file">
+									<input class="upload" type="file" accept=".csv" file-reader="fileContent"
+									       (change)="onSelectFile($event.target.files)">
+								</div>
+								<div *ngIf="fileContent" class="content">
+									<div class="content">
+										<div class="fresh-datatables">
+											<table id="datatablesLevel"
+											       class="table table-striped table-no-bordered table-hover"
+											       cellspacing="0" width="100%" style="width:100%">
+												<thead>
+												<tr>
+													<th *ngFor="let item of dataTable.headerRow">{{ item }}</th>
+												</tr>
+												</thead>
+												
+												<tbody id="tBodyLevel">
+												<tr *ngFor="let student of arrayDataFile">
+													<td>{{student.student_identification}}</td>
+													<td>{{student.student_name}}</td>
+													<td>{{student.student_lastname}}</td>
+													<td>{{student.student_email}}</td>
+													<td>{{student.student_phone}}</td>
+													<td>{{student.student_grade_id}}</td>
+													<td>{{student.student_parallel_id}}</td>
+													<td>
+														<ng-container
+																*ngIf="student.student_status==true; else elseEstado">
+															<button class="btn btn-success btn-fill btn-xs">
+																<i class="fa fa-check"></i>
+															</button>
+														</ng-container>
+														<ng-template #elseEstado>
+															<button class="btn btn-danger btn-fill btn-xs">
+																<i class="fa fa-close"></i>
+															</button>
+														</ng-template>
+													</td>
+												
+												</tr>
+												</tbody>
+											</table>
+											<div class="col-sm-3" style="margin-top: 10px; float: right;">
+												<button type="submit" (click)="sendFileData()"
+												        class="btn btn-success btn-fill">Finalizar Importación.
+												</button>
+											</div>
+										</div>
+									
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">Cerrar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

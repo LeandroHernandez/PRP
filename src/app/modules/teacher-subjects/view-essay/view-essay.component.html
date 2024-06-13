@@ -1,0 +1,112 @@
+<div class="modal fade" id="ModalEssayDetail" tabindex="-1" role="dialog" aria-labelledby="ModalEssayDetail"
+	aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog padding-modal" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<i class="fa fa-list"></i>
+				{{essayId.resource_name}}
+				<button (click)="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-detail"></i>
+				</h4>
+			</div>
+			<div class="main-content">
+				<div class="row">
+					<div [ngClass]="hasRubric ? 'col-md-6': 'col-md-12'">
+						<!-- <div class="col-md-6"> -->
+						<div class="card">
+							<div class="content">
+								<h3>{{essayId.resource_name}}</h3>
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 align-middle text-center" *ngIf="essayAnswer">
+												<div class="content modal-content-form" *ngIf="essayAnswer.hasOwnProperty('resource_url')">
+													<mat-tab-group mat-align-tabs="start" [color]="Primary" [backgroundColor]="Primary" style="padding: 0px !important;">
+														<mat-tab *ngFor="let resource of resourcesUrl; let index = index" style="padding: 0px !important;">
+															<ng-template mat-tab-label style="padding: 0px !important;">
+                        <span id="salvacion{{index}}"
+                              style="margin: 0 auto; padding-left: 1rem; padding-right: 1rem; padding-top: 1rem; padding-bottom: 1rem;">
+                            Recurso {{ index }}
+                        </span>
+															</ng-template>
+															<div class="container">
+																<iframe style="width: 100%; height: 50vh" [src]="resource" frameborder="0"></iframe>
+															</div>
+														</mat-tab>
+													</mat-tab-group>
+													<!--<iframe style="width: 100%; height: 50vh" [src]="resourceUrl" frameborder="0"></iframe>-->
+												</div>
+												<div class="form-group border-focus"
+												     *ngIf="!essayAnswer.hasOwnProperty('resource_url') || essayAnswer.resource_answer !== ''">
+													<angular-editor disabled
+													                [(ngModel)]="essayAnswer.resource_answer">
+													</angular-editor>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="footer">
+								<div>
+									<h3>Comentario del profesor</h3>
+									<textarea rows="3" class="form-control-plaintext" [(ngModel)]="essayAnswer.resource_comment"></textarea>
+									<button class="btn btn-block btn-fill btn-success" (click)="saveComment()" type="button">Guardar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6" *ngIf="hasRubric">
+						<!-- <div class="col-md-6"> -->
+						<div class="card">
+							<div class="content">
+								<div class="row col-avanc">
+									<h3>{{essayRubric.rubric_name}}</h3>
+									<p>{{essayRubric.rubric_des}}</p>
+								</div>
+								<hr>
+								<div class="row col-avanc">
+									<table class="table-responsive table-borderless">
+										<thead>
+											<tr>
+												<th>Criterios / Puntaje</th>
+												<th *ngFor="let point of rubricPoints">
+													<input disabled type="text" class="form-control"
+														[(ngModel)]="point.rubric_point_calification">
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let judge of rubricJudgements; let i = index">
+												<td>
+													<input disabled type="text" class="form-control" [(ngModel)]="judge.rubric_judgement_des">
+												</td>
+												<td *ngFor="let item of judge.rubric_judgement_items">
+													<span style="cursor: pointer"
+														  (click)="setSelected(item, judge.rubric_judgement_items)"
+														  class="form-control"
+														  [ngClass]="itemIsEnabled(item, judge.rubric_judgement_items) ? 'select-option' : ''">
+														{{item.rubric_judgement_item_des}}...
+													</span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<hr>
+								<div class="footer">
+									<button (click)="!isSave ? saveQualification(true) : saveQualification(false)"
+										class="btn btn-primary btn-fill">
+										{{!isSave ? 'Guardar' : 'Editar'}}
+									</button>
+								</div>
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

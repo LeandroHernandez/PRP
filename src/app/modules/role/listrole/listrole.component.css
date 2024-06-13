@@ -1,0 +1,35 @@
+table {
+    width: 100%;
+}
+
+.text-rigth {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.modal-dialog {
+    max-width: 1000px;
+    width: 90% !important;
+}
+
+.icon-edit {
+    color: orange;
+    font-size: 1.4rem;
+}
+
+.icon-delete {
+    color: red;
+    font-size: 1.4rem;
+}
+
+.icon-active {
+    color: green;
+    font-size: 1.4rem;
+}
+
+.scroll-conten-modal {
+    overflow-y: auto;
+}

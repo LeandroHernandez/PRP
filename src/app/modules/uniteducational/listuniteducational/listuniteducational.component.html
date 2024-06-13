@@ -1,0 +1,822 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div style="display: flex; flex-direction: row;justify-content: flex-end; margin: 15px;">
+      <button *ngIf="!isEdit" type="submit" class="btn btn-primary btn-fill" data-toggle="modal"
+        data-target="#ModalRegister" (click)="addRegister()">
+        <i class="fa fa-plus"></i> Agregar unidad educativa
+      </button>
+      <button *ngIf="isEdit" type="submit" class="btn btn-success btn-fill"
+        (click)="clearUnitEducational()">
+        <i class="fa fa-plus"></i> Listar unidades educativas
+      </button>
+    </div>
+
+    <div *ngIf="!isEdit" class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="content">
+              <div class="fresh-datatables">
+                <table id="datatablesUnitEducational" class="table table-striped table-no-bordered table-hover"
+                       style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>{{ dataTable.headerRow[0] }}</th>
+                      <th>{{ dataTable.headerRow[1] }}</th>
+                      <th>{{ dataTable.headerRow[2] }}</th>
+                      <th>{{ dataTable.headerRow[3] }}</th>
+                      <th>{{ dataTable.headerRow[4] }}</th>
+                      <th>{{ dataTable.headerRow[5] }}</th>
+                      <th class="disabled-sorting text-right">{{ dataTable.headerRow[6] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tBodyUnitEducational">
+                    <tr *ngFor="let item of arrayUnitEducational; let i = index">
+                      <td>{{i+1}}</td>
+                      <td><img *ngIf="item.unit_educational_logo" [src]="item.unit_educational_logo "
+                          class="avatar logo" alt=""></td>
+                      <td>{{item.unit_educational_name}}</td>
+                      <td>#{{item.unit_educational_id.substring(8)}}</td>
+                      <td>{{item.unit_educational_password}}</td>
+                      <td>
+                        <ng-container *ngIf="item.unit_educational_status==true; else elseEstado">
+                          <button class="btn btn-success btn-fill btn-xs">
+                            <i class="fa fa-check"></i>
+                          </button>
+                        </ng-container>
+                        <ng-template #elseEstado>
+                          <button class="btn btn-danger btn-fill btn-xs">
+                            <i class="fa fa-close"></i>
+                          </button>
+                        </ng-template>
+                      </td>
+                      <td class="text-right">
+                        <div class="btn-group">
+                          <button (click)="editUnitEducational(item)"
+                                  class="btn btn-fill btn-xs btn-warning btn-icon"
+                                  data-toggle="modal"
+                                  data-target="#exampleModalCenter">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <!--   <button (click)="deleteUnitEducational(item)" class="btn btn-fill btn-xs btn-danger btn-icon">
+                          <i class="fa fa-trash"></i>
+                        </button>-->
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="isEdit" class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <div class="row">
+              <div class="col-sm-8">
+                <h4 class="title">
+                  <img *ngIf="unitEducational.unit_educational_logo" [src]="unitEducational.unit_educational_logo "
+                    class="avatar logo" alt="">
+                  <b>{{unitEducational.unit_educational_name}}</b>
+                </h4>
+              </div>
+              <div class="col-sm-4 text-center">
+                <br>
+                Estado
+                <bSwitch [switch-on-color]="'success'"
+                         [ngModel]="unitEducational.unit_educational_status"
+                         (ngModelChange)="changeState($event)">
+                </bSwitch>
+              </div>
+            </div>
+          </div>
+          <div class="content content-full-width">
+            <ul role="tablist" class="nav nav-tabs">
+              <!-- <li role="presentation" class="active">
+                <a href="#icon-subjects-cod" data-toggle="tab"><i class="fa fa-info"></i> Todo</a>
+              </li> -->
+              <li role="presentation" class="active">
+                <a href="#icon-info" data-toggle="tab"><i class="fa fa-info"></i> Información General</a>
+              </li>
+              <li>
+                <a href="#icon-account" data-toggle="tab"><i class="fa fa-circle"></i> Niveles</a>
+              </li>
+              <li>
+                <a href="#icon-style" data-toggle="tab"><i class="fa fa-circle"></i> Sub niveles</a>
+              </li>
+              <li>
+                <a href="#icon-settings" data-toggle="tab"><i class="fa fa-circle"></i> Grados</a>
+              </li>
+              <li>
+                <a href="#icon-parallels" data-toggle="tab"><i class="fa fa-circle"></i> Paralelos</a>
+              </li>
+              <li>
+                <a href="#icon-academyAreas" data-toggle="tab"><i class="fa fa-circle"></i> Áreas académicas</a>
+              </li>
+              <li>
+                <a href="#icon-subjects" data-toggle="tab"><i class="fa fa-circle"></i> Asignaturas</a>
+              </li>
+            </ul>
+            <!-- LISTADO DE DEPENDENCIAS DE UNIDAD EDUCATIVA ------------------------------->
+            <div class="tab-content">
+              <div id="icon-subjects-cod" class="tab-pane ">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="content">
+                          <div class="fresh-datatables">
+                            <!-- {{arraySubjects | json}} -->
+                            <table id="datatablesUnitDetail" class="table table-striped table-bordered table-hover"
+                              cellspacing="0" width="100%" style="width:100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center">Nivel</th>
+                                  <th class="text-center">Subnivel</th>
+                                  <th class="text-center">Area Academica</th>
+                                  <th class="text-center">Asignatura</th>
+                                  <th class="text-center">Estado (UE)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tBodyUnitDetail">
+                                <tr *ngFor="let subject of arraySubjects; let i = index">
+                                  <td>
+                                    <div *ngFor="let grade of arrayGrades; let i = index">
+                                      <span *ngIf="subject.sublevel_id==grade.sublevel_id">{{grade.grade_name}} </span>
+                                    </div>
+                                  </td>
+                                  <td class="text-left">{{subject.area_acad_id}}</td>
+                                  <td class="text-left">{{subject.area_acad_name}} </td>
+                                  <td class="text-left">{{subject.subject_id}}</td>
+                                  <td class="text-left">{{subject.subject_name}} </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- FORMULARIO DE EDITAR UNIDAD EDUCATIVA -->
+              <div id="icon-info" class="tab-pane active">
+                <form #formulariounitEducational="ngForm" method="get" action="/" class="form-horizontal" novalidate
+                  (ngSubmit)="save(formulariounitEducational.value, formulariounitEducational.valid, formulariounitEducational)">
+                  <div class="form-group">
+
+                    <div class="col-sm-4">
+                      <label class="control-label">ID<span class="star">*</span></label>
+                      <input readonly
+                             id="unit_educational_id"
+                             type="text"
+                             class="form-control"
+                             name="unit_educational_id"
+                             placeholder="ej. Inicial"
+                             [ngModel]="unitEducational.unit_educational_id"
+                             required #unit_educational_id="ngModel">
+                      <small
+                        [hidden]="unit_educational_id.valid || (unit_educational_id.pristine && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <label class="control-label">Nombre<span class="star">*</span></label>
+                      <input id="unit_educational_name" type="text" class="form-control" name="unit_educational_name"
+                        placeholder="Nombre" [ngModel]="unitEducational.unit_educational_name" required
+                        #unit_educational_name="ngModel">
+                      <small
+                        [hidden]="unit_educational_name.valid || (unit_educational_name.pristine && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+                    <div class="col-sm-4">
+                      <label class="control-label">Dirección<span class="star">*</span></label>
+                      <input id="unit_educational_address" type="text" class="form-control"
+                        name="unit_educational_address" placeholder="Dirección"
+                        [ngModel]="unitEducational.unit_educational_address" required
+                        #unit_educational_address="ngModel">
+                      <small
+                        [hidden]="unit_educational_address.valid || (unit_educational_address.pristine && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+                    <div class="col-sm-4">
+                      <label class="control-label">Teléfono<span class="star">*</span></label>
+                      <input id="unit_educational_phone" type="number" class="form-control"
+                        name="unit_educational_phone" placeholder="Teléfono"
+                        [ngModel]="unitEducational.unit_educational_phone" required #unit_educational_phone="ngModel">
+                      <small
+                        [hidden]="unit_educational_phone.valid || (unit_educational_phone.pristine && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+                    <div class="col-sm-4">
+                      <label class="control-label">Email<span class="star">*</span></label>
+                      <input id="unit_educational_email" type="text" class="form-control" name="unit_educational_email"
+                        placeholder="Email" [ngModel]="unitEducational.unit_educational_email" required
+                        #unit_educational_email="ngModel">
+                      <small
+                        [hidden]="unit_educational_email.valid || (unit_educational_email.pristine && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+                    <div class="col-sm-4">
+                      <label class="control-label">Plan<span class="star">*</span></label>
+                      <input id="unit_educational_plan" type="number" class="form-control" name="unit_educational_plan"
+                        placeholder="Plan" [ngModel]="unitEducational.unit_educational_plan" required
+                        #unit_educational_plan="ngModel">
+                      <small
+                        [hidden]="unit_educational_plan.valid || (unit_educational_plan.pristine && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+                    <div class="col-sm-4">
+                      <label class="control-label">País<span class="star">*</span></label>
+                      <select class="form-control"
+                              id="unit_educational_country"
+                              name="unit_educational_country"
+                              [(ngModel)]="unitEducational.unit_educational_country"
+                              (change)="onChangeCountry()">
+                        <option value="" selected>Seleccione una opción</option>
+                        <option *ngFor=" let country of listCountries" [value]="country.country_name">
+                          {{country.country_name}}</option>
+                      </select>
+                      <!--    <input id="unit_educational_country" type="text" class="form-control"
+                      name="unit_educational_country" placeholder="País"
+                      [ngModel]="unitEducational.unit_educational_country" required #unit_educational_country="ngModel">-->
+                      <small
+                        [hidden]="!unit_educational_country || (unit_educational_country && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+                    <div class="col-sm-4">
+                      <label class="control-label">Ciudad<span class="star">*</span></label>
+                      <select class="form-control" type="select" id="unit_educational_city" name="unit_educational_city"
+                        [(ngModel)]="unitEducational.unit_educational_city">
+                        <option value="" selected>Seleccione una opción</option>
+                        <option *ngFor=" let city of listCities" [value]="city.city_name"> {{city.city_name}}</option>
+                      </select>
+                      <!--    <input id="unit_educational_city" type="text" class="form-control" name="unit_educational_city"
+                      placeholder="Ciudad" [ngModel]="unitEducational.unit_educational_city" required
+                      #unit_educational_city="ngModel">-->
+                      <small
+                        [hidden]="!unit_educational_city || (unit_educational_city && !formulariounitEducational.submitted)"
+                        class="text-danger">
+                        Obligatorio
+                      </small>
+                    </div>
+                    <div class="col-sm-4">
+                      <label class="control-label">Logo<span class="star">*</span></label>
+                      <br>
+                      <button type="button" class="btn btn-primary btn-fill" data-toggle="modal"
+                        data-target="#exampleModalCenterFile" (click)="addFile()">
+                        {{ loadedImage == false ? 'Editar Imagen.' : 'Archivo seleccionado.'  }}
+                      </button>
+                    </div>
+
+                  </div>
+                  <button type="submit" class="btn btn-success btn-fill">
+                    Editar unidad educativa
+                  </button>
+                </form>
+              </div>
+              <!-- ARRAY DE NIVELES-->
+              <div id="icon-account" class="tab-pane">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="content">
+                          <div class="fresh-datatables">
+                            <table id="datatablesLevel" class="table table-striped table-bordered table-hover"
+                              cellspacing="0" width="100%" style="width:100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center">Nivel</th>
+                                  <th class="text-center">Estado (UE)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tBodyLevel">
+                                <tr *ngFor="let level of arrayLevels; let i = index">
+                                  <td class="text-center">{{i+1}}</td>
+                                  <td class="text-center">{{level.level_name}}</td>
+                                  <td class="text-center">
+                                    <!-- {{arrayLevelsAux[i].level_status}} -->
+                                    <bSwitch [switch-on-color]="'success'"
+                                             [ngModel]="enableLevel(level)"
+                                             (ngModelChange)="changeStateLevelUnitEducational($event, level)">
+                                    </bSwitch>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ARRAY DE SUBNIVELES -->
+              <div id="icon-style" class="tab-pane">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="content">
+                          <div class="fresh-datatables">
+                            <table id="datatablesSubLevel"
+                                   class="table table-striped table-bordered table-hover"
+                                   style="width:100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center">Nivel</th>
+                                  <th class="text-center">Subnivel</th>
+                                  <th class="text-center">Estado (UE)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tBodySubLevel">
+                                <tr *ngFor="let subLevel of arraySubLevels; let i = index">
+                                  <td class="text-center">{{i+1}}</td>
+                                  <td class="text-center">{{subLevel.level_name}}</td>
+                                  <td class="text-center">{{subLevel.sublevel_name}}</td>
+                                  <td class="text-center">
+                                    <bSwitch [switch-on-color]="'success'"
+                                             [ngModel]="enableSubLevel(subLevel)"
+                                             (ngModelChange)="changeStateSubLevelUnitEducational($event, subLevel)">
+                                    </bSwitch>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ARRAY DE GRADOS -->
+              <div id="icon-settings" class="tab-pane">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="content">
+                          <div class="fresh-datatables">
+                            <table id="datatablesGrade"
+                                   class="table table-striped table-bordered table-hover"
+                                   style="width:100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center">Nivel</th>
+                                  <th class="text-center">Subnivel</th>
+                                  <th class="text-center">Grado</th>
+                                  <th class="text-center">Estado (UE)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tBodyGrade">
+                                <tr *ngFor="let grade of arrayGrades; let i = index">
+                                  <td class="text-center">{{i+1}}</td>
+                                  <td class="text-center">{{grade.level_name}}</td>
+                                  <td class="text-center">{{grade.sublevel_name}}</td>
+                                  <td class="text-center">{{grade.grade_name}}</td>
+                                  <td class="text-center">
+                                    <bSwitch [switch-on-color]="'success'"
+                                             [ngModel]="enableGrade(grade)"
+                                             (ngModelChange)="changeStateGradeUnitEducational($event, grade)">
+                                    </bSwitch>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ARRAY DE PARALELOS-->
+              <div id="icon-parallels" class="tab-pane">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="content">
+                          <div class="fresh-datatables">
+                            <table id="datatablesParallels"
+                                   class="table table-striped table-bordered table-hover"
+                                   style="width:100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center">Nivel</th>
+                                  <th class="text-center">Subnivel</th>
+                                  <th class="text-center">ID Grado</th>
+                                  <th class="text-center">Grado</th>
+                                  <th class="text-center">ID Paralelo</th>
+                                  <th class="text-center">Paralelo</th>
+                                  <th class="text-center">Estado (UE)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tBodyParallels">
+                                <tr *ngFor="let parallel of arrayParallels; let i = index">
+                                  <td class="text-center">{{i+1}}</td>
+                                  <td class="text-center">{{parallel.level_name}}</td>
+                                  <td class="text-center">{{parallel.sublevel_name}}</td>
+                                  <td class="text-center">{{parallel.grade_id}}</td>
+                                  <td class="text-center">{{parallel.grade_name}}</td>
+                                  <td class="text-center">{{parallel.parallel_id}}</td>
+                                  <td class="text-center">{{parallel.parallel_name}}</td>
+                                  <td class="text-center">
+                                    <bSwitch [switch-on-color]="'success'"
+                                             [ngModel] = "enableParallel(parallel)"
+                                             (ngModelChange)="changeStateParallelUnitEducational($event, parallel)">
+                                    </bSwitch>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ARRAY DE AREAS ACADEMICAS-->
+              <div id="icon-academyAreas" class="tab-pane">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="content">
+                          <div class="fresh-datatables">
+                            <table id="datatablesAcademyArea"
+                                   class="table table-striped table-bordered table-hover"
+                                   style="width:100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center">Nivel</th>
+                                  <th class="text-center">Subnivel</th>
+                                  <th class="text-center">Area Academica</th>
+                                  <th class="text-center">Estado (UE)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tBodyAcademyArea">
+                                <tr *ngFor="let academy_area of arrayAcademy_area; let i = index">
+                                  <td class="text-center">{{i+1}}</td>
+                                  <td class="text-center">{{academy_area.level_name}}</td>
+                                  <td class="text-center">{{academy_area.sublevel_name}}</td>
+                                  <td class="text-center">{{academy_area.academyarea_name}}</td>
+                                  <td class="text-center">
+                                    <bSwitch [switch-on-color]="'success'"
+                                             [ngModel]="enableAcademyArea(academy_area)"
+                                             (ngModelChange)="changeStateAcademyAreaUnitEducational($event, academy_area)">
+                                    </bSwitch>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ARRAY DE ASIGNATURAS-->
+              <div id="icon-subjects" class="tab-pane">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="content">
+                          <div class="fresh-datatables">
+                            <table id="datatablesSubject" class="table table-striped table-bordered table-hover"
+                              cellspacing="0" width="100%" style="width:100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center">Nivel</th>
+                                  <th class="text-center">Subnivel</th>
+                                  <th class="text-center">Area Academica</th>
+                                  <th class="text-center">Asignatura</th>
+                                  <th class="text-center">Estado (UE)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tBodySubject">
+                                <tr *ngFor="let subject of arraySubjects; let i = index">
+                                  <td class="text-center">{{i+1}}</td>
+                                  <td class="text-center">{{subject.level_name}}</td>
+                                  <td class="text-center">{{subject.sublevel_name}}</td>
+                                  <td class="text-center">{{subject.area_acad_name}}</td>
+                                  <td class="text-center">{{subject.subject_name}}</td>
+                                  <td class="text-center">
+                                    <bSwitch [switch-on-color]="'success'"
+                                             [ngModel]="enableSubject(subject)"
+                                             (ngModelChange)="changeStateSubjectUnitEducational($event, subject)">
+                                    </bSwitch>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MODAL REGISTRO NUEVA UNIDAD EDUCATIVA -->
+    <div class="modal fade" id="ModalRegister" tabindex="-1" role="dialog" aria-labelledby="ModalRegisterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> NUEVA UNIDAD EDUCATICA</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="content">
+                    <form #formulariounitEducational="ngForm" method="get" action="/" class="form-horizontal" novalidate
+                      (ngSubmit)="save(formulariounitEducational.value, formulariounitEducational.valid)">
+                      <div class="form-group">
+
+                        <div class="col-sm-4">
+                          <label class="control-label">ID<span class="star">*</span></label>
+                          <input readonly id="unit_educational_id" type="text" class="form-control"
+                            name="unit_educational_id" placeholder="ej. Inicial"
+                            [ngModel]="unitEducational.unit_educational_id" required #unit_educational_id="ngModel">
+                          <small
+                            [hidden]="unit_educational_id.valid || (unit_educational_id.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio
+                          </small>
+                        </div>
+
+                        <div class="col-sm-4">
+                          <label class="control-label">Nombre<span class="star">*</span></label>
+                          <input id="unit_educational_name" type="text" class="form-control"
+                            name="unit_educational_name" placeholder="Nombre"
+                            [ngModel]="unitEducational.unit_educational_name" required #unit_educational_name="ngModel">
+                          <small
+                            [hidden]="unit_educational_name.valid || (unit_educational_name.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio
+                          </small>
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Dirección<span class="star">*</span></label>
+                          <input id="unit_educational_address" type="text" class="form-control"
+                            name="unit_educational_address" placeholder="Dirección"
+                            [ngModel]="unitEducational.unit_educational_address" required
+                            #unit_educational_address="ngModel">
+                          <small
+                            [hidden]="unit_educational_address.valid || (unit_educational_address.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio
+                          </small>
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Teléfono Factura<span class="star">*</span></label>
+                          <input id="unit_educational_phoneBill" type="number" class="form-control"
+                            name="unit_educational_phoneBill" placeholder="Teléfono"
+                            [ngModel]="unitEducational.unit_educational_phoneBill" required
+                            #unit_educational_phone="ngModel">
+                          <small
+                            [hidden]="unit_educational_phone.valid || (unit_educational_phone.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio
+                          </small>
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Email<span class="star">*</span></label>
+                          <input id="unit_educational_email" type="email" class="form-control"
+                            name="unit_educational_email" placeholder="Email"
+                            [ngModel]="unitEducational.unit_educational_email" required
+                            #unit_educational_email="ngModel"
+                            pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                          <small
+                            [hidden]="unit_educational_email.valid || (unit_educational_email.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio, Introduza una dirección de correo valida.
+                          </small>
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Plan(Cantidad de alumnos)<span class="star">*</span></label>
+                          <input id="unit_educational_plan" type="number" class="form-control"
+                            name="unit_educational_plan" placeholder="Plan"
+                            [ngModel]="unitEducational.unit_educational_plan" required #unit_educational_plan="ngModel">
+                          <small
+                            [hidden]="unit_educational_plan.valid || (unit_educational_plan.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio
+                          </small>
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">País<span class="star">*</span></label>
+                          <select type="select" class="form-control" id="unit_educational_country"
+                            name="unit_educational_country" [ngModel]="unitEducational.unit_educational_country">
+                            <option value="" selected>Seleccione una opción</option>
+                            <option *ngFor=" let country of listCountries" [value]="country.country_name">
+                              {{country.country_name}}</option>
+                          </select>
+                          <!--  <input id="unit_educational_country" type="text" class="form-control"
+                          name="unit_educational_country" placeholder="País"
+                          [ngModel]="unitEducational.unit_educational_country" required
+                          #unit_educational_country="ngModel">-->
+
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Ciudad<span class="star">*</span></label>
+                          <select class="form-control" id="unit_educational_city" name="unit_educational_city"
+                            [ngModel]="unitEducational.unit_educational_city">
+                            <option value="" selected>Seleccione una opción</option>
+                            <option *ngFor=" let city of listCities" [value]="city.city_name"> {{city.city_name}}
+                            </option>
+                          </select>
+
+                          <!--  <input id="unit_educational_city" type="text" class="form-control" name="unit_educational_city"
+                          placeholder="Ciudad" [ngModel]="unitEducational.unit_educational_city" required
+                          #unit_educational_city="ngModel"> -->
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Contraseña<span class="star">*</span></label>
+                          <input id="unit_educational_password" type="password" class="form-control"
+                            name="unit_educational_password" placeholder="Contraseña"
+                            [(ngModel)]="unitEducational.unit_educational_password" required
+                            #unit_educational_password="ngModel" minlength="6">
+                          <small
+                            [hidden]="unit_educational_password.valid|| (unit_educational_password.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio, Longitud minima de 6 caracteres.
+                          </small>
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Confirmar Contraseña<span class="star">*</span></label>
+                          <input id="unit_educational_Confirmpassword" type="password" class="form-control"
+                            name="unit_educational_Confirmpassword" placeholder="Confirmar Contraseña"
+                            [(ngModel)]="unitEducational.unit_educational_Confirmpassword" required
+                            #unit_educational_Confirmpassword="ngModel">
+                          <small
+                            [hidden]="unit_educational_Confirmpassword.valid || (unit_educational_Confirmpassword.pristine && !formulariounitEducational.submitted)"
+                            class="text-danger">
+                            Obligatorio
+                          </small>
+                          <div *ngIf="!passwordsMatch()" class="text-danger">
+                            Las contraseñas no coinciden.
+
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <label class="control-label">Logo<span class="star">*</span></label>
+                          <br>
+                          <button name="unit_educational_logo" id="unit_educational_logo" type="button"
+                            class="btn btn-primary btn-fill" data-toggle="modal" data-target="#exampleModalCenterFile"
+                            (click)="addFile()">
+                            {{ loadedImage == false ? 'Seleccionar archivo.' : 'Archivo seleccionado.'  }}
+                          </button>
+                        </div>
+                        <label style="margin-top: 5px" class="col-sm-1 control-label">Estado<span
+                            class="star">*</span></label>
+                        <br>
+                        <div class="checkbox col-sm-2">
+                          <div class="checkbox">
+                            <input id="unit_educational_status" name="unit_educational_status"
+                              [ngModel]="unitEducational.unit_educational_status" #unit_educational_status="ngModel"
+                              type="checkbox">
+                            <label class="" for="unit_educational_status">
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+              <br><label>Modulo de Noticias </label>
+              <div class="toggle-switch">
+                <input type="checkbox" id="toggle" />
+                <label for="toggle" class="toggle-slider"></label>
+            </div><br><br>
+              <label>Modulo de Entrenamiento </label><div class="toggle-switch">
+              <input type="checkbox" id="toggle2" />
+              <label for="toggle2" class="toggle-slider"></label>
+          </div><br><br><br>
+              <label>Modulo de Campeonatos </label><div class="toggle-switch">
+                <input type="checkbox" id="toggle3" />
+                <label for="toggle3" class="toggle-slider"></label>
+            </div><br><br><br>
+              <label>Modulo de Control de Pagos </label>
+              <div class="toggle-switch">
+                <input type="checkbox" id="toggle4" />
+                <label for="toggle4" class="toggle-slider"></label>
+            </div><br><br>
+            <div class="column-buttons">
+              <button type="button" class="btn btn-primary btn-fill" data-toggle="modal" data-target="#ModalCenterFacturas">
+                  Facturas
+              </button>
+              <br>
+              <button type="button" class="btn btn-primary btn-fill" [routerLink]="['/academicyear']" data-toggle="modal" data-target="ModalCenterAñoLectivo">
+                Año Lectivo
+            </button>
+          </div>
+            <div class="modal-footer">
+              
+              <!-- Botones "Guardar" y "Cerrar" -->
+              <div class="row-buttons">
+                <button type="submit" class="btn btn-success btn-fill">{{ isEdit == false ? 'GUARDAR' : 'ACTUALIZAR' }}</button>
+                  <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">
+                      Cerrar
+                  </button>
+              </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    <!-- MODAL DE CARGAR IMAGEN DE LOGO -->
+
+    <div class="modal fade" id="exampleModalCenterFile" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+      <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content" style=" width: 50%; margin-left: 25%;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Cargar Archivo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body ">
+            <div style="display:flex; justify-content: center; align-content: center;">
+              <figure>
+                <img class="is-rounded is-image" *ngIf="!unitEducational.unit_educational_logo && !imageSrc"
+                  src="assets\img\image-not-found.png">
+                <img class="is-rounded is-image" *ngIf="unitEducational.unit_educational_logo && imageSrc "
+                  [src]=" imageSrc ">
+                <img class="is-rounded is-image" *ngIf="unitEducational.unit_educational_logo && !imageSrc"
+                  [src]="unitEducational.unit_educational_logo">
+                <img class="is-rounded is-image" *ngIf="!unitEducational.unit_educational_logo && imageSrc"
+                  [src]="imageSrc">
+              </figure>
+            </div>
+            <input id="unit_educational_logo" type="file" class="form-control" name="unit_educational_logo"
+              accept="image/*" (change)="onChangeImage($event)">
+            <small [hidden]="unitEducational.unit_educational_logo || (unitEducational.unit_educational_logo && !formulariounitEducational.submitted)"
+              class="text-danger">
+              Obligatorio
+            </small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">
+              Cerrar
+          </button>
+          
+          <button type="button" class="btn btn-primary btn-fill" (click)="saveFile()">Guardar</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

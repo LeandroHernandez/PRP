@@ -1,0 +1,1828 @@
+<!--
+	*** Modulo para agregar unidades, lecciones y recursos a cada materia ***
+-->
+<div>
+    <div class="row card {{activeSubject.color}} card-header-subject">
+        <div class="col-sm-1 text-center">
+            <img [src]="activeSubject.icon" class="img-subject" alt="Ícono de aplicación">
+        </div>
+        <div class="col-sm-11 text-left a-middle"><br>
+            <span class="title-subject">{{activeSubject.subject_name}}</span>
+            <span class="title-subject"> {{activeSubject.grade_name}} / {{activeSubject.parallel_name}}</span>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row row-btn">
+    <div class="col-sm-6 text-left ml-2">
+        <button (click)="showSubject()" type="button" class="btn btn-primary btn-fill">
+            <i class="fa fa-arrow-left"></i> Todas las materias
+        </button>
+        <span>&nbsp;</span>
+        <button type="button" class="btn btn-success btn-fill" data-toggle="modal"
+                data-target="#ModalAddVideoConference">
+            <i class="fa fa-video-camera"></i> Video Conferencia
+        </button>
+    </div>
+    <div class="col-sm-6 text-right">
+        <button type="button" class="btn btn-success btn-fill" data-toggle="modal"
+                data-target="#ModalAddUnit" (click)="newUnit()">
+            <i class="fa fa-plus"></i> Crear unidad
+        </button>
+    </div>
+</div>
+
+<div class="main-content">
+    <!-- unidades -->
+    <ng-template class="text-center" #noTabs>
+        <h1 class="alert-danger">No existen unidades añadidas a la materia</h1>
+        <!-- <a data-toggle="modal"
+                     data-target="#ModalAddUnit">
+                        Agregar unidad <i class="fa fa-plus"></i>
+                </a> -->
+    </ng-template>
+    <div class="card">
+        <mat-tab-group (selectedIndexChange)="setActiveUnit( $event )" *ngIf="units.length > 0; else noTabs">
+            <mat-tab *ngFor="let unit of units; let index = index">
+                <ng-template mat-tab-label>
+                    <div class="col-sm-1 text-center">
+                        <i *ngIf="enableUnit(unit.statusUnit)"
+                           class="fa fa-eye icon-activate"
+                           [class.active]="unit.statusUnit"
+                           (click)="updateUnitStatus(unit, index)">
+                        </i>
+                        <i *ngIf="!enableUnit(unit.statusUnit)"
+                           class="fa fa-eye-slash icon-activate"
+                           [class.active]="unit.statusUnit"
+                           (click)="updateUnitStatus(unit, index)">
+                        </i>
+                    </div>
+                    <div class="col-sm-11 text-center">
+                        <!--<span>UNIDAD {{units.length - index}}: {{unit.unitName | uppercase}}</span>-->
+                        <span>{{unit.unitName | uppercase}}</span>
+                    </div>
+                </ng-template>
+                <div class="main-content">
+                    <div class="col-md-4">
+                        <!-- panel fecha -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card panel panel-default">
+                                    <div class="media v-middle">
+                                        <div class="media-left">
+                                            <div class="bg-green-400 text-white btn btn-success btn-fill"
+                                                 data-toggle="modal"
+                                                 style="border-top-left-radius: 20px; border-top-right-radius: 20px;"
+                                                 data-target="#ModalAddUnit" (click)="editUnit(unit)">
+                                                <div class="panel-body">
+                                                    <button style="background-color: transparent; border-style: none;">
+                                                        <i class="fa fa-pencil-square-o fa-fw fa-2x"></i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+												<span class="text-body-2">Fecha de
+													Inicio</span><br>{{unit.fromDate}}
+                                        </div>
+                                        <div class="media-body">
+												<span class="text-body-2">Fecha de
+													Finalización</span><br>{{unit.toDate}}
+                                        </div>
+                                        <div class="media-body text-center">
+                                            <span class="text-body-2 text-center">Peso unidad</span><br><span
+                                                style="color: #5195ee; font-weight: bold;">{{unit.pUnit}}%</span>
+                                        </div>
+                                        <div class="media-body text-center">
+                                            <span class="text-body-2 text-center">Porcentaje de evaluación en la unidad</span><br>
+                                            <span *ngIf="totalEvaluation<100"
+                                                  style="color: #f0ad3a; font-weight: bold; font-size: 15px !important; "> <i
+                                                    class="fa fa-warning"></i> {{totalEvaluation}}%</span>
+                                            <span *ngIf="totalEvaluation==100"
+                                                  style="color: #5ac46f; font-weight: bold; font-size: 15px;"> <i
+                                                    class="fa fa-check"></i> {{totalEvaluation}}%</span>
+                                            <span *ngIf="totalEvaluation>100"
+                                                  style="color: #df4d4d; font-weight: bold; font-size: 15px !important;;"> <i
+                                                    class="fa fa-close"></i> {{totalEvaluation}}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin de panel fecha -->
+
+                        <!-- agregar texto -->
+                        <div class="row">
+                            <div class="text-subhead-2 text-light">Textos</div>
+                            <div class="col-md-12">
+                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                    <div class="panel-body">
+                                        <div class="row" data-toggle="isotope">
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4">
+                                                <!--<div class="panel panel-default paper-shadow" data-z="0.5">-->
+                                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                                    <div class="cover overlay hover">
+                                                        <span class="img icon-block height-100 "></span>
+                                                        <button data-toggle="modal" data-target="#ModalAddText"
+                                                                class="padding-none overlay overlay-full  btn-addS" (click)="getText2List()">
+																<span class="v-center">
+																	<i class="fa fa-plus text-grey-600"></i>
+																</span>
+                                                            <h4>Agregar Texto</h4>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                 *ngFor="let text of unitResources.text; let i = index">
+
+                                                <!-- <div class="panel panel-default paper-shadow text-center" data-toggle="modal"
+                                                        data-target="#ModalAddToClass" [title]="text.textbook_title" data-z="0.5"
+                                                        (click)="setSelectedResource( text, 'text')"> -->
+                                                <div class="panel panel-default paper-shadow text-center"
+                                                     [title]="text.textbook_title" data-z="0.5">
+                                                    <span>{{ text.textbook_title | slice:0:50 }}</span>
+                                                    <div class="cover overlay  hover ">
+                                                        <!-- <embed src="{{text.url | scrurl}}" type="application/pdf" width="100%" height="600px" /> -->
+
+                                                        <img class="icon-block"
+                                                             src="../../../../assets/img/Book_icon.png"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- fin agregar texto -->
+
+                        <!-- agregar Video -->
+                        <div class="row">
+                            <div class="text-subhead-2 text-light">Videos</div>
+                            <div class="col-md-12">
+                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                    <div class="panel-body">
+                                        <div class="row" data-toggle="isotope">
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4">
+                                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                                    <div class="cover overlay  hover ">
+                                                        <span class="img icon-block height-100 "></span>
+                                                        <button data-toggle="modal" data-target="#ModalAddVideo"
+                                                                class="padding-none overlay overlay-full  btn-addS">
+																<span class="v-center">
+																	<i class="fa fa-plus text-grey-600"></i>
+																</span>
+                                                            <h4>Agregar Video</h4>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- *ngIf="video.selected" -->
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                 *ngFor="let video of externalResources.videos; let i = index">
+                                                <div class="card text-center" *ngIf="video.selected" data-z="0.5">
+                                                    <br>
+                                                    <div class="row" [title]="video.textbook_title">
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-play-circle fa-1x"></i>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-trash fa-1x" style="color: red;"
+                                                               (click)="deleteResourceList(video)"></i>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center" style="height: 5rem;">
+                                                            <p style='font-size: 12px'>
+                                                                {{ video.textbook_title | slice:0:30}}...</p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <hr> -->
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#ModalAddToClass"
+                                                                    (click)="setSelectedResource( video, 'video' )"
+                                                                    type="button"
+                                                                    class="btn btn-block btn-xs btn-primary btn-fill">
+                                                                <i class="fa fa-plus"></i>
+                                                                Agregar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <hr> -->
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin agregar videos -->
+
+                        <!-- agregar Practicas -->
+                        <div class="row">
+                            <div class="text-subhead-2 text-light">Prácticas</div>
+                            <div class="col-md-12">
+                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                    <div class="panel-body">
+                                        <div class="row" data-toggle="isotope">
+
+                                            <!--<div class="item col-xs-12 col-sm-6 col-lg-4">
+                                                            <div class="panel panel-default paper-shadow" data-z="0.5">
+                                                                    <div class="cover overlay  hover ">
+                                                                            <span class="img icon-block height-100 "></span>
+                                                                            <button data-toggle="modal"
+                                                                                    data-target="#ModalAddPractice"
+                                                                                    class="padding-none overlay overlay-full  btn-addS">
+                                                                                    <span class="v-center">
+                                                                                            <i class="fa fa-plus text-grey-600"></i>
+                                                                                    </span>
+                                                                                    <h4>Agregar Prácticas, Evaluacion, Actividades</h4>
+                                                                            </button>
+                                                                    </div>
+                                                            </div>
+                                                    </div>-->
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4">
+                                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                                    <div class="cover overlay  hover ">
+                                                        <span class="img icon-block height-120 "></span>
+                                                        <button data-toggle="modal" data-target="#ModalAddEssay"
+                                                                class="padding-none overlay overlay-full  btn-addS">
+																<span class="v-center">
+																	<i class="fa fa-plus text-grey-600"></i>
+																</span>
+                                                            <h4>Agregar Prácticas, Evaluaciones o Actividades</h4>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                 *ngFor="let practice of practices">
+                                                <div class="panel panel-default paper-shadow text-center"
+                                                     [title]="practice.practice_name"
+                                                     *ngIf="practice.selected" data-z="0.5">
+                                                    <br>
+                                                    <div class="row" [title]="practice.practice_name">
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-bars fa-1x"></i>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-trash fa-1x" style="color: red;"
+                                                               (click)="deleteResourceList(practice)"></i>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center" style="height: 5rem;">
+                                                            <p style='font-size: 12px'>
+                                                                {{practice.practice_name | slice:0:30}}...</p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <hr> -->
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#ModalAddToClass"
+                                                                    (click)="setSelectedResource( practice, 'practice' )"
+                                                                    type="button"
+                                                                    class="btn btn-block btn-xs btn-primary btn-fill">
+                                                                <i class="fa fa-plus"></i>
+                                                                Agregar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                 *ngFor="let evaluation of arrayEvaluations">
+                                                <div class="panel panel-default paper-shadow text-center"
+                                                     [title]="evaluation.evaluation_name " data-z="0.5"
+                                                     *ngIf="evaluation['selected']">
+                                                    <br>
+                                                    <div class="row" [title]="evaluation.evaluation_name">
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-bars fa-1x"></i>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-trash fa-1x" style="color: red;"
+                                                               (click)="deleteResourceList(evaluation)"></i>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center" style="height: 5rem;">
+                                                            <p style='font-size: 12px'>
+                                                                {{evaluation.evaluation_name | slice:0:30}}...</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#ModalAddToClass"
+                                                                    (click)="setSelectedResource( evaluation, 'evaluation' )"
+                                                                    type="button"
+                                                                    class="btn btn-block btn-xs btn-primary btn-fill">
+                                                                <i class="fa fa-plus"></i>
+                                                                Agregar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Ensayos (temp)-->
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                 *ngFor="let essay of essays">
+                                                <div class="panel panel-default paper-shadow text-center"
+                                                     [title]="essay.essay_id" *ngIf="essay['selected']" data-z="0.5">
+                                                    <br>
+                                                    <div class="row" [title]="essay.essay_name">
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-bars fa-1x"></i>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <i class="fa fa-trash fa-1x" style="color: red;"
+                                                               (click)="deleteResourceList(essay)"></i>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center" style="height: 5rem;">
+                                                            <p style='font-size: 12px'>
+                                                                {{essay.essay_name | slice:0:30}}...</p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <hr> -->
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#ModalAddToClass"
+                                                                    (click)="setSelectedResource( essay, 'essay' )"
+                                                                    type="button"
+                                                                    class="btn btn-block btn-xs btn-primary btn-fill">
+                                                                <i class="fa fa-plus"></i>
+                                                                Agregar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin agregar Practicas-->
+
+                        <!-- agregar Material de apoyo -->
+                        <div class="row">
+                            <div class="text-subhead-2 text-light">Material de apoyo</div>
+                            <div class="col-md-12" style="max-height: 35vh !important; overflow-y: scroll;">
+                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                    <div class="panel-body">
+                                        <div class="row" data-toggle="isotope">
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4">
+                                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                                    <div class="cover overlay  hover ">
+                                                        <span class="img icon-block height-100 "></span>
+                                                        <button data-toggle="modal" data-target="#ModalAddMaterial"
+                                                                class="padding-none overlay overlay-full  btn-addS">
+																<span class="v-center">
+																	<i class="fa fa-plus text-grey-600"></i>
+																</span>
+                                                            <h4>Agregar Docs, Jpg, Pdf</h4>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                 *ngFor="let file of externalResources.files; let i = index">
+                                                <div class="card" data-z="0.5">
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-xs-6 text-center">
+                                                            <i class="fa fa-bars fa-1x"></i>
+                                                        </div>
+                                                        <div class="col-xs-6 text-center">
+                                                            <i class="fa fa-trash fa-1x" style="color: red;"
+                                                               (click)="deleteResourceFileOrUrl(file,'file')"></i>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center" style="height: 10rem;">
+                                                            <img [src]="file['url']" [alt]="file['nombre'] | slice:0:15"
+                                                                 width="80%" height="80%">
+                                                        </div>
+                                                    </div>
+                                                    <!-- <hr> -->
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#ModalAddToClass"
+                                                                    (click)="setSelectedResource( file, 'file' )"
+                                                                    type="button"
+                                                                    class="btn btn-block btn-xs btn-primary btn-fill">
+                                                                <i class="fa fa-plus"></i>
+                                                                Agregar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                 *ngFor="let exturl of externalResources.urls; let i = index">
+                                                <div class="card" data-z="0.5">
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-xs-6  text-center">
+                                                            <i class="fa fa-bars fa-1x"></i>
+                                                        </div>
+                                                        <div class="col-xs-6 text-center">
+
+                                                            <i class="fa fa-trash fa-1x" style="color: red;"
+                                                               (click)="deleteResourceFileOrUrl(exturl, 'url')"></i>
+
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center" style="height: 10rem;">
+                                                            <a [href]="exturl['url']" target="_blank"
+                                                               [title]="exturl['url']">
+                                                                <p style='font-size: 12px'>
+                                                                    {{exturl['url']  | slice:0:20}}...</p>
+                                                                <i class="fa fa-external-link fa-2x"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center">
+                                                            <button data-toggle="modal"
+                                                                    data-target="#ModalAddToClass"
+                                                                    (click)="setSelectedResource( exturl, 'url' )"
+                                                                    type="button"
+                                                                    class="btn btn-block btn-xs btn-primary btn-fill">
+                                                                <i class="fa fa-plus"></i>
+                                                                Agregar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin material de apoyo -->
+
+                        <!-- agregar notas generales -->
+                        <div class="row">
+                            <div class="text-subhead-2 text-light">Notas generales</div>
+                            <div class="col-md-12">
+                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                    <div class="panel-body">
+                                        <div class="row" data-toggle="isotope">
+
+                                            <div class="item">
+                                                <div class="panel panel-default paper-shadow" data-z="0.5">
+                                                    <div class="cover overlay hover" style="text-align: center;">
+                                                        <span class="img icon-block " style="height: 30px"></span>
+                                                        <button class="padding-none overlay overlay-full btn-addS"
+                                                                data-toggle="modal"
+                                                                data-target="#ModalAddClassNote"
+                                                                (click)="typeNote = 'unit'">
+																<span class="v-center">
+																	<i class="fa fa-plus text-grey-600"></i>
+																	Escribir nota
+																</span>
+
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="">
+                                                <div class="row">
+                                                    <div class="item col-xs-10 col-md-10"
+                                                         *ngFor="let note of unit.unit_notes; let i = index">
+                                                        <div class="card" style="text-align: center;">
+                                                            <strong>{{note.note_title | uppercase}}</strong>
+                                                            <hr>
+                                                            <p style="font-size: small;">{{note.note_content | uppercase }}</p>
+                                                            <button class="btn btn-danger btn-fill btn-xs"
+                                                                    data-toggle="modal"
+                                                                    data-target="#ModalAddClassNote"
+                                                                    (click)="editClassNotes('unit', i)">
+																<span class="btn-label"><i class="fa fa-edit"></i>
+																</span>
+                                                            </button>
+                                                            <button class="btn btn-danger btn-fill btn-xs"
+                                                                    data-dismiss="modal"
+                                                                    (click)="removeClassNotes('unit', i)">
+																		<span class="btn-label"><i
+                                                                                class="fa fa-trash"></i>
+																		</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fin notas generales -->
+                    </div>
+                    <!-- Columna de sesiones-->
+                    <div class="col-md-8" *ngIf="classes">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="media v-middle">
+                                    <div class="media-body">
+                                        <button class="btn btn-white btn-flat" data-toggle="modal"
+                                                data-target="#ModalAddClass"
+                                                (click)="newClass()">
+                                            <i class="fa fa-plus"></i> Agregar lección
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div style="width:100%; height:1200px; overflow: scroll;">
+                            <div class="panel panel-default paper-shadow" data-z="0.5">
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel panel-default"
+                                         *ngFor="let unitClass of classes; let i = index">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <div class="row">
+                                                    <div class="col-sm-1 text-center">
+                                                        <i *ngIf="unitClass.class_status"
+                                                           class="fa fa-eye icon-activate"
+                                                           (click)="updateClassStatus(unitClass)"
+                                                           [class.active]="unitClass.class_status">
+                                                        </i>
+                                                        <i *ngIf="!unitClass.class_status"
+                                                           class="fa fa-eye-slash icon-activate"
+                                                           (click)="updateClassStatus(unitClass)"
+                                                           [class.active]="unitClass.class_status">
+                                                        </i>
+                                                    </div>
+
+                                                    <!-- *** NOMBRE DE SESIÓN *** -->
+                                                    <div class="col-sm-10 text-left">
+                                                        <i class="fa fa-pencil-square-o fa-fw "
+                                                           style="cursor: pointer;" data-toggle="modal"
+                                                           data-target="#ModalAddClass"
+                                                           (click)="editClass(unitClass)"></i>
+                                                        {{classes.length - i}}.-
+                                                        <span class="title-class">{{unitClass.className}}</span>
+                                                    </div>
+                                                    <!-- *** SIMULAR CLASE *** -->
+                                                    <div class="col-sm-1 text-center" (click)="showSimulator(unitClass)"
+                                                         style="cursor:pointer;">
+                                                        <i class="fa fa-play"></i> SIM
+                                                    </div>
+                                                    <!-- *** COLOCAR LINK DE VIDEO SESIÓN *** -->
+                                                    <!--<div class="col-sm-3 text-center" style="cursor: pointer;"
+                                                             (click)="addLinkVideoC(unitClass, i)">
+                                                        <i *ngIf="unitClass.video_conference&&unitClass.video_conference.state_vc"
+                                                             class="fa fa-video-camera icon-camera active"></i>
+                                                        <i *ngIf="unitClass.video_conference&&!unitClass.video_conference.state_vc"
+                                                             class="fa  fa-window-close-o icon-camera inactive"></i>
+                                                        <i *ngIf="!unitClass.video_conference"
+                                                             class="fa fa-video-camera icon-camera"></i> Link de
+                                                        conferencia
+                                                    </div>-->
+                                                    <!-- *** ENLAZAR VIDEO DE SESIÓN GRABADA *** -->
+                                                    <!--<div class="col-sm-3 text-center" style="cursor: pointer;"
+                                                             (click)="addVideoClass(unitClass, i)">
+                                                        <i *ngIf="unitClass.video_class"
+                                                             class="fa fa-play-circle icon-camera active"></i>
+                                                        <i *ngIf="!unitClass.video_class"
+                                                             class="fa fa-play-circle icon-camera"></i> Agregar video
+                                                        de sesión
+                                                    </div>-->
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <!-- *** INICIO *** -->
+
+                                                    <div class="col-sm-2 text-left">
+                                                        <span class="text-body-2">Fecha de Inicio</span><br><span
+                                                            class="title-class">{{unitClass.fromDate}}</span>
+                                                    </div>
+
+                                                    <!-- *** FIN *** -->
+                                                    <div class="col-sm-3 text-left">
+                                                        <span class="text-body-2">Fecha de Finalización</span><br><span
+                                                            class="title-class">{{ unitClass.toDate}}</span>
+                                                    </div>
+
+                                                    <!-- *** ACTIVAR FORO *** -->
+                                                    <div *ngIf="forumsArray[i]" class="col-sm-3 text-center"
+                                                         (click)="findForum(unitClass, i)">
+                                                        <i *ngIf="forumsArray[i].forum_status "
+                                                           class="fa fa-forumbee active"
+                                                           style="cursor: pointer"></i>
+                                                        <i *ngIf="!forumsArray[i].forum_status"
+                                                           class="fa fa-forumbee " style="cursor: pointer"></i>
+                                                        <span *ngIf="!forumsArray[i].forum_status"
+                                                              style="cursor: pointer"> Foro Inactivo</span>
+                                                        <span *ngIf="forumsArray[i].forum_status"
+                                                              style="cursor: pointer">  Foro Activo</span>
+                                                    </div>
+                                                    <div *ngIf="!forumsArray[i]" class="col-sm-3 text-center"
+                                                         (click)="findForum(unitClass, i)">
+                                                        <i class="fa fa-forumbee " style="cursor: pointer"></i>
+                                                        <span style="cursor: pointer"> Añadir Foro</span>
+                                                    </div>
+
+                                                    <!-- *** AGREGAR NOTAS *** -->
+                                                    <div class="col-sm-4 text-center"
+                                                         style="cursor: pointer; color: #5195ee;"
+                                                         data-toggle="modal" data-target="#ModalAddClassNote"
+                                                         (click)="typeNote = 'class'; this.activeClass = unitClass">
+                                                        <img src="../../../../assets/img/icons/letter.png"
+                                                             style="cursor: pointer; width: 2rem;">
+                                                        Agregar Indicaciones
+                                                    </div>
+                                                </div>
+                                                <a [attr.data-target]="'#collapse' + i" data-toggle="collapse">
+                                                    <!--<b class="caret"></b>-->
+                                                    <i class="fa fa-arrow-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div [id]="'collapse' + i" class="panel-collapse collapse">
+                                            <div class="panel panel-default paper-shadow" data-z="0.5">
+                                                <ul class="list-group" cdkDropList
+                                                    (cdkDropListDropped)="reorderResources($event, unitClass.class_resources, unitClass)">
+                                                    <li class="list-group-item"
+                                                        style="cursor: move; padding: 20px !important" cdkDrag
+                                                        *ngFor="let resource of unitClass.class_resources; let iResource = index">
+                                                        <div class="row">
+                                                            <div class="col-sm-7">
+                                                                {{iResource + 1}}
+                                                                <span class="avatar avatar-32 img-circle bg-primary">
+                                                                        <i class="fa" [ngClass]="{'fa-file-text': resource.resource_type === 'text',
+                                                                        'fa-play-circle': resource.resource_type === 'video',
+                                                                        'fa-bars': resource.resource_type === 'practice'}">
+                                                                        </i>
+                                                                    </span>
+                                                                {{resource.resource_name  | slice:0:50}}
+                                                            </div>
+                                                            <div
+                                                                    *ngIf="resource.resource_type === 'essay' && validateRubric(resource.resource_rubric)">
+                                                                <div class="col-sm-1 text-center"
+                                                                     style="font-weight: bold; font-size: 12px;">
+                                                                    Peso evaluación
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <select id="actividad_peso"
+                                                                            [(ngModel)]="resource.evaluation_peso"
+                                                                            (ngModelChange)="changePEssay($event, resource, unitClass)"
+                                                                            #evaluation_peso='ngModel'
+                                                                            class="form-control"
+                                                                            name="evaluation_peso">
+                                                                        <option value="" disabled>---Seleccione ---
+                                                                        </option>
+                                                                        <option *ngFor="let p of arrayPorcentaje; let i = index"
+                                                                                [ngValue]="p">{{p}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span style="float: right; height: 100%">
+																	<i class="fa fa-sort fa-2x"></i>
+																	<i class="fa fa-trash fa-2x"
+                                                                       style="color: red !important"
+                                                                       (click)="deleteResource( resource, unitClass )"
+                                                                       style="cursor: pointer"></i>
+																</span>
+                                                    </li>
+                                                </ul>
+
+                                                <ul class="list-group">
+                                                    <li class="list-group-item"
+                                                        style="padding: 10px !important"
+                                                        *ngFor="let evaluation of unitClass.class_evaluation; let iEvaluation = index">
+                                                        <div *ngIf="iEvaluation+1 !== 0"
+                                                             style="text-align: center;">
+                                                            <span> Evaluación de lección</span>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-1">
+																	<span class="avatar avatar-32 img-circle bg-primary"
+                                                                          style="margin-left: 20px;">
+																		<i class="fa fa-clock-o">
+																		</i>
+																	</span>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                {{evaluation.evaluation_name | slice:0:50}}
+                                                            </div>
+                                                            <div class="col-sm-1 text-center"
+                                                                 style="font-weight: bold; font-size: 12px;">
+                                                                Peso evaluación
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <select (ngModelChange)="changeP($event, evaluation, unitClass)"
+                                                                        id="evaluation_peso" class="form-control"
+                                                                        name="evaluation_peso"
+                                                                        [(ngModel)]="evaluation.evaluation_peso"
+                                                                        #evaluation_peso='ngModel'>
+                                                                    <option value="" disabled>---Seleccione ---
+                                                                    </option>
+                                                                    <option *ngFor="let p of arrayPorcentaje; let i = index"
+                                                                            [ngValue]="p">{{p}}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-1">
+																	<span style="float: right">
+																		<i class="fa fa-trash fa-1x"
+                                                                           style="color: red !important"
+                                                                           (click)="deleteEvaluation( evaluation, unitClass )"
+                                                                           style="cursor: pointer"></i>
+																	</span>
+                                                            </div>
+
+                                                        </div>
+                                                    </li>
+                                                </ul>
+
+                                                <!--<div class="cover overlay cover-image-full hover"
+                                                                         cdkDropList
+                                                                         (cdkDropListDropped)="reorderResources($event, unitClass.class_resources)">
+                                                                <div class="item col-xs-12 col-sm-6 col-lg-4"
+                                                                                 cdkDrag
+                                                                                 *ngFor="let resource of unitClass.class_resources">
+                                                                        <div class="card text-center" style="cursor: move">
+                                                                                <strong>{{resource.resource_name | slice:0:10}}</strong>
+                                                                                <p>{{resource.resource_des | slice:0:10}}</p>
+                                                                                <i class="fa fa-3x"
+                                                                                         [ngClass]="{'fa-file-text': resource.resource_type === 'text',
+                                                                                         'fa-play-circle': resource.resource_type === 'video',
+                                                                                         'fa-bars': resource.resource_type === 'practice'}"></i>
+                                                                        </div>
+                                                                </div>
+                                                        </div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- !Columna de sesiones-->
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+
+<!-- MODALS -->
+<!-- Modal add video conferencias -->
+<div class="modal fade"
+     id="ModalAddVideoConference"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddVideoConference"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <strong>Video Conferencias</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <br>
+            </div>
+            <div class="modal-body scroll-content-modal">
+                <form [formGroup]="urlVideoForm">
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label for="toDateVc" class="control-label">Fecha</label>
+                            <input type="date" class="form-control" id="toDateVc" formControlName="toDate"
+                                   [value]="currentDate()" placeholder="dd-mm-yyyy">
+                        </div>
+                        <div class="col-md-8">
+                            <label for="urlVideoC" class="control-label">Link</label>
+                            <input type="text" class="form-control" id="urlVideoC" formControlName="urlVideoC"
+                                   placeholder="Link de la video conferencia">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label for="toHoursVc" class="control-label">Hora</label>
+                            <input type="time" class="form-control" id="toHoursVc" formControlName="toHours">
+                        </div>
+                        <div class="col-md-8">
+                            <label for="detailsVideoC" class="control-label">Detalles</label>
+                            <input type="text" class="form-control" id="detailsVideoC" formControlName="detailsVideoC"
+                                   placeholder="Detalles: ID, PASSWORD...">
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="text-center">
+                        <button class="btn btn-success btn-fill btn-wd" data-dismiss="modal" (click)="saveVideoC()">
+							<span class="btn-label">
+								Guardar <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                    </div>
+                </form>
+                <hr>
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tbody *ngIf="unitResources">
+                        <tr *ngFor="let video of unitResources['video_conferences']">
+                            <td>{{video['toDate']}}</td>
+                            <td>{{video['toHours']}}</td>
+                            <td><a [href]="video['urlVideoC']" target="_blank">{{video['urlVideoC']}}</a></td>
+                            <td>{{video['detailsVideoC']}}</td>
+                            <td>
+                                <i class="fa fa-trash text-danger" (click)="deleteVideo(video)"
+                                   style="cursor: pointer"></i>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add url de video llamada -->
+<div class="modal fade"
+     id="ModalAddLinkVideoClass"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddToClass"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Agregar un link para video conferencia</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <br>
+            </div>
+            <div class="modal-body scroll-content-modal">
+                <!--<form [formGroup]="urlVideoForm">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="urlVideoC" class="control-label">Link de la video conferencia:</label>
+                            <input type="text" class="form-control" id="urlVideoC" formControlName="urlVideoC"
+                                   placeholder="Link de la video conferencia">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="detailsVideoC" class="control-label">Detalles de la video conferencia:</label>
+                            <input type="text" class="form-control" id="detailsVideoC" formControlName="detailsVideoC"
+                                   placeholder="Detalles: ID, PASSWORD...">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="toDateVc" class="control-label">Fecha de inicio:</label>
+                            <input type="date" class="form-control" id="toDateVc" formControlName="toDate"
+                                   [value]="currentDate()" placeholder="dd-mm-yyyy">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="toHoursVc" class="control-label">Hora:</label>
+                            <input type="time" class="form-control" id="toHoursVc" formControlName="toHours">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-6">
+                            <label class="control-label">Estado de video conferencia<span class="star">*</span></label>
+                            <mat-slide-toggle
+                                    class="example-margin"
+                                    id="state_vc" (change)="onChange($event)"
+                                    formControlName="state_vc" style="display: block;
+                                margin: auto;">
+                                &lt;!&ndash; {{state === true ? 'Video conferencia Activada' : 'Video conferencia Desactivada' }} &ndash;&gt;
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-fill btn-wd" data-dismiss="modal" (click)="saveVideoC()">
+                            <span class="btn-label">
+                                Guardar <i class="fa fa-save"></i>
+                            </span>
+                        </button>
+                    </div>
+                </form>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add url de video de la sesión grabada -->
+<div class="modal fade"
+     id="ModalAddVideoClass"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddVideoClass"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Agregar un link para video conferencia</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <br>
+            </div>
+            <div class="modal-body scroll-content-modal">
+                <form [formGroup]="urlVideoClassForm">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="urlVideoClass" class="control-label">Link del video de la lección:</label>
+                            <input type="text" class="form-control" id="urlVideoClass" formControlName="urlVideoClass"
+                                   placeholder="Link del video de la lección">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-fill btn-wd" data-dismiss="modal" (click)="saveVideoClass()">
+							<span class="btn-label">
+								Agregar video de la lección <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add to class(temp) -->
+<div class="modal fade"
+     id="ModalAddToClass"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddToClass"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Agregar recurso a lección</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <br>
+            </div>
+            <div class="modal-body scroll-content-modal">
+                <form [formGroup]="newResourceForm">
+                    <label for="classSelect">Seleccione lección:</label>
+                    <select id="classSelect" class="form-control" formControlName="unitClass">
+                        <option value="" disabled>---Seleccione ---</option>
+                        <option *ngFor="let unitClass of classes; let i = index" [ngValue]="unitClass">
+                            {{unitClass.className}}
+                        </option>
+                    </select>
+                    <hr>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-fill btn-wd" data-dismiss="modal"
+                                (click)="addResourceToClass()">
+							<span class="btn-label">
+								Agregar Recurso <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add unit-->
+<div class="modal fade"
+     id="ModalAddUnit"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddUnit"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title">{{ isEdit == false ? 'Crear Unidad' : 'Editar Unidad'  }}</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <br>
+            </div>
+            <div class="modal-body scroll-content-modal">
+                <form [formGroup]="newUnitForm">
+                    <div class="form-group" style="display: none">
+                        <input type="text" class="form-control" formControlName="subject">
+                        <input type="text" class="form-control" formControlName="grade">
+                        <input type="text" class="form-control" formControlName="parallel">
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="unitfromDate" class="control-label">Fecha de inicio:</label>
+                            <input type="date" class="form-control" id="unitfromDate" formControlName="fromDate"
+                                   [value]="currentDate()" placeholder="dd-mm-yyyy">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="unittoDate" class="control-label">Fecha de finalización:</label>
+                            <input type="date" class="form-control" id="unittoDate" formControlName="toDate"
+                                   [value]="currentDate()"
+                                   placeholder="dd-mm-yyyy">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="unitName" class="control-label">Nombre de la unidad:</label>
+                            <input maxlength="40" type="text" class="form-control" id="unitName"
+                                   formControlName="unitName"
+                                   placeholder="Nombre de la unidad">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="unitName" class="control-label">Porcentaje de peso en el dominio de la
+                                materia:</label>
+                            <select id="unitSelectP" class="form-control" formControlName="pUnit" [(ngModel)]="pUnit"
+                                    (ngModelChange)=validarTotal($event)>
+                                <option value="" disabled>---Seleccione ---</option>
+                                <option *ngFor="let p of arrayPorcentaje; let i = index" [ngValue]="p">{{p}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-fill btn-wd" data-dismiss="modal"
+                                [disabled]="!newUnitForm.valid"
+                                (click)="addUnit()">
+							<span class="btn-label">
+								{{ isEdit == false ? 'Crear Unidad' : 'Editar Unidad'  }} <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add class -->
+<div class="modal fade"
+     id="ModalAddClass"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddClass"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>{{ isEdit == false ? 'Crear Lección' : 'Editar Lección'  }}</strong>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <!-- <h4 class="modal-title"><i class="fa fa-plus"></i> CREAR SESIÓN</h4> -->
+            </div>
+            <div class="modal-body scroll-content-modal">
+                <form [formGroup]="newClassForm">
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="fromDate" class="control-label">Fecha de inicio:</label>
+                            <input type="date" class="form-control" id="fromDate" formControlName="fromDate"
+                                   [value]="currentDate()"
+                                   placeholder="dd-mm-yyyy">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="toDate" class="control-label">Fecha de finalización:</label>
+                            <input type="date" class="form-control" id="toDate" formControlName="toDate"
+                                   [value]="currentDate()"
+                                   placeholder="dd-mm-yyyy">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="className" class="control-label">Nombre de la lección:</label>
+                            <input maxlength="40" type="text" class="form-control" id="className"
+                                   formControlName="className"
+                                   placeholder="Nombre de la lección">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-fill btn-wd" data-dismiss="modal"
+                                [disabled]="!newClassForm.valid"
+                                (click)="addClassToSubject()">
+							<span class="btn-label">
+								{{ isEdit == false ? 'Crear lección' : 'Editar lección'  }}  <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add forum -->
+<div class="modal fade"
+     id="ModalAddClassForum"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddClassForum"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <br>
+            </div>
+            <div class="modal-body">
+                <h3><strong>ADMINISTRAR FORO</strong></h3>
+                <div class="col-md-12" *ngIf="withInitQuestion" style=" padding-left: 0px; margin: 10px;">
+                    <label class="control-label">Pregunta Inicial </label>
+                    <input [(ngModel)]='question' type="text" class="form-control"
+                           placeholder="Ingrese una pregunta para el foro">
+                </div>
+                <br>
+                <form [formGroup]="newClassForumForm">
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="forum_expiry_creation" class="control-label">Fecha de inicio:</label>
+                            <input type="date" class="form-control" id="forum_expiry_creation"
+                                   formControlName="forum_expiry_creation"
+                                   [value]="" placeholder="dd-mm-yyyy">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="forum_expiry_creation" class="control-label">hora de inicio:</label>
+                            <input type="time" class="form-control" id="creation_time" formControlName="creation_time"
+                                   [value]="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="forum_expiry_date" class="control-label">Fecha de finalización:</label>
+                            <input type="date" class="form-control" id="forum_expiry_date"
+                                   formControlName="forum_expiry_date"
+                                   [value]="" placeholder="dd-mm-yyyy">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="expiry_time" class="control-label">Hora de finalización:</label>
+                            <input type="time" class="form-control" id="expiry_time" formControlName="expiry_time"
+                                   [value]="">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">Estado<span class="star">*</span></label>
+                            <mat-slide-toggle
+                                    class="example-margin"
+                                    [checked]="status"
+                                    id="forum_status" (change)="onChange($event)"
+                                    formControlName="forum_status" style="display: block;
+								margin: auto;">
+                                {{status === true ? 'Foro Activado' : 'Foro Desactivado' }}
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div class="text-center" style=" margin: 10px;">
+                        <button class="btn btn-primary btn-fill btn-wd" data-dismiss="modal"
+                                [disabled]="!newClassForumForm.valid"
+                                (click)="saveForum()">
+							<span class="btn-label">
+								Guardar Foro <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add class note -->
+<div class="modal fade"
+     id="ModalAddClassNote"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddClassNote"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <span><strong>INDICACIONES DE LECCIÓN</strong></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body scroll-content-modal">
+                <form [formGroup]="newNoteForm">
+                    <!-- Note title -->
+                    <label for="note_title"></label>
+                    <input type="text" class="form-control" id="note_title" formControlName="note_title"
+                           placeholder="Título">
+                    <!-- !Note title -->
+                    <!-- Note content -->
+                    <label for="note_content"></label>
+                    <textarea type="text" class="form-control" id="note_content" formControlName="note_content" rows="5"
+                              placeholder="Nota...">
+										</textarea>
+                    <!-- !Note content -->
+                    <!-- Submit button -->
+                    <hr>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-fill btn-wd"
+                                data-dismiss="modal"
+                                [disabled]="!newNoteForm.valid"
+                                (click)="addNote(typeNote)"
+                                *ngIf="!editButton">
+							<span class="btn-label">
+								Agregar <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                        <button class="btn btn-primary btn-fill btn-wd"
+                                data-dismiss="modal"
+                                [disabled]="!newNoteForm.valid"
+                                (click)="editNote(typeNote)"
+                                *ngIf="editButton">
+							<span class="btn-label">
+								GUARDAR <i class="fa fa-save"></i>
+							</span>
+                        </button>
+                    </div>
+                    <div *ngFor="let note of activeClass.class_notes; let i = index">
+                        <div class="row">
+                            <div class="col-md-10">
+                                {{i + 1}}.- {{note.note_title}} : {{note.note_content}}
+                                <hr>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-danger btn-fill btn-xs"
+                                        (click)="editClassNotes(typeNote, i)">
+										<span class="btn-label"><i class="fa fa-edit"></i>
+										</span>
+                                </button>
+                                <button class="btn btn-danger btn-fill btn-xs"
+                                        data-dismiss="modal"
+                                        (click)="removeClassNotes(typeNote, i)">
+										<span class="btn-label"><i class="fa fa-trash"></i>
+										</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add text -->
+<div class="modal fade"
+     id="ModalAddText"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Libros de {{activeSubject.subject_name}}</h4>
+            </div>
+            <div class="modal-body modal-content-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="content modal-content-form">
+                                <div class="content">
+                                    <div class="fresh-datatables">
+                                        <table id="datatablesResource"
+                                               class="table table-striped table-no-bordered table-hover"
+                                               cellspacing="0" width="100%" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Grado</th>
+                                                <th>Nombre</th>
+                                                <th>Ver</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody id="tBodyLevel1">
+<!--                                            externalResources.text // esto estaba-->
+                                            <tr *ngFor="let text of listBooks2">
+                                                <td>
+                                                    {{text.grade_name}}
+                                                    <input id="{{text.id_subject}}" type="checkbox"
+                                                           (change)="text.selected = !text.selected"
+                                                           [ngModel]="text.selected">
+                                                </td>
+<!--                                                <td>-->
+
+<!--                                                    <img src="../../../../assets/img/Book_icon.png" width="25"/>-->
+<!--                                                    {{text.textbook_title}}-->
+<!--                                                </td>-->
+                                                <td>
+
+                                                    <img src="../../../../assets/img/Book_icon.png" width="25"/>
+                                                    {{text.subject_name}}
+                                                </td>
+
+                                                <td class="text-right">
+                                                    <a (click)="OpenPopupCenter(text.url, 'TEST!?', 1000, 600);">
+                                                        <i class="fa fa-eye"></i>
+
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-fill"
+                        (click)="addResourceToUnit(externalResources.text)">Aceptar
+                </button>
+                <button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">CerrarR</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal add video-->
+<div class="modal fade"
+     id="ModalAddVideo"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddVideo"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Videos de {{activeSubject.subject_name}}</h4>
+            </div>
+            <div class="modal-body modal-content-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="content modal-content-form">
+                                <div class="content">
+                                    <div class="fresh-datatables">
+                                        <table id="datatablesResourceVideos"
+                                               class="table table-striped table-no-bordered table-hover"
+                                               cellspacing="0" width="100%" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nombre</th>
+                                                <th>Ver</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody id="tBodyLevel2">
+                                            <tr *ngFor="let video of externalResources.videos; let i = index">
+                                                <td>
+                                                    <input [id]="i" type="checkbox"
+                                                           (change)="video.selected = !video.selected"
+                                                           [ngModel]="video.selected">
+
+                                                </td>
+                                                <td>
+                                                    <img src="../../../../assets/img/Book_icon.png" width="25"/>
+                                                    {{video.textbook_title}}
+                                                </td>
+                                                <td class="text-right">
+                                                    <a (click)="previewVideo(video)" data-dismiss="modal"
+                                                       data-toggle="modal" href="#lost">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-fill" (click)="confirmResourceVideo()">Aceptar</button>
+                <button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal add practice -->
+<div class="modal fade"
+     id="lost"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddPractice"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button data-toggle="modal" data-target="#ModalAddVideo" type="button" class="close"
+                        (click)="stopVideo()" data-dismiss="modal">&times;
+                </button>
+                <h4 class="modal-title">{{selectedVideo}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <youtube-player [videoId]="id" (ready)="savePlayer($event)" [playerVars]="dat"
+                                    (change)="onStateChange($event)">
+                    </youtube-player>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal preview PDF-->
+<div class="modal fade"
+     id="previewPDF"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modalPreviewPDF"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button data-toggle="modal" data-target="#ModalAddText" type="button" class="close"
+                        data-dismiss="modal">&times;
+                </button>
+                <h4 class="modal-title">{{selectedVideo}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <pdf-viewer [src]="selectedPdf" [render-text]="true" (page-rendered)="pageRendered($event)"
+                                style="display: block;"></pdf-viewer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add practice-->
+<div class="modal fade"
+     id="ModalAddEssay"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddEssay"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Recursos de {{activeSubject.subject_name}}</h4>
+            </div>
+            <div class="modal-body modal-content-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+                                <mat-tab label="Prácticas">
+                                    <div class="content modal-content-form">
+                                        <div class="content">
+                                            <div class="fresh-datatables">
+                                                <table id="datatablesResourcePractices"
+                                                       class="table table-striped table-no-bordered table-hover"
+                                                       cellspacing="0" width="100%" style="width:100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Nombre</th>
+                                                        <!--<th >Ver</th>-->
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody id="tBodyLevel3">
+                                                    <tr *ngFor="let practice of practices">
+                                                        <td>
+                                                            <input id="{{practice.practice_id}}" type="checkbox"
+                                                                   (change)="practice.selected = !practice.selected"
+                                                                   [ngModel]="practice.selected">
+                                                        </td>
+                                                        <td>
+                                                            <img src="../../../../assets/img/Book_icon.png"
+                                                                 width="25"/>
+                                                            {{practice.practice_name}}
+                                                        </td>
+                                                        <!--<td class="text-right">
+                                                        <a class="btn btn-primary btn-xs"
+                                                                 data-toggle="tooltip" data-placement="top" title="Ver"><i
+                                                                class="fa fa-eye"></i></a>
+                                                </td>-->
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Evaluaciones">
+                                    <div class="content modal-content-form">
+                                        <div class="content">
+                                            <div class="fresh-datatables">
+                                                <table id="datatablesResourceEvaluations"
+                                                       class="table table-striped table-no-bordered table-hover"
+                                                       cellspacing="0" width="100%" style="width:100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Nombre</th>
+                                                        <!--<th >Ver</th>-->
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody id="tBodyLevel4">
+                                                    <tr *ngFor="let evaluation of arrayEvaluations">
+                                                        <td>
+                                                            <input id="{{evaluation.evaluation_id}}" type="checkbox"
+                                                                   (change)="evaluation['selected'] = !evaluation['selected']"
+                                                                   [ngModel]="evaluation['selected']">
+
+                                                        </td>
+                                                        <td>
+                                                            <img src="../../../../assets/img/Book_icon.png"
+                                                                 width="25"/>
+                                                            {{evaluation.evaluation_name}}
+                                                        </td>
+                                                        <!--<td class="text-right">
+                                                        <a class="btn btn-primary btn-xs"
+                                                                 data-toggle="tooltip" data-placement="top" title="Ver"><i
+                                                                class="fa fa-eye"></i></a>
+                                                </td>-->
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Actividades">
+                                    <div class="content modal-content-form">
+                                        <div class="content">
+                                            <div class="fresh-datatables">
+                                                <table id="datatablesResourceEssays"
+                                                       class="table table-striped table-no-bordered table-hover"
+                                                       cellspacing="0" width="100%" style="width:100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Nombre</th>
+                                                        <!--<th >Ver</th>-->
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody id="tBodyLevel5">
+                                                    <tr *ngFor="let essay of essays">
+                                                        <td>
+                                                            <input id="{{essay.essay_id}}" type="checkbox"
+                                                                   (change)="essay['selected'] = !essay['selected']"
+                                                                   [ngModel]="essay['selected']">
+                                                        </td>
+                                                        <td>
+                                                            <img src="../../../../assets/img/Book_icon.png"
+                                                                 width="25"/>
+                                                            {{essay.essay_name}}
+                                                        </td>
+                                                        <!--<td class="text-right">
+                                                        <a class="btn btn-primary btn-xs"
+                                                                 data-toggle="tooltip" data-placement="top" title="Ver"><i
+                                                                class="fa fa-eye"></i></a>
+                                                </td>-->
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-fill" (click)="confirmResourcePractice()">Aceptar
+                </button>
+                <button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal add essays -->
+<!--<div class="modal fade" id="ModalAddPractice" tabindex="-1" role="dialog" aria-labelledby="ModalAddPractice"
+     aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+		<div class="modal-content">
+			
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Practicas de {{activeSubject.subject_name}}</h4>
+			</div>
+			<div class="modal-body modal-content-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="content modal-content-form">
+								<div class="content">
+									<div class="fresh-datatables">
+										<table id="datatablesResourcePractices" class="table table-striped table-no-bordered table-hover"
+											cellspacing="0" width="100%" style="width:100%">
+											<thead>
+											<tr>
+												<th></th>
+												<th>Nombre</th>
+												&lt;!&ndash;<th >Ver</th>&ndash;&gt;
+											</tr>
+											</thead>
+											
+											<tbody id="tBodyLevel">
+											<tr *ngFor="let practice of practices">
+												<td>
+													<input id="{{practice.practice_id}}" type="checkbox"
+													       (change)="practice.selected = !practice.selected" [ngModel]="practice.selected">
+												</td>
+												<td>
+													<img src="../../../../assets/img/Book_icon.png" width="25" />
+													{{practice.practice_name}}
+												</td>
+												&lt;!&ndash;<td class="text-right">
+													<a class="btn btn-primary btn-xs"
+														 data-toggle="tooltip" data-placement="top" title="Ver"><i
+														class="fa fa-eye"></i></a>
+												</td>&ndash;&gt;
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success btn-fill" (click)="confirmResourcePractice()">Aceptar
+				</button>
+				<button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">Cerrar</button>
+			</div>
+
+		</div>
+	</div>
+</div>-->
+
+<!-- Modal add material-->
+<div class="modal fade"
+     id="ModalAddMaterial"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="ModalAddMaterial"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">CARGAR ARCHIVOS</h4>
+            </div>
+            <div class="modal-body modal-content-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" id="urlInput" #urlInput class="drop-zone"
+                                               placeholder="Agrega un Link/Urls aquí y presione la tecla enter"
+                                               (keyup.enter)="urls.push( urlInput.value); urlInput.value = ''">
+                                        <ul class="nav nav-pills" role="tablist">
+                                            <li role="presentation" *ngFor="let u of urls">
+												<span class="badge">{{u | slice:0:40}} <i class="fa fa-times"
+                                                                                          (click)="urls.splice( urls.indexOf(u), 1)"></i></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <hr>
+                                        <div appNgDropFiles [archivos]="files" (mouseSobre)="isOverDiv = $event"
+                                             [ngClass]="{'file-over': isOverDiv}"
+                                             class="well drop-zone-File text-center">
+                                            <div *ngIf="files.length == 0">
+                                                <h4>Arrastre <strong>AQUÍ</strong> los documentos que desea cargar</h4>
+                                                <h5>El tamaño máximo de elementos a cargar es de 35Mb</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-6 col-lg-4" *ngFor="let archivo of files">
+                                                    <div class="card">
+                                                        <div class="content">
+                                                            <strong [title]="archivo.nombreArchivo">
+                                                                {{ archivo.nombreArchivo | slice:0:20 }}
+                                                            </strong>
+                                                            {{ archivo.archivo.size / 1024 / 1024 | number: '.2-2'}} MB
+                                                            <div class="progress">
+                                                                <div class="progress-bar" role="progressbar"
+                                                                     [ngStyle]="{'width' : archivo.progreso + '%'}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="cargarImagenes()" type="button" class="btn btn-primary btn-fill">Cargar</button>
+                <button (click)="cleanFiles()" type="button" class="btn  btn-danger btn-fill"
+                        data-dismiss="modal">Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	<strong>Holy guacamole!</strong> You should check in on some of those fields below.
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>-->
+
+<!-- !MODALS -->
+<app-modal-simulator
+        (isReturn)="return()"
+        [classes]="this.simClass"
+        *ngIf="showViewSimulation">
+</app-modal-simulator>
+

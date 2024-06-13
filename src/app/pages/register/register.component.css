@@ -1,0 +1,36 @@
+* {
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto;
+}
+
+#div-registro {
+  width: 100%;
+  padding: 10vh;
+}
+
+/* media queries */
+@media (min-width: 5px) and (max-width: 499px) {
+
+  #div-registro {
+    padding: 0;
+  }
+
+}
+
+@media (min-width: 500px) and (max-width: 768px) {
+
+  #div-registro {
+    padding: 0;
+  }
+
+}
+
+@media (min-width: 769px) and (max-width: 990px) {
+
+  #div-registro {
+    padding: 0;
+  }
+
+}

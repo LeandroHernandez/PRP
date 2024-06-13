@@ -1,0 +1,321 @@
+<div class="main-content">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="content">
+                <div class="card-header card-header-icon card-header-info">
+                    <h1 class="card-title">Menu</h1>
+                </div>
+                <div class="card-body">
+                    <div class="text-rigth">
+                <button class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#Modaladdmenu" (click)="open_modal_create_menu()">
+                  <span class="btn-label">
+                    <i class="fa fa-plus"></i>
+                  </span>
+                  Agregar Menu
+                </button>
+              </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="fresh-datatables">
+                                        <table id="datatableMenu"
+                                               class="table table-striped table-no-bordered table-hover"
+                                               cellspacing="0" width="100%" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>INDICE</th>
+                                                <th>NOMBRE</th>
+                                                <th>URL</th>
+                                                <th>ICONO</th>
+                                                <th>ESTADO</th>
+                                                <th>ACCIONES</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tBodyUnitEducational">
+                                            <tr *ngFor="let menu of data_menu; let i = index">
+                                                <td>{{i+1}}</td>
+                                                <td>{{menu.menu.menu_name}}</td>
+                                                <td>{{menu.menu.menu_url}}</td>
+                                                <td><i class="{{menu.menu.menu_icon}}"></i> {{menu.menu.menu_icon}}</td>
+                                                <td>
+                                                    <ng-container *ngIf="menu.menu.menu_state == true; else elseEstado">
+                                                        <button class="btn btn-success btn-fill btn-xs">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                    </ng-container>
+                                                    <ng-template #elseEstado>
+                                                        <button class="btn btn-danger btn-fill btn-xs">
+                                                            <i class="fa fa-close"></i>
+                                                        </button>
+                                                    </ng-template>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="btn-group">
+                                                        <button (click)="load_data_menu_for_edit(menu)"
+                                                                class="btn btn-fill btn-xs btn-warning btn-icon"
+                                                                data-toggle="modal"
+                                                                data-target="#Modaladdmenu">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        <button (click)="question_delete_menu(menu)"
+                                                                *ngIf="(menu.menu.menu_state == true)"
+                                                                class="btn btn-fill btn-xs btn-danger btn-icon">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                        <button (click)="question_delete_menu(menu)"
+                                                                *ngIf="(menu.menu.menu_state == false)"
+                                                                class="btn btn-fill btn-xs btn-success btn-icon">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modaladdmenu"
+     tabindex="-1" role="dialog"
+     aria-labelledby="Modaladdmenu"
+     aria-hidden="true">
+    <div class="modal-dialog padding-modal"
+         role="document" style="width: 80% !important; max-width: inherit;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <br>
+            </div>
+            <div class="modal-body scroll-conten-modal">
+                <form [formGroup]="menu_form">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nombre</label>
+                                    <input class="form-control"
+                                           id="menu_name"
+                                           type="text"
+                                           autocomplete="off"
+                                           name="menu_name"
+                                           placeholder="Nombre..."
+                                           formControlName="menu_name"
+                                           maxlength="100"/>
+                                    <div class="text-danger message-error"
+                                         *ngIf="menu_form.controls['menu_name'].hasError('required')
+                                         && (menu_form.controls['menu_name'].dirty
+                                         || menu_form.controls['menu_name'].touched)">
+                                        Por favor ingrese la Nombre
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Url</label>
+                                    <input class="form-control"
+                                           id="menu_url"
+                                           type="text"
+                                           autocomplete="off"
+                                           name="menu_url"
+                                           placeholder="Url..."
+                                           formControlName="menu_url"
+                                           maxlength="100"/>
+                                    <div class="text-danger message-error"
+                                         *ngIf="menu_form.controls['menu_url'].hasError('required')
+                                         && (menu_form.controls['menu_url'].dirty
+                                         || menu_form.controls['menu_url'].touched)">
+                                        Por favor ingrese una Url
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Icono  <i class="{{menu_form.value.menu_icon}}"></i>  </label>
+                                    <input class="form-control"
+                                           id="menu_icon"
+                                           type="text"
+                                           autocomplete="off"
+                                           name="menu_icon"
+                                           placeholder="Icono..."
+                                           formControlName="menu_icon"
+                                           maxlength="100"/>
+                                    <div class="text-danger message-error"
+                                         *ngIf="menu_form.controls['menu_icon'].hasError('required')
+                                         && (menu_form.controls['menu_icon'].dirty
+                                         || menu_form.controls['menu_icon'].touched)">
+                                        Por favor ingrese una Icono
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-rigth">
+                    <button class="btn btn-success btn-fill btn-wd"
+                            data-toggle="modal"
+                            data-target="#Modaladdsubmenu"
+                            (click)="open_modal_create_submenu()">
+                        <span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        Agregar SubMenu
+                    </button>
+                </div>
+                <br>
+                <div class="table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+              <th class="text-center">
+                Nombre
+              </th>
+              <th class="text-center">
+                Url
+              </th>
+              <th class="text-center">
+                Icono
+              </th>
+              <th class="text-center">
+                Opciones
+              </th>
+            </thead>
+                        <tbody>
+
+              <tr *ngFor="let submenu of data_submenu; let i=index">
+                <td class="text-center">
+                  {{ submenu.submenu_name }}
+                </td>
+                <td class="text-center">
+                  {{ submenu.submenu_url }}
+                </td>
+                <td class="text-center">
+                  {{ submenu.submenu_icon }}
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-warning btn-fill btn-sm" (click)="load_data_submenu_for_edit(submenu, i)" data-toggle="modal" data-target="#Modaladdsubmenu">
+                    <span class="btn-label">
+                      <i class="fa fa-edit"></i>
+                    </span>
+                    Editar
+                  </button>
+                  &nbsp;&nbsp;&nbsp;
+                  <button class="btn btn-danger btn-fill btn-sm" (click)="change_status_submenu(i)" *ngIf="(submenu.submenu_state == true) ? true : false">
+                    <span class="btn-label">
+                      <i class="fa fa-minus-circle"></i>
+                    </span>
+                    Desactivar
+                  </button>
+                  <button class="btn btn-default btn-fill btn-sm" (click)="change_status_submenu(i)" *ngIf="(submenu.submenu_state == false) ? true : false">
+                    <span class="btn-label">
+                      <i class="fa fa-check-circle"></i>
+                    </span>
+                    Activar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-fill btn-wd"
+                            (click)="action_menu()"
+                            [disabled] = "this.menu_form.invalid"
+                            data-dismiss="modal">
+                        <span class="btn-label">
+                            <i class="fa fa-save"></i>
+                        </span>{{ name_action_menu }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modaladdsubmenu"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="Modaladdsubmenu"
+     aria-hidden="true">
+  <div class="modal-dialog padding-modal" role="document" style="width: 80% !important; max-width: inherit;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <br>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="submenu_form">
+          <div class="content">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Nombre</label>
+                          <input class="form-control" id="submenu_name" type="text" autocomplete="off"
+                          name="submenu_name" placeholder="Nombre..." formControlName="submenu_name" maxlength="100"/>
+                          <div class="text-danger message-error"
+                              *ngIf="submenu_form.controls['submenu_name'].hasError('required') && (submenu_form.controls['submenu_name'].dirty || submenu_form.controls['submenu_name'].touched)">
+                              Por favor ingrese la Nombre
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Url</label>
+                          <input class="form-control" id="submenu_url" type="text" autocomplete="off"
+                          name="submenu_url" placeholder="Url..." formControlName="submenu_url" maxlength="100"/>
+                          <div class="text-danger message-error"
+                                *ngIf="submenu_form.controls['submenu_url'].hasError('required') && (submenu_form.controls['submenu_url'].dirty || submenu_form.controls['submenu_url'].touched)">
+                                  Por favor ingrese una Url
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Icono</label>
+                          <input class="form-control" id="submenu_icon" type="text" autocomplete="off"
+                          name="submenu_icon" placeholder="Icono..." formControlName="submenu_icon" maxlength="100"/>
+                          <div class="text-danger message-error"
+                                *ngIf="submenu_form.controls['submenu_icon'].hasError('required')
+                                && (submenu_form.controls['submenu_icon'].dirty
+                                || submenu_form.controls['submenu_icon'].touched)">
+                                  Por favor ingrese una Icono
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary btn-fill btn-wd"
+                    (click)="action_submenu()"
+                    [disabled] = "this.submenu_form.invalid"
+                    data-dismiss="modal">
+              <span class="btn-label">
+                <i class="fa fa-save"></i>
+              </span>
+              {{ name_action_submenu }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

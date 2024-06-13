@@ -1,0 +1,172 @@
+<div class="container-fluid">
+
+    <div style="display: flex; flex-direction: row;justify-content: flex-end; margin: 15px;">
+        <button type="submit" class="btn btn-success btn-fill"  data-toggle="modal" data-target="#exampleModalCenter" (click)="addRepresentative(RepresD); formRepresentative.reset()">Nuevo Registro </button>
+    </div>
+     <!-- model nuevo registro -->
+  
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
+      <div class="modal-content">
+        <form #formRepresentative="ngForm" method="get" action="/" class="form-horizontal" novalidate (ngSubmit)="saveRepresentative(formRepresentative.value, formRepresentative.valid)">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ isEdit == false ? 'Nuevo Representante' : 'Editar Representante'  }}</h4>
+            </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="content">
+                                <div class="form-group">
+                                    
+                                    <div class="col-sm-6">
+                                        <label class="control-label">ID<span class="star">*</span></label>
+                                        <input readonly id="representative_id" type="text" class="form-control" name="representative_id" placeholder="Id" [ngModel]="RepresD.representative_id" required #representative_id="ngModel">
+                                        <small [hidden]="representative_id.valid || (representative_id.pristine && !formRepresentative.submitted)" class="text-danger">
+                                            Obligatorio
+                                        </small>
+                                    </div>                                 
+
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Cédula<span class="star">*</span></label>
+                                        <input id="representative_identification" type="text" data-length="4" class="form-control" name="representative_identification" placeholder="Cédula" [ngModel]="RepresD.representative_identification" required #representative_identification="ngModel">
+                                        <small
+                                            [hidden]="representative_identification.valid || (representative_identification.pristine && !formRepresentative.submitted)" class="text-danger"> Obligatorio /<i> sin carácteres especiales </i>
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Nombre<span class="star">*</span></label>
+                                        <input id="representative_name" type="text" class="form-control" name="representative_name" placeholder="Nombre" [ngModel]="RepresD.representative_name" required  #representative_name="ngModel">
+                                        <small
+                                            [hidden]="representative_name.valid || (representative_name.pristine && !formRepresentative.submitted)" class="text-danger"> Obligatorio /<i> sin carácteres especiales </i>
+                                        </small>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Apellido<span class="star">*</span></label>
+                                        <input id="representative_lastname" type="text" class="form-control" name="representative_lastname" placeholder="Apellidos" [ngModel]="RepresD.representative_lastname" required  #representative_lastname="ngModel">
+                                        <small
+                                            [hidden]="representative_lastname.valid || (representative_lastname.pristine && !formRepresentative.submitted)" class="text-danger"> Obligatorio /<i> sin carácteres especiales </i>
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label class="control-label">Email<span class="star">*</span></label>
+                                        <input id="representative_email" type="email" class="form-control" name="representative_email" placeholder="Email" [ngModel]="RepresD.representative_email" email="true"  #representative_email="ngModel">
+                                        <small
+                                            [hidden]="representative_email.valid || (representative_email.pristine && !formRepresentative.submitted)" class="text-danger"> Se requiere correo electrónico ejemplo: <i> nombre@empresa.com </i>
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Teléfono</label>
+                                        <input id="representative_phone" type="text" maxlength="12" class="form-control" name="representative_phone" placeholder="Teléfono" [ngModel]="RepresD.representative_phone"   #representative_phone="ngModel">
+                                        <small
+                                            [hidden]="representative_phone.valid || (representative_phone.pristine && !formRepresentative.submitted)" class="text-danger"> Solo ingrese numero /<i> Telefonico </i>
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Celular</label>
+                                        <input id="representative_movil" type="text" maxlength="12" class="form-control" name="representative_movil" placeholder="Celular" [ngModel]="RepresD.representative_movil"  #representative_movil="ngModel">
+                                        <small
+                                            [hidden]="representative_movil.valid || (representative_movil.pristine && !formRepresentative.submitted)" class="text-danger"> Solo ingrese numero /<i> Celular </i>
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label class="control-label">Dirección</label>
+                                        <input id="representative_address" type="text" class="form-control" name="representative_address" placeholder="Dirección" [ngModel]="RepresD.representative_address"   #representative_address="ngModel">
+                                        <small
+                                            [hidden]="representative_address.valid || (representative_address.pristine && !formRepresentative.submitted)" class="text-danger"> Obligatorio /<i> sin carácteres especiales </i>
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Contraseña<span class="star">*</span></label>
+                                        <input id="representative_password" type="password" class="form-control" name="representative_password" placeholder="Contraseña" [ngModel]="RepresD.representative_password" reverse="true" required  #representative_password="ngModel">
+                                        <small
+                                            [hidden]="representative_password.valid || (representative_password.pristine && !formRepresentative.submitted)" class="text-danger"> Obligatorio /<i> contraseña </i>
+                                        </small>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Estado<span class="star">*</span></label>
+                                            <div class="checkbox">
+                                                <input class="form-control" id="representative_status" name="representative_status" [ngModel]="RepresD.representative_status" #representative_status="ngModel" type="checkbox">
+                                                <label class="" for="representative_status"></label>
+                                            </div>
+                                    </div>
+                                </div>                     
+                         
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success btn-fill" >{{ isEdit == false ? 'AGREGAR' : 'ACTUALIZAR'  }}</button>
+            <button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">Cerrar</button>
+        </div>
+   </form>
+
+      </div>
+    </div>
+  </div>
+  <!-- model nuevo registro fin -->
+ 
+    
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="content">
+                            <div class="fresh-datatables">
+                                <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th *ngFor="let item of dataTable.headerRow" >{{ item }}</th>
+                                            <th class="disabled-sorting text-right">Opciones</th>
+                                        </tr>
+                                    </thead>
+    
+                                    <tbody id="tBodyLevel">
+                                        <tr *ngFor="let RepresD of data_representative">
+                                            <td>{{RepresD.representative_identification}}</td>
+                                            <td>{{RepresD.representative_name}}</td>
+                                            <td>{{RepresD.representative_lastname}}</td>
+                                            <td>{{RepresD.representative_email}}</td>
+                                            <td>{{RepresD.representative_phone}}</td>
+                                            <td>
+                                                <ng-container *ngIf="RepresD.representative_status==true; else elseEstado">
+                                                    <button class="btn btn-success btn-fill btn-xs">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                </ng-container>
+                                                <ng-template #elseEstado>
+                                                    <button class="btn btn-danger btn-fill btn-xs">
+                                                        <i class="fa fa-close"></i>
+                                                    </button>
+                                                </ng-template>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class="btn-group">
+                                                    <button (click)="editRepres(RepresD)"
+                                                        class="btn btn-fill btn-xs btn-warning btn-icon" data-toggle="modal"
+                                                        data-target="#exampleModalCenter">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button (click)="deleteRepres(RepresD)"
+                                                        class="btn btn-fill btn-xs btn-danger btn-icon">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

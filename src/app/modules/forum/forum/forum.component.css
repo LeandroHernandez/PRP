@@ -1,0 +1,8 @@
+.cssRespuestas {
+    justify-content: flex-start; 
+    display: flex; 
+    float: inline-start;
+    background-color: #109CF1;
+    color: #FFFFFF;
+    border-radius: 10px;
+}

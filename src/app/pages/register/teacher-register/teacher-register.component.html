@@ -1,0 +1,229 @@
+<mat-horizontal-stepper [linear]="true">
+	<mat-step [stepControl]="teacherForm">
+		<ng-template matStepLabel>Profesor</ng-template>
+		<div class="row">
+			<div class="col-md-6 col-sm-12 text-justify div-info">
+				<h3>Registro Profesor</h3>
+				<br>
+				<p>
+					Con estos datos el profesor podrá entrar a su cuenta, monitorear y administrar las sesiones de la
+					plataforma.
+				</p>
+			</div>
+			<div class="col-md-6 col-sm-12 text-center" id="div-codigo">
+				<label for="inputStudentCode">AGREGAR CÓDIGO DE PROFESOR</label>
+				<br>
+				<input id="inputStudentCode"
+				       (keyup.enter)="get_teacher_by_id(this.teacherD.teacher_id)"
+				       [disabled]="input_enabled"
+				       [(ngModel)]="this.teacherD.teacher_id">
+				<h3><strong>Profesor: </strong>{{this.teacherD.teacher_name}} {{this.teacherD.teacher_surname}}</h3>
+			</div>
+		</div>
+		<form autocomplete="off" [formGroup]="teacherForm">
+			<div class="row">
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherName">Nombres</label>
+					<input type="text"
+					       class="form-control"
+					       id="inputTeacherName"
+					       formControlName="teacher_name"
+					       [(ngModel)]="teacherD.teacher_name">
+					<small
+						*ngIf="(teacher_name.dirty || teacher_name.touched) && teacher_name.invalid && teacher_name.errors.required"
+						class="text-danger">
+						Nombre es requerido
+					</small>
+					<small
+						*ngIf="(teacher_name.dirty || teacher_name.touched) && teacher_name.invalid && teacher_name.errors.minlength"
+						class="text-danger">
+						Nombre demasiado corto
+					</small>
+				</div>
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherSurname">Apellidos</label>
+					<input type="text"
+					       class="form-control"
+					       id="inputTeacherSurname"
+					       formControlName="teacher_surname"
+					       [(ngModel)]="teacherD.teacher_surname">
+					<small
+						*ngIf="(teacher_surname.dirty || teacher_surname.touched) && teacher_surname.invalid && teacher_surname.errors.required"
+						class="text-danger">
+						Apellido es requerido
+					</small>
+					<small
+						*ngIf="(teacher_surname.dirty || teacher_surname.touched) && teacher_surname.invalid && teacher_surname.errors.minlength"
+						class="text-danger">
+						Apellido demasiado corto
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherIdentification">Cédula</label>
+					<input type="text"
+					       class="form-control"
+					       id="inputTeacherIdentification"
+					       formControlName="teacher_identification"
+					       [(ngModel)]="teacherD.teacher_identification">
+					<small
+						*ngIf="(teacher_identification.dirty || teacher_identification.touched) && teacher_identification.invalid && teacher_identification.errors.required"
+						class="text-danger">
+						Cédula es requerido
+					</small>
+				</div>
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherPhone">Teléfono</label>
+					<input type="text"
+					       class="form-control"
+					       id="inputTeacherPhone"
+					       formControlName="teacher_phone"
+					       [(ngModel)]="teacherD.teacher_phone">
+					<small
+						*ngIf="(teacher_phone.dirty || teacher_phone.touched) && teacher_phone.invalid && teacher_phone.errors.required"
+						class="text-danger">
+						Teléfono es requerido
+					</small>
+					<small
+						*ngIf="(teacher_phone.dirty || teacher_phone.touched) && teacher_phone.invalid && teacher_phone.errors.pattern"
+						class="text-danger">
+						Formato de teléfono incorrecto
+					</small>
+					<small
+						*ngIf="(teacher_phone.dirty || teacher_phone.touched) && teacher_phone.invalid && teacher_phone.errors.minlength"
+						class="text-danger">
+						Teléfono demasiado corto
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherEmail1">Email</label>
+					<input type="email"
+					       class="form-control"
+					       id="inputTeacherEmail1"
+					       formControlName="teacher_email"
+					       [(ngModel)]="teacherD.teacher_email">
+					<small
+						*ngIf="(teacher_email.dirty || teacher_email.touched) && teacher_email.invalid && teacher_email.errors.required"
+						class="text-danger">
+						Correo es requerido
+					</small>
+					<small
+						*ngIf="(teacher_email.dirty || teacher_email.touched) && teacher_email.invalid && teacher_email.errors.pattern"
+						class="text-danger">
+						Formato de correo incorrecto
+					</small>
+				</div>
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherEmail2">Repetir Email</label>
+					<input type="email"
+					       class="form-control"
+					       id="inputTeacherEmail2"
+					       formControlName="teacher_email1">
+					<small *ngIf="teacher_mail2_not_valid" class="text-danger">
+						Correos no coinciden
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherPass1">Contraseña</label>
+					<input type="password"
+					       class="form-control"
+					       id="inputTeacherPass1"
+					       formControlName="teacher_pass"
+					       [(ngModel)]="teacherD.teacher_pass">
+					<small
+						*ngIf="(teacher_pass.dirty || teacher_pass.touched) && teacher_pass.invalid && teacher_pass.errors.required"
+						class="text-danger">
+						Contraseña es requerida
+					</small>
+				</div>
+				<div class="form-group col-md-6 register-form-input">
+					<label for="inputTeacherPass2">Confirmar Contraseña</label>
+					<input type="password"
+					       class="form-control"
+					       id="inputTeacherPass2"
+					       formControlName="teacher_pass1">
+					<small *ngIf="teacher_pass2_not_valid" class="text-danger">
+						Contraseñas deben ser iguales
+					</small>
+				</div>
+				<div class="custom-control text-center">
+					<input type="checkbox"
+					       class="custom-control-input"
+					       id="termsCheck"
+					       formControlName="teacher_terms"
+					       [(ngModel)]="teacherD.teacher_terms">
+					<label class="custom-control-label" for="termsCheck">
+						Acepto los <a href="javacript:void(0)">
+						<button data-toggle="modal"
+						        data-target="#ModalViewPdf" style="border: none; background-color: transparent;"> Terminos y
+							condiciones
+						</button>
+					</a> de uso y
+						<a href="javascript:void(0)">politicas de privacidad</a>
+					</label>
+				</div>
+			</div>
+			<div class="text-center p-5">
+				<button class="btn btn-fill btn-success btn-lg"
+				        (click)="checkForm()"
+				        [disabled]="!submitted || !teacherD.teacher_terms"
+				        matStepperNext>Siguiente
+				</button>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>Finalizar</ng-template>
+		<div class="text-center">
+			<h1>Bienvenido</h1>
+			<hr>
+			<p class="text-center">
+							<span>
+								Para finalizar el registro exitosamente presione el botón Finalizar! <br>
+								Y podrás ingresar a tu cuenta para disfrutar de la experiencia dydactico.
+							</span>
+			</p>
+		</div>
+		<div class="text-center p-5">
+			<button class="btn btn-fill btn-lg p-3 m-3" matStepperPrevious>Atrás</button>
+			<button class="btn btn-fill btn-lg btn-success p-3" (click)="saveInfo()">Finalizar</button>
+		</div>
+	</mat-step>
+</mat-horizontal-stepper>
+<div class="modal fade" id="ModalViewPdf" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span class="modal-title"> Terminos y condiciones </span>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="content modal-content-form">
+								<div class="content">
+										<embed src="https://firebasestorage.googleapis.com/v0/b/dydactico.appspot.com/o/%20termsAndConditions%2FTe%CC%81rminos%20y%20Condicionesdydactico.pdf?alt=media&token=5dac73d0-b000-47cc-8091-01c7a5fa9d9e" type="application/pdf" width="100%" height="600px" />
+								</div>
+							</div>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fill btn-xs btn-danger btn-icon"
+				        data-dismiss="modal">Cerrar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

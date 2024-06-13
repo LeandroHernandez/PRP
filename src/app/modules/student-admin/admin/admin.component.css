@@ -1,0 +1,19 @@
+.titulo{
+  font-weight: bold;
+}
+
+.avatar {
+  border-radius: 50%;
+  display: grid;
+  width: 30vh;
+  height: 30vh;
+  background-color: #FF6D7A;
+  margin: 0;
+  place-items: center center;
+}
+
+.avatar-text {
+  color: white;
+  font-weight: bold;
+  font-size: 16pt;
+}

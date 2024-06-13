@@ -1,0 +1,99 @@
+<div class="card card-wizardd">
+    <div id="myCarousel" class="carousel slide body-content" data-ride="carousel">
+        <ul class="nav">
+            <li data-target="#myCarousel" [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"
+                *ngFor=" let questionOption of questionsFromEvaluation; let i = index">
+            </li>
+        </ul>
+        <div class="tab-content content-questions card" >
+            
+            <div class="tab-pane carousel-inner" role="listbox"
+                *ngFor=" let questionOption of questionsFromEvaluation; let i = index"
+                [ngClass]="i == 0 ? 'item active' : 'item'">
+	              <!-- Timer-->
+                <div *ngIf="questionOption.question_time !== 'Sin limite'" class="row" style="height: 23vh; line-height : 25px; padding: 8px;">
+                    <span
+                        *ngIf="questionOption.question_time !== 'Sin limite' && questionOption.question_time !== 'Otro'"
+                        id="timer">00:<span *ngIf="count_second < 10">0</span>{{count_second}}</span>
+                    <span
+                        *ngIf="questionOption.question_time !== 'Sin limite' && questionOption.question_time === 'Otro'"
+                        id="timer">0{{count_minutes}}:<span *ngIf="count_second < 10">0</span>{{count_second}}</span>
+                </div>
+	              <!-- Row pregunta e imagen -->
+                <div class="row" style="margin: 0 auto; max-height: 35vh;">
+                    <div [ngClass]="questionOption.question_image? 'col-sm-6': 'col-sm-12'" style="font-size: 20px; font-style: normal; color: rgb(104, 101, 101); display: grid;
+                    margin: 0; place-items: center center; max-height: 20vh">
+	                    <span >{{questionOption.option_description}}</span>
+                    </div>
+                    <div *ngIf="questionOption.question_image" class="col-sm-6 text-center"
+                        style="height: 35vh; max-height: 35vh; object-fit: cover; background-size: auto; overflow: scroll">
+                        <img *ngIf="questionOption.question_image" class="img-responsive" [src]="questionOption.question_image">
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 0 !important;" >
+                    <div class="panel panel-default" style="margin-top: 0 !important;" >
+                        <div class="panel-body ">
+                            <!-- OPCIONES DE SELECCIÓN MULTIPLE Y OPCIÓN MULTIPLE-->
+                            <div class="row content-options ">
+                                <div *ngFor=" let optFromQ of arrayItemsWithQuestion[i]; let j = index"
+                                    class=" content-item">
+                                    <ng-container>
+                                        <div *ngIf="questionOption.option_name !== 'Respuesta Específica'"
+                                            id="option_{{i}}_{{j}}"
+                                            [ngStyle]="disableQuestion?{'background-color': '#c1c1c1'}:{}"
+                                            style=" align-items: center;" class="card contenedor"
+                                            (click)="disableQuestion?null:checked.click()" style="cursor: pointer">
+                                            <div class="text-center" style="border: 1px solid #3f3f3f !important;">
+                                                <input id="{{optFromQ.option_item_id}}" class="my_checkbox " #checked
+                                                    (change)="onChangeReply($event.target.checked,optFromQ, i, j); doAlgo(arrayItemsWithQuestion[i])"
+                                                    type="checkbox" [hidden]="true">
+
+                                                <img *ngIf="optFromQ.option_item_image"
+                                                    class="rounded mx-auto d-block is-image-option"
+                                                    [src]="optFromQ.option_item_image" style="margin-top: 5px ;">
+                                                <p *ngIf="optFromQ.option_item_image" class="category"
+                                                    style="text-align: center;justify-items: center;font-size: 18px; color: rgb(97, 94, 94);">
+                                                    {{optFromQ.option_item_description | uppercase}}
+                                                </p>
+
+                                                <p *ngIf="!optFromQ.option_item_image" class="category text-middle"
+                                                    style="text-align: center;justify-items: center; font-size: 18px; color: rgb(97, 94, 94);">
+                                                    {{optFromQ.option_item_description | uppercase}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- OPCIONES DE RESPUESTA ESCRITA-->
+                                        <div *ngIf="questionOption.option_name === 'Respuesta Específica'">
+                                            <input [disabled]="isDisabled" id="{{optFromQ.option_item_id}}" name="{{optFromQ.option_item_id}}"
+                                                type="text" class="form-control"
+                                                placeholder="Escribe tu respuesta {{j + 1}} aquí"
+                                                [(ngModel)]="responseArray[j]" (keyup)="validateAnswer(i , j)">
+                                                <!--<a *ngIf="j + 1 === arrayItemsWithQuestion[i].length" class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                  </a>-->
+                                                  <!--<a *ngIf="j + 1 === arrayItemsWithQuestion[i].length" class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                                     <button 
+                                                        (click)="saveAnswer()" type="button" class="btn btn-info btn-fill"
+                                                        style="margin-left: 10px;">Responder</button>
+                                                  </a>-->
+                                               
+                                             
+                                    
+                                        </div>
+                                       
+                                    </ng-container>
+                                </div>
+                                  <button *ngIf="questionOption.option_name === 'Respuesta Específica' " (click)="click() " style="margin-left: 10px;" type="button" class="btn btn-info btn-fill"
+                                >Responder</button>
+                                <!--<button *ngIf="questionOption.option_name === 'Respuesta Específica'" (click)="saveAnswer() " type="button" class="btn btn-info btn-fill"
+                                >Siguiente</button>-->
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

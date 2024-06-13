@@ -1,0 +1,82 @@
+<div class="cardheaderNames">
+    <div style="margin-left: auto; margin-right: auto; display: flex; width: 90%;">
+        <!-- <img src="{{arrayMaterias.icon}}" style="margin-top: 17px; width: 65px;" alt=""> -->
+        <div class="cssNames">
+            <!-- {{arrayMaterias.subject_name}} -->
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table mat-table [dataSource]="dataSource" matSort>
+
+                            <ng-container matColumnDef="Material" class="makegray">
+                                <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 166px;" mat-sort-header> </th>
+                                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Completado">
+                                <th mat-header-cell *matHeaderCellDef class="cssColumTable" style="text-align: center" mat-sort-header> Completado </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="content text-center ">
+                                        {{element.completado}} %
+                                        <div class="barBackgroudDetail">
+                                            <div [ngStyle]="{'width.%':element.completado}"
+                                                class="barprogresDetail"> </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Duracion">
+                                <th mat-header-cell *matHeaderCellDef class="cssColumTable" style="text-align: center" mat-sort-header> Duracion </th>
+                                <td mat-cell *matCellDef="let element" > {{element.duracion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Errores">
+                                <th mat-header-cell *matHeaderCellDef class="cssColumTable" style="text-align: center" mat-sort-header> Errores </th>
+                                <td mat-cell *matCellDef="let element"> {{element.errores}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Aciertos">
+                                <th mat-header-cell *matHeaderCellDef class="cssColumTable" style="text-align: center" mat-sort-header> Aciertos </th>
+                                <td mat-cell *matCellDef="let element"> {{element.aciertos}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="FechaHora">
+                                <th mat-header-cell *matHeaderCellDef class="cssColumTable" style="text-align: center" mat-sort-header> Fecha - Hora
+                                </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechahora}} </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <div class="tableFooter">
+                            <div style="margin-left: auto; margin-right: auto; display: flex; width: 89%;">
+                                <div class="cssfooterNames">
+                                    Total Completado    
+                                </div>
+                                <div class="content text-center " style="width: 75%;">
+                                    70 %
+                                    <div class="barBackgroudDetail">
+                                        <div [ngStyle]="{'width.%':70}"
+                                            class="barprogresDetail"> </div>
+                                    </div>
+                                </div>
+                                <div class="cssfooterNames">
+                                    01/06/20 09:05am    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

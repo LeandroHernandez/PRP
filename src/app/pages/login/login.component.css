@@ -1,0 +1,88 @@
+* {
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto;
+}
+
+.card-footer {
+  width: 100%;
+  background: #ffffff;
+}
+
+.card-footer h3{
+  cursor: pointer;
+}
+
+.login-form {
+  width: 40vw;
+  padding: 15px 50px;
+}
+
+.login-form-input {
+  width: 100%;
+  padding: 15px 0px;
+}
+
+/* background image*/
+.wrapper-full-page {
+  background: url(../../../assets/img/Landingpage/1_5760X2340.jpg) 50% 50%;
+  background-size: cover;
+}
+
+/* full screen div */
+#div-login {
+  display: grid;
+  height: 90vh;
+  margin: 0;
+  place-items: center center;
+  background: linear-gradient(90deg, rgba(32, 133, 165, 0.5) 0%, rgba(27, 162, 238, 0.5) 100%) center center;
+  background-size: 100% 100%;
+}
+
+/* middle screen modal */
+#modal-login {
+  background: #ffffff;
+  width: 30vw;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* media queries */
+@media (min-width: 5px) and (max-width: 499px) {
+
+  #modal-login {
+    width: 95vw;
+  }
+
+  .login-form {
+    width: 95vw;
+    padding: 15px 50px;
+  }
+
+}
+
+@media (min-width: 500px) and (max-width: 768px) {
+
+  #modal-login {
+    width: 95vw;
+  }
+
+  .login-form {
+    width: 95vw;
+    padding: 15px 50px;
+  }
+
+}
+
+@media (min-width: 769px) and (max-width: 990px) {
+
+  #modal-login {
+    width: 95vw;
+  }
+
+  .login-form {
+    width: 95vw;
+    padding: 15px 50px;
+  }
+
+}

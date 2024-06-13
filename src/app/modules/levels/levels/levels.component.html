@@ -1,0 +1,155 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div style="display: flex; flex-direction: row;justify-content: flex-end; margin: 15px;">
+            <button type="submit" class="btn btn-success btn-fill" data-toggle="modal" data-target="#exampleModalCenter"
+                (click)="addRegisterLevel(level)">
+                Agregar nivel
+            </button>
+        </div>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEdit == false ? 'REGISTRAR NIVEL' : 'EDITAR NIVEL'  }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="content">
+                                        <form #formularioLevel="ngForm" method="get" action="/" class="form-horizontal"
+                                            novalidate
+                                            (ngSubmit)="saveLevel(formularioLevel.value, formularioLevel.valid)">
+                                            <div class="form-group">
+                                                <div class="col-sm-4">
+                                                    <label class="control-label">ID<span class="star">*</span></label>
+                                                    <input readonly id="level_id" type="text" class="form-control"
+                                                        name="level_id" placeholder="ej. Inicial"
+                                                        [ngModel]="level.level_id" required #level_id="ngModel">
+                                                    <small
+                                                        [hidden]="level_id.valid || (level_id.pristine && !formularioLevel.submitted)"
+                                                        class="text-danger">
+                                                        Obligatorio
+                                                    </small>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="control-label">Nivel<span
+                                                            class="star">*</span></label>
+                                                    <input id="level_name" type="text" class="form-control"
+                                                        name="level_name" placeholder="ej. Inicial"
+                                                        [ngModel]="level.level_name" required #level_name="ngModel">
+                                                    <small
+                                                        [hidden]="level_name.valid || (level_name.pristine && !formularioLevel.submitted)"
+                                                        class="text-danger">
+                                                        Obligatorio /<i> sin carácteres especiales </i>
+                                                    </small>
+                                                </div><br>
+                                                <label class="col-sm-1 control-label">Estado<span
+                                                        class="star">*</span></label>
+                                                <div class="checkbox col-sm-1">
+                                                    <div class="checkbox">
+                                                        <input id="level_status" name="level_status"
+                                                            [ngModel]="level.level_status" #level_status="ngModel"
+                                                            type="checkbox">
+                                                        <label class="" for="level_status">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <button type="submit"
+                                                        class="btn btn-success btn-fill">{{ isEdit == false ? 'AGREGAR' : 'EDITAR'  }}</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon"
+                            data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- DATA TABLE NIVEL-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="content">
+                        <div class="fresh-datatables">
+                            <table id="datatablesLevel" class="table table-striped table-no-bordered table-hover"
+                                cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let item of dataTable.headerRow">{{ item }}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tBodyLevel">
+                                    <tr *ngFor="let level of arrayLevels">
+                                        <td>{{level.level_id}}</td>
+                                        <td>{{level.level_name}}</td>
+                                        <td>
+                                            <ng-container *ngIf="level.level_status==true; else elseEstado">
+                                                <button class="btn btn-success btn-fill btn-xs">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            </ng-container>
+                                            <ng-template #elseEstado>
+                                                <button class="btn btn-danger btn-fill btn-xs">
+                                                    <i class="fa fa-close"></i>
+                                                </button>
+                                            </ng-template>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="btn-group">
+                                                <button (click)="editLevel(level)"
+                                                    class="btn btn-fill btn-xs btn-warning btn-icon" data-toggle="modal"
+                                                    data-target="#exampleModalCenter">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button (click)="deleteLevel(level)"
+                                                    class="btn btn-fill btn-xs btn-danger btn-icon">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+
+    <!-- <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 card tex-center" *ngFor="let item of nvideos">
+                <video  class="video">
+                    <source src="https://www.youtube.com/watch?v=CZveWWxLTKI&feature=youtu.be" type="video/mp4">
+                </video> -->
+    <!-- <iframe width="420" height="345" src="https://www.youtube.com/watch?v=CZveWWxLTKI&feature=youtu.be">
+                </iframe> -->
+
+    <!-- <video width="80%" height="" [src]="getVideoIframe('https://www.youtube.com/watch?v=CZveWWxLTKI&feature=youtu.be')" frameborder="0"
+                    
+                    allowfullscreen></video> -->
+    <!-- </div>
+        </div>
+
+    </div> -->
+</div>

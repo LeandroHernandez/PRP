@@ -1,0 +1,359 @@
+<div class="header-title background{{Subject.color}}" *ngIf="Subject">
+	<img src="{{Subject.icon}}" alt="" style="margin: 5px; height: 50px;">
+	<h3 class="banner-title"><strong style="color: white;">{{Subject.subject_name}} </strong></h3>
+</div>
+
+<div class="main-content">
+	<div class="container-fluid">
+		<div class="row card"><br>
+			<div class="col-sm-4">
+				<input [(ngModel)]="essay.essay_name" type="text" class="form-control" id="evaluation_name"
+				       name="evaluation_name" placeholder="Nombre de la actividad">
+				<small [hidden]="essay.essay_name " class="text-danger">
+					Campo Obligatorio
+				</small>
+			</div>
+			<div class="col-sm-2">
+				<button [disabled]="essay.essay_name == '' "
+				        (click)="addEssay()"
+				        class="btn btn-success btn-fill">
+					{{id_essay == "" ? 'Crear' : 'Editar'}}
+				</button>
+			</div>
+			<div style="float: right; margin-right: 5px;">
+				<button (click)="returnShowPracticesList()" class="btn btn-primary btn-fill">
+					<i class="fa fa-bars" aria-hidden="true"></i> Listar
+				</button>
+			</div>
+			<br><br><br>
+		</div>
+		<div class="card row">
+			<div class="card-header" *ngIf="id_essay !== ''; else elseTemplate">
+				<div class="col-md-6" style=" min-height: 60px; padding-top: 10px;">
+					<h3> {{essay.essay_name}}</h3> 
+				</div>
+				<div class="fresh-datatables col-md-6 " style="float: right;" style=" min-height: 60px;">
+					<div class=" nav navbar-nav navbar-right" style="width: 200px;">
+						<button class="btn btn-primary btn-fill"
+						        data-toggle="modal"
+						        data-target="#ModalAddEssayItem"
+						        (click)="addEssayItem()"
+						        [disabled]="isOptionSave || !isNewActivity"
+						        [title]="isOptionSave || !isNewActivity? 'Solo puede agregar una descripción a la actividad': ''">
+							<i class="fa fa-plus-circle fa-md" aria-hidden="true"></i> Agregar Detalle.
+						</button>
+					</div>
+				</div>
+			</div>
+			
+			<ng-template #elseTemplate>
+				<div class="card-header text-center">
+					<div class="card-danger-sp">
+						<i class="fa fa-info-circle fa-ico"></i><br><br>
+						<h2>Por favor cree una nueva actividad</h2>
+					</div>
+				</div>
+			</ng-template>
+		</div>
+		
+		<div *ngIf="optionQuestionSelect" class="row">
+			<div class="card card-option">
+				<div class="panel panel-default">
+					<div class="panel-footer">
+						<div class="row">
+							<div class="col-sm-9">
+								{{optionQuestionSelect.option_description}}
+							</div>
+							<div class="col-sm-1"
+								 *ngIf="enableRemoveRubric()">
+								<i (click)="deleteOption(optionQuestionSelect)"
+								   class="fa fa-trash fa-action-option"></i>
+							</div>
+							<div class="col-sm-1"
+								 *ngIf="enableRemoveRubric()">
+								<i data-toggle="modal"
+								   data-target="#ModalAddEssayItem"
+								   class="fa fa-edit fa-action-option"></i>
+							</div>
+							<div class="col-sm-1"
+								 *ngIf="!enableRemoveRubric()">
+								<i data-toggle="modal"
+								   data-target="#ModalAddEssayItem"
+								   class="fa fa-eye fa-action-option"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+		
+		<!-- MODAL NUEVAS PREGUNTAS -->
+		<div class="modal fade" id="ModalAddEssayItem" tabindex="-1" role="dialog"
+		     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-practice" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" (click)="!isOptionSave? deleteOption(optionQuestionSelect): ''" class="close" data-dismiss="modal">&times;</button>
+						
+						<h3 class="modal-title"><i class="fa fa-plus"></i> AGREGAR PREGUNTA </h3>
+					
+					</div>
+					<div class="modal-body">
+						<div class="row" *ngIf="optionQuestionSelect">
+							<!-- MODAL TEXTO ABIERTO -->
+							<div class="col-md-6">
+								<div class="card  card-content-practice-option">
+									<div class="panel-footer content modal-content-form">
+										<div class="row">
+											<div class="col-sm-6">
+												Texto Abierto
+											</div>
+											<div class="col-sm-6 ">
+												Pregunta
+											</div>
+										</div>
+									</div>
+									<div class="panel-body content modal-content-form">
+										<div class="row">
+											<div class="form-group col-md-10">
+												<input type="text" class="form-control" id="option_description"
+												       name="option_description"
+												       aria-describedby="option_description"
+												       placeholder="Escribe las indicaciones aquí"
+												       [(ngModel)]="optionQuestionSelect.option_description">
+											</div>
+											
+											<div class="form-group col-md-2 text-center">
+												<label for="option_image">
+													<button class="btn" (click)="fileuploadIMG.click()" title="Adjuntar Foto">
+														<i class="fa fa-picture-o" aria-hidden="true"></i>
+													</button>
+												</label>
+												<input (change)="onChangeImage($event, true)" type="file"
+												       style="display:none;" accept="image/*" class="form-control-file"
+                               #fileuploadIMG id="option_image" name="option_image">
+												
+												<label for="option_file">
+													<button class="btn" (click)="fileuploadPDF.click()" title="Adjuntar Documento">
+														<i class="fa fa-paperclip" aria-hidden="true"></i>
+													</button>
+												</label>
+												<input (change)="onChangeImage($event, false)" type="file"
+												       style="display:none;" accept="application/pdf"
+												       class="form-control-file"
+                               #fileuploadPDF id="option_file" name="option_file">
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="form-group col-md-10 text-center">
+												<button class="btn btn-fill btn-block"
+														[disabled]="!enableRemoveRubric()"
+												        [class.btn-success]="isRubricActive"
+												        (click)="isRubricActive = !isRubricActive">
+													{{isRubricActive? 'Rúbrica Activada' : 'Rúbrica Desactivada'}}
+												</button>
+											</div>
+											<div class="form-group col-md-2 text-center">
+												<label for="option_image">
+													<!--<button class="btn" (click)="editRubric()" [disabled]="!isRubricSave" data-toggle="modal" data-target="#ModalRubricas">
+														<i class="fa fa-edit" aria-hidden="true"></i>
+													</button>-->
+													<button class="btn"
+															(click)="editRubric()"
+															[disabled]="!isRubricActive"
+															data-toggle="modal"
+															data-target="#ModalRubricas">
+														<i class="fa fa-edit" aria-hidden="true"></i>
+													</button>
+												</label>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group form-check">
+													<input type="checkbox" class="form-check-input" id="exampleCheck1"
+													       [(ngModel)]="optionQuestionSelect.option_attached_required">
+													<label class="form-check-label" for="exampleCheck1">Solicitar Adjunto al Alumno</label>
+												</div>
+												<div class="form-group form-check" *ngIf="optionQuestionSelect.option_attached_required">
+													<input type="checkbox" class="form-check-input" id="exampleCheck3"
+													       [(ngModel)]="optionQuestionSelect.option_attached_multiple">
+													<label class="form-check-label" for="exampleCheck3">Multiples archivos</label>
+												</div>
+												<div class="form-group form-check">
+													<input type="checkbox" class="form-check-input" id="exampleCheck2"
+													       [(ngModel)]="optionQuestionSelect.option_text_required">
+													<label class="form-check-label" for="exampleCheck2">Usar Editor de Texto</label>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-3">
+												<select class="browser-default custom-select form-control" name="time_option"
+												        [(ngModel)]="optionQuestionSelect.question_time"
+												        (change)="onChangeTime($event)"
+												        ngDefaultControl>
+													<option value=0 disabled selected>Selecciona el tiempo</option>
+													<option *ngFor="let time of timeArray" [value]="time">{{ time }}
+														<span *ngIf="time !== 'Otro' && time !== 'Sin limite'">Seg.</span></option>
+												</select>
+												<div *ngIf="addOtherTime">
+													<input [(ngModel)]="otherTime" type="number" class="form-control"
+													       name="evaluation_name" placeholder="Ingresa el tiempo" (keyup)="onKey($event)" min="0" max="9">
+												</div>
+											</div>
+											<div class="col-md-3">
+												<select class="browser-default custom-select form-control" name="question_scoring"
+												        [(ngModel)]="essayRubric.rubric_calification"
+												        ngDefaultControl>
+													<option value='' disabled selected>Selecciona el Puntaje</option>
+													<option *ngFor="let scoring of scoringArrayEvaluation" [ngValue]="scoring">{{scoring}} pts.
+													</option>
+												</select>
+											</div>
+											<div class="col-md-6">
+												<button class="btn btn-fill" (click)="!isOptionSave? deleteOption(optionQuestionSelect): ''" data-dismiss="modal">
+													Cancelar
+												</button>
+												<button [disabled]="!optionQuestionSelect.option_attached_required && !optionQuestionSelect.option_text_required || !enableRemoveRubric()"
+												        class="btn btn-success btn-fill"
+												        (click)="isOptionSave? saveOptionItem(false): saveOptionItem(true)">
+													{{isOptionSave? 'Editar': 'Guardar'}}
+												</button>
+											</div>
+										</div>
+									
+									</div>
+								</div>
+							</div>
+							<!-- VISUALIZAR PREGUNTA RESPUESTA ESCRITA-->
+							<div class="col-md-6">
+								<div class="card card-content-practice-option ">
+									<div class="content modal-content-form">
+										<div class="content text-center">
+											<h1><b>{{!optionQuestionSelect.option_description ? 'Pregunta' : optionQuestionSelect.option_description}}</b>
+											</h1>
+											<hr>
+											
+											<figure *ngIf="imageSrc !== '' && file === undefined">
+												<img class="is-rounded is-image"
+												     *ngIf="!imageSrc && !optionQuestionSelect.question_image && !file"
+												     src="assets\img\image-not-found.png">
+												<img *ngIf="imageSrc && optionQuestionSelect.question_image"
+												     class="rounded mx-auto d-block is-image" [src]="imageSrc">
+												<img *ngIf="imageSrc && !optionQuestionSelect.question_image"
+												     class="rounded mx-auto d-block is-image" [src]="imageSrc">
+												<img *ngIf="!imageSrc && optionQuestionSelect.question_image"
+												     class="rounded mx-auto d-block is-image"
+												     [src]="optionQuestionSelect.question_image">
+											</figure>
+											<i *ngIf="file !== undefined "  class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i>  <h1 *ngIf="file !== undefined" >  {{nameFile}}</h1>
+											<button *ngIf="imageFile !== undefined || file !== undefined" (click)="cleanFiles()" style="border: none; background-color: transparent;"><i  class="fa fa-trash-o fa-lg" style="color:red; margin-top: 5px; cursor: pointer;"  aria-hidden="true"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- MODAL AGREGAR RUBRICAS -->
+		<div class="modal fade" id="ModalRubricas" tabindex="-1" role="dialog"
+		     aria-labelledby="exampleModalCenterTitle" aria-hidden="true" *ngIf="optionQuestionSelect">
+			<div class="modal-dialog modal-dialog-centered modal-practice" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						
+						<h3 class="modal-title"><i class="fa fa-plus"></i> RÚBRICA /
+							TOTAL: {{essayRubric.rubric_calification}}</h3>
+					
+					</div>
+					<div class="modal-body">
+						
+						<div class="panel-body content modal-content-form">
+							<div class="row">
+								<div class="form-group col-md-4">
+									<input type="text" class="form-control" id="rubric_name"
+									       name="rubric_name"
+									       aria-describedby="rubric_name"
+									       placeholder="Título de la rubrica"
+									       [(ngModel)]="essayRubric.rubric_name">
+								</div>
+								
+								<div class="form-group col-md-8">
+									<input type="text" class="form-control" id="rubric_des"
+									       name="rubric_des"
+									       aria-describedby="rubric_des"
+									       placeholder="Indicaciones"
+									       [(ngModel)]="essayRubric.rubric_des">
+								</div>
+							</div>
+							
+							<div *ngIf="rubricPoints" class="row">
+								<table class="table-responsive table-borderless">
+									<thead>
+									<tr>
+										<th>Criterios / Puntaje</th>
+										<th *ngFor="let point of rubricPoints; let i = index">
+											<input type="text" class="form-control" (keyup)="checkPoints(); assignPoint(i, $event)" [(ngModel)]="point.rubric_point_calification">
+										</th>
+										<th>
+											<span>
+												<i class="fa fa-trash text-danger"
+												   style="cursor: pointer"
+												   title="Borrar Columna"
+												   *ngIf="rubricPoints.length > 1"
+												   (click)="deleteRubricPoints()"></i>
+												<i class="fa fa-plus" style="cursor: pointer" title="Agregar Columna" (click)="addRubricPoints()"></i>
+											</span>
+										</th>
+									</tr>
+									<tr *ngFor="let judge of rubricJudgements; let i = index">
+										<td>
+											<input type="text" class="form-control" [(ngModel)]="judge.rubric_judgement_des">
+										</td>
+										<td *ngFor="let item of judge.rubric_judgement_items">
+											<input type="text" class="form-control" [(ngModel)]="item.rubric_judgement_item_des">
+										</td>
+									</tr>
+									<tr *ngIf="rubricJudgements">
+										<td>
+											<span>
+												<i class="fa fa-trash text-danger"
+												   style="cursor: pointer"
+												   title="Borrar Criterio"
+												   *ngIf="rubricJudgements.length > 1"
+												   (click)="deleteRubricJudgement()"></i>
+												<i class="fa fa-plus" style="cursor: pointer" title="Agregar Criterio" (click)="addRubricJudgement()"></i>
+											</span>
+											<!--<button class="btn btn-fill btn-danger">Eliminar último criterio <i
+												class="fa fa-trash"></i></button>
+											<button (click)="addRubricJudgement()" class="btn btn-fill btn-success">Agrega un criterio <i
+												class="fa fa-plus-o"></i></button>-->
+										</td>
+									</tr>
+									</thead>
+								</table>
+							</div>
+							<div class="row" style="display: flex; flex-direction: row-reverse;">
+								<div class="col-sm-6">
+									<button [disabled]="!isCorrect || !enableRemoveRubric()" class="btn btn-success btn-fill" (click)="saveRubric()">
+										{{!isRubricSave || isNewActivity ? 'Crear' : 'Editar'}} ....
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+</div>

@@ -1,0 +1,71 @@
+<div class="container">
+    <hr>
+    <div class="row card text-left" style="width: 70%;"><br>
+        <div class="col-sm-3 text-center card-danger-sp" style="width: 17%;">
+            <h2> Buscar </h2>
+        </div>
+        <div class="col-sm-9 text-center">
+            <input type="text" class="form-control" id="buscar" name="buscar" placeholder="Buscar"
+                style="border-radius: 16px; border-color: black;">
+        </div>
+    </div>
+
+    <div class="row card text-left" style="min-height: 77px; background-color: #E6F7FF; width: 100%;"><br>
+        <div class="col-sm-3 text-center card-danger-sp" style="width: 5%; font-size: 3em;">
+            <i class="fa fa-plus-circle fa-2" aria-hidden="true"></i>
+        </div>
+        <div class="col-sm-9 text-center">
+            <input type="text" class="form-control" id="buscar" name="buscar"
+                placeholder="Puedes añadir una nueva Consulta" style="background-color: #E6F7FF;
+                border: 1px solid #747474;">
+        </div>
+        <button type="button" class="btn btn-primary btn-fill">
+            Añadir
+        </button>
+    </div>
+
+    <div *ngFor="let questionForum of forumQuestionDocumentList;  let i = index">
+        <!-- card preguntas -->
+        <hr style="border-color: #9E9E9E; width: 95%; margin: 5px">
+        <div class="row card" style="min-height: 77px; width: 100%; margin-bottom: 20px;"><br>
+            <div class="col-sm-12">
+                <div class="col-sm-8 text-left card-danger-sp">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    {{questionForum.question}}
+                </div>
+                <div class="col-sm-3 text-rigth card-danger-sp"
+                    style="justify-content: flex-end; display: flex; float: inline-end;">
+                    {{questionForum.question_date}} {{questionForum.question_time}}
+                </div>
+            </div>
+            <div class="col-sm-12 text-center">
+                <input type="text" class="form-control" id="buscar" name="buscar"
+                    placeholder="Haz Click aquí para responder" style="border: 1px solid #747474;">
+            </div>
+            <div class="col-sm-2" style="justify-content: flex-end; display: flex; float: inline-end;">
+                <button type="button" class="btn btn-primary btn-fill">
+                    Enviar
+                </button>
+            </div>
+        </div>
+        <!-- card respuestas -->
+        <div class="row card col-sm-2 cssRespuestas text-center" style="margin-bottom: 5px;">
+            Todas las Respuestas
+        </div>
+        <br>
+        <div *ngFor="let answerForum of forumAnswerDocumentList;  let i = index">
+            <div class="row card" style="min-height: 57px; width: 100%; margin-bottom: 10px;"><br>
+                <div class="col-sm-12">
+                    <div class="col-sm-8 text-left card-danger-sp">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        {{answerForum.answer_user_name}} : {{answerForum.answer}}         
+                    </div>
+                    <div class="col-sm-3 text-rigth card-danger-sp"
+                        style="justify-content: flex-end; display: flex; float: inline-end;">
+                        fecha / hora
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

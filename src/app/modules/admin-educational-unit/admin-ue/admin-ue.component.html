@@ -1,0 +1,156 @@
+<div *ngIf="isAdminParallel">
+    <app-admin-parallel-of-edu-unit (isReturn)="return()" [isAdminParallel]="isAdminParallel" [parallel_id]="parallel_id" [grade_id]="grade_id "
+    [unitEducationalId] ="infoUser.unit_educational_id">
+    </app-admin-parallel-of-edu-unit>
+</div>
+
+<div *ngIf="!isAdminParallel" class="container-fluid" style="margin-top: 2%; ">
+    <div class="container-fluid">
+        <button type="submit" class="btn btn-primary btn-fill"
+            data-toggle="modal" data-target="#ModalAdminParallel">
+            <i class="fa fa-plus"></i> Agregar Paralelo
+        </button>
+        &nbsp;
+        <button type="submit" class="btn btn-primary btn-fill"
+                data-toggle="modal" data-target="#ModalAdminParallel">
+            <i class="fa fa-plus"></i> Configurar Pesos
+        </button>
+
+        <div class="modal fade" id="ModalAdminParallel" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> AGREGAR PARALELO </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="content modal-content-form">
+                                        <span>Grado</span>
+                                        <select [(ngModel)]="grade_id" class="form-control"
+                                                (change)="OnChangeGradeAdmin($event, true)">
+                                            <option value="" selected>Seleccione una opción.</option>
+                                            <option [selected]="grade_id == grade_id" *ngFor="let grade of arrayGrades"
+                                                    [value]="grade.grade_id">
+                                                {{grade.grade_name}}
+                                            </option>
+                                        </select>
+                                        <br>
+                                        <span>Paralelo</span>
+                                        <br>
+                                        <select [(ngModel)]="parallel" class="form-control">
+                                            <option value="" selected>Seleccione una opción.</option>
+                                            <option *ngFor="let parallel of arrayParallels"
+                                                    [value]="parallel.parallel_id">
+                                                {{parallel.parallel_name}}
+                                            </option>
+                                        </select>
+
+                                        <div class="col-sm-3"
+                                             style="margin-top: 20px; float: right;margin-right: 20px;">
+                                            <button type="submit" (click)="adminParalelo(parallel)"
+                                                    class="btn btn-primary btn-fill"><i class="fa fa-plus"></i>Agregar
+                                                Paralelo</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon"
+                                data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        &nbsp;
+        <button type="submit" class="btn btn-primary btn-fill"
+                data-toggle="modal" data-target="#ModalAdminAcademic">
+            <i class="fa fa-plus"></i> Periodo Lectivo
+        </button>
+
+        <!-- MODAL ADMINISTRAR PERIODO ACADEMICO-->
+        <div class="modal fade" id="ModalAdminAcademic" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> PERIODO LECTIVO </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="content modal-content-form">
+                                        <span>Periodo Lectivo</span>
+                                        <select [(ngModel)]="periodic_id" class="form-control"
+                                            (change)="OnChangePeriodicAdmin($event, true)">
+                                            <option value="0" disabled>Seleccione una opción.</option>
+                                            <option *ngFor="let periodic of arrayPeriodic"
+                                                [value]="periodic.academic_year_id">
+                                                {{periodic.academic_year_name}}
+                                            </option>
+                                        </select>
+                                        <br>
+                                        <div class="col-sm-3"
+                                            style="margin-top: 20px; float: right;margin-right: 20px;">
+                                            <button type="submit" (click)="adminPeriodic(periodic_id)"
+                                                class="btn btn-primary btn-fill"><i class="fa fa-plus"></i>Generar Nuevo Periodo Lectivo</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon"
+                            data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- CONTAINER CARDS PARALLELS FROM GRADES-->
+    <div class=" container-grades" style=" width: 100%;">
+        <div class=" panel-group " id="accordion">
+            <div *ngFor="let grade of arrayGrades, let i = index" class="col-sm-2 card panel container-grade">
+                <div class="panel-heading">
+                    <h4 class="panel-title" style="text-align: center;">
+                        <button style="background-color: transparent; border: none; text-align: center; "
+                            (click)="selectGrade(grade.grade_id)" [attr.data-target]="'#test' +[[grade.grade_id]]"
+                            class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
+                            {{grade.grade_name}}</button>
+                    </h4>
+                </div>
+                <div id="test{{grade.grade_id}}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="card-body">
+                            <div style="width: 60px;margin: 1px;" class="col-sm-6 "
+                                *ngFor="let parallel of arrayParallelsActive">
+                                <button style="width: 60px" (click)="selectParallel(parallel.parallel_id)"
+                                    class="btn btn-fill btn-block">{{parallel.parallel_name}}</button>
+                            </div>
+                            <button (click)="OnChangeGradeAdmin(grade.grade_id, false)"
+                                style="margin-left: 8%; margin-top: 2px;" type="submit"
+                                class="btn btn-primary btn-fill btn-xs" data-toggle="modal"
+                                data-target="#ModalAdminParallel">
+                                <i class="fa fa-plus"></i> Agregar Paralelo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

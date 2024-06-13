@@ -1,0 +1,72 @@
+<div id="bd-content" class="body-content">
+	<div class="row card matOne card-header-subject">
+		<div class="col-sm-8 text-left a-middle"><br>
+			<span class="title-subject">Actividades Pendientes</span>
+		</div>
+	</div>
+</div>
+
+<div class="row" *ngIf="!loading">
+	<div class="col-md-11" *ngIf="hasClasses, else noClasses">
+		<full-calendar deepChangeDetection="true" #calendar [options]="calendarOptions"></full-calendar>
+	</div>
+	<ng-template #noClasses>
+		<div class="col-md-12 text-center">
+			<h3>No tiene pendientes.</h3>
+		</div>
+	</ng-template>
+</div>
+
+<!-- MODAL ACTIVIDAD DEL ESTUDIANTE -->
+<div class="modal fade" id="modalCalendar" tabindex="-1" role="dialog" aria-labelledby="modalCalendar"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header" *ngIf="selectedClase">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel" style="font-weight: bold"> Sesión: {{selectedClase.className}}
+				</h4>
+			</div>
+			<div class="modal-body" style="position: initial; overflow-y:auto;" *ngIf="eventoSeleccionado">
+				<div class="row" style="min-height: 95px;">
+					<div class="col-md-12" style="padding-top: 15px;">
+						<i *ngIf="!eventoSeleccionado.resource_status" class="fa fa-circle-thin"
+						   aria-hidden="true" style="color:red;"></i>
+						<i *ngIf="eventoSeleccionado.resource_status" class="fa fa-check"
+						   aria-hidden="true" style="color: rgb(6, 185, 6);"></i>
+						<span
+								style="font-size:12px; margin-left: 5px; color: rgb(94, 93, 93);">
+                                                        {{eventoSeleccionado.resource_type | uppercase}}</span>
+						<span
+								style="font-size: 12px; margin-left: 15px;  color: rgb(44, 43, 43);"
+								*ngIf="eventoSeleccionado.resource_type !== 'video' && eventoSeleccionado.resource_type !== 'text'">{{eventoSeleccionado.resource_des | uppercase}}</span>
+						<span
+								style="font-size: 12px; margin-left: 15px;  color: rgb(44, 43, 43);"
+								*ngIf="eventoSeleccionado.resource_type === 'video' || eventoSeleccionado.resource_type === 'text'">{{eventoSeleccionado.resource_name | uppercase}}</span>
+					</div>
+				</div>
+				
+				<hr>
+				<div class="row">
+					<div class="col-sm-4">
+						<b>Fecha de Inicio</b> <br>
+						{{selectedClase.fromDate}}
+					</div>
+					<div class="col-sm-4">
+						<b>Fecha de finalización</b> <br>
+						{{selectedClase.toDate}}
+					</div>
+					
+					<!--<div class="col-sm-4 text-center">
+						<button class="btn btn-primary btn-fill btn-block" (click)="showDetail()">VER</button>
+					</div>-->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- FIN DETALLE DE PRACTICAS-->
+<!--<app-view-essay *ngIf="showEssayDetail" (isReturn)="return()" [essayId]="essayId" [student]="studentSelect"
+                [subjectId]="subject_id" [unitId]="unit_id" [classId]="classId"></app-view-essay>-->
