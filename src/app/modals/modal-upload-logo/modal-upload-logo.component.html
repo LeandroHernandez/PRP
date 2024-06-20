@@ -1,0 +1,18 @@
+<div class="text-center">
+    <h2>Seleccionar Logo</h2>
+</div>
+
+<div mat-dialog-content class="center-content">
+    <div class="input-group" style="width: 100%;">
+        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" hidden (change)="onFileChange($event)">
+    </div>
+    <br>
+    <div *ngIf="imageSrc" class="image-preview">
+        <img [src]="imageSrc" alt="Imagen de factura" style="max-width: 100%; height: auto;">
+    </div>
+</div>
+
+<mat-dialog-actions align="end" style="padding-top: 20px;" align="end">
+    <button mat-raised-button class="custom-button-guardar" (click)="onSave()">Cargar</button>
+    <button mat-stroked-button [mat-dialog-close]="true" cdkFocusInitial class="custom-button-cerrar">Cancelar</button>
+</mat-dialog-actions>

@@ -1,27 +1,36 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 /**Models */
-import {DataTable} from '../../../models/interfaces/data-table';
-import {UnitEducational} from '../../../models/class/class.documentUnitEducational';
-import {Level} from 'app/models/class/class.documentLevel';
-import {SchoolGrade} from 'app/models/class/class.documentschoolGrade';
-import {SubLevels} from 'app/models/class/class.documentSubLevels';
-import {Parallels} from 'app/models/class/classdocument-parallels';
-import {Academyareadocum} from 'app/models/academyarea/academyareadocum.model';
-import {Subject} from 'app/models/class/classdocumentSubject'
+import { DataTable } from '../../../models/interfaces/data-table';
+import { UnitEducational } from '../../../models/class/class.documentUnitEducational';
+import { Level } from 'app/models/class/class.documentLevel';
+import { SchoolGrade } from 'app/models/class/class.documentschoolGrade';
+import { SubLevels } from 'app/models/class/class.documentSubLevels';
+import { Parallels } from 'app/models/class/classdocument-parallels';
+import { Academyareadocum } from 'app/models/academyarea/academyareadocum.model';
+import { Subject } from 'app/models/class/classdocumentSubject'
 
 /**Services */
-import {StorageService} from 'app/services/storage/storage.service';
-import {UnitEdicationalService} from '../../../services/unit-edicational/unit-edicational.service';
-import {LevelsService} from 'app/services/levels/levels.service';
-import {SubLevelsService} from '../../../services/sublevels/sublevels.service';
-import {GradesService} from 'app/services/grades/grades.service';
-import {ParallelsService} from 'app/services/parallels/parallels.service';
-import {AcademyareaService} from 'app/services/academyarea/academyarea.service';
-import {SubjectService} from 'app/services/subject/subject.service'
-import {AuthService} from '../../../services/login/auth.service';
+import { StorageService } from 'app/services/storage/storage.service';
+import { UnitEdicationalService } from '../../../services/unit-edicational/unit-edicational.service';
+import { LevelsService } from 'app/services/levels/levels.service';
+import { SubLevelsService } from '../../../services/sublevels/sublevels.service';
+import { GradesService } from 'app/services/grades/grades.service';
+import { ParallelsService } from 'app/services/parallels/parallels.service';
+import { AcademyareaService } from 'app/services/academyarea/academyarea.service';
+import { SubjectService } from 'app/services/subject/subject.service'
+import { AuthService } from '../../../services/login/auth.service';
 import DocumentData = firebase.firestore.DocumentData;
-import {QuerySnapshot} from '@angular/fire/firestore';
+import { QuerySnapshot } from '@angular/fire/firestore';
+
+/** Angular Materials */
+import { MatDialog } from '@angular/material/dialog';
+import { ModalAddNewUEComponent } from 'app/modals/modal-add-new-ue/modal-add-new-ue.component';
+import { ShareDataService } from 'app/services/ShareData/share-data.service';
+
+import swal from 'sweetalert2';
+import { ModalUploadLogoComponent } from 'app/modals/modal-upload-logo/modal-upload-logo.component';
+import { Subscription } from 'rxjs';
 
 
 declare var $: any;
@@ -60,6 +69,12 @@ export class ListuniteducationalComponent implements OnInit {
     public arraySubjectsAux: Subject[];
     public academicPeriodStorage;
 
+    selectedFile: File | null = null;
+    subscription: Subscription;
+    nameImagen: String = '';
+    unidadEducativa: UnitEducational;
+
+
     constructor(
         public unitEdicationalService: UnitEdicationalService,
         private levelService: LevelsService,
@@ -69,7 +84,7 @@ export class ListuniteducationalComponent implements OnInit {
         private parallelService: ParallelsService,
         private academyAreaService: AcademyareaService,
         private subjectService: SubjectService,
-        public auth: AuthService,
+        public auth: AuthService, private dialog: MatDialog, private shareDataService: ShareDataService
     ) {
     }
 
@@ -77,13 +92,13 @@ export class ListuniteducationalComponent implements OnInit {
         this.arraySubLevels = [];
         this.arrayUnitEducational = [];
         this.getUnitEducational();
-        this.academicPeriodStorage =  JSON.parse(localStorage.getItem('academic_period'));
+        this.academicPeriodStorage = JSON.parse(localStorage.getItem('academic_period'));
         this.unitEducational = {
             unit_educational_id: new Date().getTime().toString(),
             unit_educational_name: '',
             unit_educational_address: '',
             unit_educational_phone: '',
-            unit_educational_phoneBill:'',
+            unit_educational_phoneBill: '',
             unit_educational_email: '',
             unit_educational_academy: '',
             unit_educational_country: '',
@@ -102,19 +117,57 @@ export class ListuniteducationalComponent implements OnInit {
         this.getCountries();
         this.getCities();
         this.getDataLevel()
+
+        this.subscription = this.shareDataService.file$.subscribe(file => {
+            this.selectedFile = file;
+            if (file) {
+                this.nameImagen = file.name;  // Almacenar el nombre del archivo en la variable
+                //console.log('Archivo recibido:', file.name);
+            } else {
+                this.nameImagen = '';  // Limpiar el nombre si no hay archivo
+            }
+        });
     }
+
+    //Abrir Modal para crear una nueva UE
+    openModalAddNewUE(): void {
+        const dialogRef = this.dialog.open(ModalAddNewUEComponent, {
+            width: '',
+            disableClose: true // Esto deshabilita el cierre automático
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.shareDataService.setFile(this.selectedFile);
+        });
+    }
+
+    //Abrir moodal "Edit" logo de UE
+    openModalEditLogo(): void {
+        const dialogRef = this.dialog.open(ModalUploadLogoComponent, {
+            width: '300px',
+            disableClose: true // Esto deshabilita el cierre automático
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.shareDataService.setFile(this.selectedFile);
+        });
+    }
+
+
 
     /**
      * Optenemos todas las unidades educativas
      */
     private getUnitEducational() {
         this.arrayUnitEducational = [];
+
         this.unitEdicationalService.allUnitEducationals()
             .then(doc => {
                 if (!doc.empty) {
                     doc.forEach(ac => {
                         const unitEducational: UnitEducational = ac.data() as UnitEducational;
                         this.arrayUnitEducational.push(unitEducational)
+
                     });
                 } else {
                     console.log('DATA UNIT EDUCATIONAL NOT FOUND')
@@ -123,6 +176,8 @@ export class ListuniteducationalComponent implements OnInit {
             .catch(function (error) {
                 console.log('ERROR GETTING DOCUMENTS UNIT EDUCATIONAL:', error);
             });
+
+        console.log("Unidades ", this.arrayUnitEducational)
     }
 
     /**
@@ -137,7 +192,7 @@ export class ListuniteducationalComponent implements OnInit {
             unit_educational_phone: '',
             unit_educational_email: '',
             unit_educational_academy: '',
-            unit_educational_phoneBill:'',
+            unit_educational_phoneBill: '',
             unit_educational_country: '',
             unit_educational_city: '',
             unit_educational_logo: '',
@@ -156,31 +211,94 @@ export class ListuniteducationalComponent implements OnInit {
     }
 
 
-    /**
-     * Guardamos una nueva UE
-     * @param unitEdicational
-     * @param isValid
-     */
-    async save(unitEducational: UnitEducational, isValid: boolean) {
+    // /**
+    //  * Editar una UE
+    //  * @param unitEdicational
+    //  * @param isValid
+    //  */
+    async editUE(unitEducational: UnitEducational, isValid: boolean) {
         if (isValid) {
-            if (this.loadedImage) {
-                unitEducational.unit_educational_logo = await this.storageService.uploadFile(`UnitEducational/${unitEducational.unit_educational_name}/logo_${unitEducational.unit_educational_id}.png`, this.imageFile);
+          if (this.isEdit) {
+            if (this.selectedFile) {
+              try {
+                // Verificar si this.unidadEducativa está definido
+                if (this.unidadEducativa && this.unidadEducativa.unit_educational_logo) {
+                  const oldFilePath = `UnitEducational/${unitEducational.unit_educational_name}/logo_${unitEducational.unit_educational_id}.png`;
+                  await this.unitEdicationalService.deleteFile(oldFilePath);
+                }
+      
+                // Subir el nuevo archivo
+                unitEducational.unit_educational_logo = await this.unitEdicationalService.uploadFile(
+                  `UnitEducational/${unitEducational.unit_educational_name}/logo_${unitEducational.unit_educational_id}.png`,
+                  this.selectedFile
+                );
+      
+                this.selectedFile = null;
+                this.nameImagen = '';
+              } catch (error) {
+                swal({
+                  title: 'Error',
+                  text: 'Hubo un error al guardar la imagen. Vuelve a intentarlo.',
+                  buttonsStyling: false,
+                  confirmButtonClass: 'btn btn-fill btn-danger',
+                  type: 'error',
+                });
+                return;
+              }
             } else {
-                unitEducational.unit_educational_logo = this.unitEducational.unit_educational_logo;
+              unitEducational.unit_educational_logo = this.unidadEducativa?.unit_educational_logo || '';
             }
-            if (this.isEdit) {
-                this.unitEdicationalService.saveUnitEducational(unitEducational, false);
-                /// *** descomentar esta linea en caso de que no se creen los datos completos ***
-                // this.saverLevelsUnitEducational(unitEducational);
-            } else {
-                await this.auth.registerUserAuth(unitEducational, true);
-                await this.saverLevelsUnitEducational(unitEducational);
-                // this.unitEdicationalService.saveUnitEducational(unitEducational, true)
-            }
-            $('#ModalRegister').modal('hide');
+      
+            this.unitEdicationalService.saveUnitEducational(unitEducational, false);
+            // *** Descomentar esta línea en caso de que no se creen los datos completos ***
+            // this.saverLevelsUnitEducational(unitEducational);
+          }
         } else {
-            console.log('*** INVALIDO ***');
+          console.log('*** INVALIDO ***');
         }
+      }
+      
+      
+      
+
+
+    // Método en el componente para eliminar una unidad educativa con confirmación
+    async deleteUnitEducational(item: UnitEducational): Promise<void> {
+        swal({
+            title: '¿Estás seguro?',
+            text: `¿Seguro que quieres eliminar la unidad educativa ${item.unit_educational_name}?`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-fill btn-success',
+            cancelButtonClass: 'btn btn-fill btn-danger'
+        }).then(async (result) => {
+            if (result.value) { // result.value es true si se presiona el botón "Sí, eliminar"
+                try {
+                    await this.unitEdicationalService.deleteUnitEducational(item.unit_educational_id, item.unit_educational_city);
+                    console.log('Unidad educativa eliminada correctamente.');
+                    swal({
+                        title: 'Eliminado!',
+                        text: 'La unidad educativa ha sido eliminada.',
+                        type: 'success',
+                        buttonsStyling: false,
+                        confirmButtonClass: 'btn btn-fill btn-success'
+                    });
+                    //this.loadUnitEducationals(); // Recargar la lista después de eliminar
+                } catch (error) {
+                    console.error('Error al eliminar la unidad educativa:', error);
+                    swal({
+                        title: 'Error',
+                        text: 'Hubo un problema al eliminar la unidad educativa. Por favor, intenta de nuevo.',
+                        type: 'error',
+                        buttonsStyling: false,
+                        confirmButtonClass: 'btn btn-fill btn-danger'
+                    });
+                }
+            }
+        });
     }
 
     /**
@@ -499,8 +617,8 @@ export class ListuniteducationalComponent implements OnInit {
                         console.log('DATA SUBJECT UNIT EDUCATIONAL NOT FOUND');
                     }
                 }).catch(function (error) {
-                console.log('ERROR GETTING DOCUMENTS SUBJECT UNIT EDUCATIONAL:', error);
-            });
+                    console.log('ERROR GETTING DOCUMENTS SUBJECT UNIT EDUCATIONAL:', error);
+                });
         }
     }
 
@@ -723,11 +841,11 @@ export class ListuniteducationalComponent implements OnInit {
         return !!this.arrayParallelsAux.find(data => data.parallel_id === parallel.parallel_id);
     }
 
-    public enableAcademyArea(academy_area: Academyareadocum): boolean  {
+    public enableAcademyArea(academy_area: Academyareadocum): boolean {
         return !!this.arrayAcademy_areaAux.find(data => data.academyarea_id === academy_area.academyarea_id);
     }
 
-    public enableSubject(subject: Subject): boolean  {
+    public enableSubject(subject: Subject): boolean {
         return !!this.arraySubjectsAux.find(data => data.subject_id === subject.subject_id);
     }
 }

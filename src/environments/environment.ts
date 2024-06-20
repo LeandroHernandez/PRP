@@ -3,6 +3,21 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+
+// export const environment = {
+//   production: false,
+//   firebase : {
+//     apiKey: "AIzaSyB9mmONxJeHF2F3HIDxQqgqwkDheqyoSeo",
+//     authDomain: "dydactico.firebaseapp.com",
+//     databaseURL: "https://dydactico.firebaseio.com",
+//     projectId: "dydactico",
+//     storageBucket: "dydactico.appspot.com",
+//     messagingSenderId: "1024863714160",
+//     appId: "1:1024863714160:web:df8a7217c3c692cb60adb5",
+//     measurementId: "G-BX6QQS2E6R"
+//   }
+// };
+
 export const environment = {
   production: false,
   firebase : {
@@ -14,5 +29,4 @@ export const environment = {
     appId: "1:747130880218:web:ad4430ca7de79771bf25e3",
     measurementId: "G-FRPTPC6BT0"
   }
-
 };

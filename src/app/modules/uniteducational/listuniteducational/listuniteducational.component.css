@@ -75,3 +75,44 @@ input:checked+.toggle-slider:before {
   justify-content: center; /* Centra verticalmente */
   text-align: center; /* Alinea el texto en el centro */
 }
+
+
+/* Estilo para el botón "Nueva UE" */
+.btn-addNewUE {
+  padding: 6px 12px; /* Ajusta el padding según sea necesario */
+  border-radius: 6px; /* Asegúrate de que el borde esté redondeado */
+  color: white; /* Texto en color blanco */
+  font-size: 16px; /* Tamaño del texto */
+  background-color: #30B700; /* Fondo verde (usa el color exacto que prefieras) */
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra ligera para dar profundidad */
+}
+
+.fa-cog {
+  font-size: 25px; /* Aumenta el tamaño del ícono */
+  margin-left:6px;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  z-index: 1;
+  font-size: 45px; /* Aumenta el tamaño del ícono */
+  line-height: 1; /* Ajusta la línea para centrar mejor el ícono en el botón */
+  color: #000; /* Cambia el color si es necesario */
+}
+
+
+
+.close {
+  position: absolute;
+  right: 15px; /* Ajusta según tu necesidad para alinear el botón a la derecha */
+  top: 5px; /* Ajusta según tu necesidad para posicionar el botón en la parte superior */
+  z-index: 1050; /* Asegúrate de que el botón esté sobre otros elementos */
+}
+
+.row.align-items-center {
+  padding-top: 20px; /* Añade un padding para separar del botón de cierre */
+  padding-bottom: 0;
+}
+
+

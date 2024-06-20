@@ -23,11 +23,16 @@ export class AcademicYearService {
      const collection = this.AcademicyearCollection.doc(`${academicyear.academic_year_id}`);
     return collection.set(academicyear);
   }
-  public deleteAcademicyear(academicyear: Academicyeardocum) {
+  public updateAcademicyear(academicyear: Academicyeardocum) {
      const collection = this.AcademicyearCollection.doc(`${academicyear.academic_year_id}`);
       return collection.update({
       'student_status': false,
     });
+  }
+
+  public deleteAcademicyear(academicyear: Academicyeardocum) {
+    const docRef = this.AcademicyearCollection.doc(`${academicyear.academic_year_id}`);
+    return docRef.delete();
   }
 
 }

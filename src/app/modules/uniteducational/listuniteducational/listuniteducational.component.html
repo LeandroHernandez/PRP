@@ -1,10 +1,15 @@
 <div class="main-content">
   <div class="container-fluid">
     <div style="display: flex; flex-direction: row;justify-content: flex-end; margin: 15px;">
-      <button *ngIf="!isEdit" type="submit" class="btn btn-primary btn-fill" data-toggle="modal"
+      <!-- <button *ngIf="!isEdit" type="submit" class="btn btn-success btn-addNewUE" data-toggle="modal"
         data-target="#ModalRegister" (click)="addRegister()">
-        <i class="fa fa-plus"></i> Agregar unidad educativa
+         Nueva UE <i class="fa fa-cog"></i>
+      </button> -->
+
+      <button *ngIf="!isEdit" type="submit" class="btn btn-success btn-addNewUE" (click)="openModalAddNewUE()">
+         Nueva UE <i class="fa fa-cog"></i>
       </button>
+
       <button *ngIf="isEdit" type="submit" class="btn btn-success btn-fill"
         (click)="clearUnitEducational()">
         <i class="fa fa-plus"></i> Listar unidades educativas
@@ -58,9 +63,9 @@
                                   data-target="#exampleModalCenter">
                             <i class="fa fa-edit"></i>
                           </button>
-                          <!--   <button (click)="deleteUnitEducational(item)" class="btn btn-fill btn-xs btn-danger btn-icon">
+                            <button (click)="deleteUnitEducational(item)" class="btn btn-fill btn-xs btn-danger btn-icon">
                           <i class="fa fa-trash"></i>
-                        </button>-->
+                        </button>
                         </div>
                       </td>
                     </tr>
@@ -166,10 +171,12 @@
                   </div>
                 </div>
               </div>
+
+
               <!-- FORMULARIO DE EDITAR UNIDAD EDUCATIVA -->
               <div id="icon-info" class="tab-pane active">
                 <form #formulariounitEducational="ngForm" method="get" action="/" class="form-horizontal" novalidate
-                  (ngSubmit)="save(formulariounitEducational.value, formulariounitEducational.valid, formulariounitEducational)">
+                  (ngSubmit)="editUE(formulariounitEducational.value, formulariounitEducational.valid, formulariounitEducational)">
                   <div class="form-group">
 
                     <div class="col-sm-4">
@@ -284,10 +291,9 @@
                     <div class="col-sm-4">
                       <label class="control-label">Logo<span class="star">*</span></label>
                       <br>
-                      <button type="button" class="btn btn-primary btn-fill" data-toggle="modal"
-                        data-target="#exampleModalCenterFile" (click)="addFile()">
-                        {{ loadedImage == false ? 'Editar Imagen.' : 'Archivo seleccionado.'  }}
+                      <button type="button" class="btn btn-primary btn-fill" (click)="openModalEditLogo()">Seleccionar Logo
                       </button>
+                      <label>{{ nameImagen }}</label>
                     </div>
 
                   </div>
@@ -296,6 +302,8 @@
                   </button>
                 </form>
               </div>
+
+
               <!-- ARRAY DE NIVELES-->
               <div id="icon-account" class="tab-pane">
                 <div class="container-fluid">
@@ -554,269 +562,4 @@
           </div>
         </div>
       </div>
-
     </div>
-
-    <!-- MODAL REGISTRO NUEVA UNIDAD EDUCATIVA -->
-    <div class="modal fade" id="ModalRegister" tabindex="-1" role="dialog" aria-labelledby="ModalRegisterTitle"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus"></i> NUEVA UNIDAD EDUCATICA</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="content">
-                    <form #formulariounitEducational="ngForm" method="get" action="/" class="form-horizontal" novalidate
-                      (ngSubmit)="save(formulariounitEducational.value, formulariounitEducational.valid)">
-                      <div class="form-group">
-
-                        <div class="col-sm-4">
-                          <label class="control-label">ID<span class="star">*</span></label>
-                          <input readonly id="unit_educational_id" type="text" class="form-control"
-                            name="unit_educational_id" placeholder="ej. Inicial"
-                            [ngModel]="unitEducational.unit_educational_id" required #unit_educational_id="ngModel">
-                          <small
-                            [hidden]="unit_educational_id.valid || (unit_educational_id.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio
-                          </small>
-                        </div>
-
-                        <div class="col-sm-4">
-                          <label class="control-label">Nombre<span class="star">*</span></label>
-                          <input id="unit_educational_name" type="text" class="form-control"
-                            name="unit_educational_name" placeholder="Nombre"
-                            [ngModel]="unitEducational.unit_educational_name" required #unit_educational_name="ngModel">
-                          <small
-                            [hidden]="unit_educational_name.valid || (unit_educational_name.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio
-                          </small>
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Dirección<span class="star">*</span></label>
-                          <input id="unit_educational_address" type="text" class="form-control"
-                            name="unit_educational_address" placeholder="Dirección"
-                            [ngModel]="unitEducational.unit_educational_address" required
-                            #unit_educational_address="ngModel">
-                          <small
-                            [hidden]="unit_educational_address.valid || (unit_educational_address.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio
-                          </small>
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Teléfono Factura<span class="star">*</span></label>
-                          <input id="unit_educational_phoneBill" type="number" class="form-control"
-                            name="unit_educational_phoneBill" placeholder="Teléfono"
-                            [ngModel]="unitEducational.unit_educational_phoneBill" required
-                            #unit_educational_phone="ngModel">
-                          <small
-                            [hidden]="unit_educational_phone.valid || (unit_educational_phone.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio
-                          </small>
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Email<span class="star">*</span></label>
-                          <input id="unit_educational_email" type="email" class="form-control"
-                            name="unit_educational_email" placeholder="Email"
-                            [ngModel]="unitEducational.unit_educational_email" required
-                            #unit_educational_email="ngModel"
-                            pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
-                          <small
-                            [hidden]="unit_educational_email.valid || (unit_educational_email.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio, Introduza una dirección de correo valida.
-                          </small>
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Plan(Cantidad de alumnos)<span class="star">*</span></label>
-                          <input id="unit_educational_plan" type="number" class="form-control"
-                            name="unit_educational_plan" placeholder="Plan"
-                            [ngModel]="unitEducational.unit_educational_plan" required #unit_educational_plan="ngModel">
-                          <small
-                            [hidden]="unit_educational_plan.valid || (unit_educational_plan.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio
-                          </small>
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">País<span class="star">*</span></label>
-                          <select type="select" class="form-control" id="unit_educational_country"
-                            name="unit_educational_country" [ngModel]="unitEducational.unit_educational_country">
-                            <option value="" selected>Seleccione una opción</option>
-                            <option *ngFor=" let country of listCountries" [value]="country.country_name">
-                              {{country.country_name}}</option>
-                          </select>
-                          <!--  <input id="unit_educational_country" type="text" class="form-control"
-                          name="unit_educational_country" placeholder="País"
-                          [ngModel]="unitEducational.unit_educational_country" required
-                          #unit_educational_country="ngModel">-->
-
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Ciudad<span class="star">*</span></label>
-                          <select class="form-control" id="unit_educational_city" name="unit_educational_city"
-                            [ngModel]="unitEducational.unit_educational_city">
-                            <option value="" selected>Seleccione una opción</option>
-                            <option *ngFor=" let city of listCities" [value]="city.city_name"> {{city.city_name}}
-                            </option>
-                          </select>
-
-                          <!--  <input id="unit_educational_city" type="text" class="form-control" name="unit_educational_city"
-                          placeholder="Ciudad" [ngModel]="unitEducational.unit_educational_city" required
-                          #unit_educational_city="ngModel"> -->
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Contraseña<span class="star">*</span></label>
-                          <input id="unit_educational_password" type="password" class="form-control"
-                            name="unit_educational_password" placeholder="Contraseña"
-                            [(ngModel)]="unitEducational.unit_educational_password" required
-                            #unit_educational_password="ngModel" minlength="6">
-                          <small
-                            [hidden]="unit_educational_password.valid|| (unit_educational_password.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio, Longitud minima de 6 caracteres.
-                          </small>
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Confirmar Contraseña<span class="star">*</span></label>
-                          <input id="unit_educational_Confirmpassword" type="password" class="form-control"
-                            name="unit_educational_Confirmpassword" placeholder="Confirmar Contraseña"
-                            [(ngModel)]="unitEducational.unit_educational_Confirmpassword" required
-                            #unit_educational_Confirmpassword="ngModel">
-                          <small
-                            [hidden]="unit_educational_Confirmpassword.valid || (unit_educational_Confirmpassword.pristine && !formulariounitEducational.submitted)"
-                            class="text-danger">
-                            Obligatorio
-                          </small>
-                          <div *ngIf="!passwordsMatch()" class="text-danger">
-                            Las contraseñas no coinciden.
-
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <label class="control-label">Logo<span class="star">*</span></label>
-                          <br>
-                          <button name="unit_educational_logo" id="unit_educational_logo" type="button"
-                            class="btn btn-primary btn-fill" data-toggle="modal" data-target="#exampleModalCenterFile"
-                            (click)="addFile()">
-                            {{ loadedImage == false ? 'Seleccionar archivo.' : 'Archivo seleccionado.'  }}
-                          </button>
-                        </div>
-                        <label style="margin-top: 5px" class="col-sm-1 control-label">Estado<span
-                            class="star">*</span></label>
-                        <br>
-                        <div class="checkbox col-sm-2">
-                          <div class="checkbox">
-                            <input id="unit_educational_status" name="unit_educational_status"
-                              [ngModel]="unitEducational.unit_educational_status" #unit_educational_status="ngModel"
-                              type="checkbox">
-                            <label class="" for="unit_educational_status">
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-              <br><label>Modulo de Noticias </label>
-              <div class="toggle-switch">
-                <input type="checkbox" id="toggle" />
-                <label for="toggle" class="toggle-slider"></label>
-            </div><br><br>
-              <label>Modulo de Entrenamiento </label><div class="toggle-switch">
-              <input type="checkbox" id="toggle2" />
-              <label for="toggle2" class="toggle-slider"></label>
-          </div><br><br><br>
-              <label>Modulo de Campeonatos </label><div class="toggle-switch">
-                <input type="checkbox" id="toggle3" />
-                <label for="toggle3" class="toggle-slider"></label>
-            </div><br><br><br>
-              <label>Modulo de Control de Pagos </label>
-              <div class="toggle-switch">
-                <input type="checkbox" id="toggle4" />
-                <label for="toggle4" class="toggle-slider"></label>
-            </div><br><br>
-            <div class="column-buttons">
-              <button type="button" class="btn btn-primary btn-fill" data-toggle="modal" data-target="#ModalCenterFacturas">
-                  Facturas
-              </button>
-              <br>
-              <button type="button" class="btn btn-primary btn-fill" [routerLink]="['/academicyear']" data-toggle="modal" data-target="ModalCenterAñoLectivo">
-                Año Lectivo
-            </button>
-          </div>
-            <div class="modal-footer">
-              
-              <!-- Botones "Guardar" y "Cerrar" -->
-              <div class="row-buttons">
-                <button type="submit" class="btn btn-success btn-fill">{{ isEdit == false ? 'GUARDAR' : 'ACTUALIZAR' }}</button>
-                  <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">
-                      Cerrar
-                  </button>
-              </div>
-          </div>
-        </div>
-      </div>
-
-
-
-    <!-- MODAL DE CARGAR IMAGEN DE LOGO -->
-
-    <div class="modal fade" id="exampleModalCenterFile" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-
-      <div class="modal-dialog modal-dialog-centered" role="document">
-
-        <div class="modal-content" style=" width: 50%; margin-left: 25%;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Cargar Archivo</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body ">
-            <div style="display:flex; justify-content: center; align-content: center;">
-              <figure>
-                <img class="is-rounded is-image" *ngIf="!unitEducational.unit_educational_logo && !imageSrc"
-                  src="assets\img\image-not-found.png">
-                <img class="is-rounded is-image" *ngIf="unitEducational.unit_educational_logo && imageSrc "
-                  [src]=" imageSrc ">
-                <img class="is-rounded is-image" *ngIf="unitEducational.unit_educational_logo && !imageSrc"
-                  [src]="unitEducational.unit_educational_logo">
-                <img class="is-rounded is-image" *ngIf="!unitEducational.unit_educational_logo && imageSrc"
-                  [src]="imageSrc">
-              </figure>
-            </div>
-            <input id="unit_educational_logo" type="file" class="form-control" name="unit_educational_logo"
-              accept="image/*" (change)="onChangeImage($event)">
-            <small [hidden]="unitEducational.unit_educational_logo || (unitEducational.unit_educational_logo && !formulariounitEducational.submitted)"
-              class="text-danger">
-              Obligatorio
-            </small>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-fill btn-xs btn-danger btn-icon" data-dismiss="modal">
-              Cerrar
-          </button>
-          
-          <button type="button" class="btn btn-primary btn-fill" (click)="saveFile()">Guardar</button>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-

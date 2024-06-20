@@ -16,6 +16,7 @@ export class UnitEducational {
     unit_educational_value?: number;
     unit_educational_emailBill?: string;
     unit_educational_phoneBill?: string;
+    unit_educational_academyId_fk?: string;
     
 
     constructor(unit_educational: any) {
@@ -36,5 +37,6 @@ export class UnitEducational {
         this.unit_educational_product= unit_educational.product;
         this.unit_educational_value  = unit_educational.value;
         this.unit_educational_ruc = unit_educational.ruc;
+        this.unit_educational_academyId_fk = unit_educational.academyId_fk;
     }
 }

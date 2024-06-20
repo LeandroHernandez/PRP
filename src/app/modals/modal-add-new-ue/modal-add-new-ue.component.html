@@ -1,0 +1,137 @@
+<form [formGroup]="form">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>Nueva Unidad Educativa</h2>
+    <div class="toggle-container">
+      <h2><span>Estado</span></h2>
+      <mat-slide-toggle formControlName="unit_educational_status"></mat-slide-toggle>
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <mat-card>
+      <div class="form-row">
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>ID</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_id">
+        </mat-form-field> -->
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_name" appToUpperCase>
+          <mat-error *ngIf="form.get('unit_educational_name').hasError('required') && form.get('unit_educational_name').touched">Nombre es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>País</mat-label>
+          <mat-select formControlName="unit_educational_country">
+            <mat-option *ngFor="let country of listCountries" [value]="country.country_name">
+              {{country.country_name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('unit_educational_country').hasError('required') && form.get('unit_educational_country').touched">País es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ciudad</mat-label>
+          <mat-select formControlName="unit_educational_city">
+            <mat-option *ngFor="let city of listCities" [value]="city.city_name">
+              {{city.city_name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('unit_educational_city').hasError('required') && form.get('unit_educational_city').touched">Ciudad es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <textarea matInput formControlName="unit_educational_address"></textarea>
+          <mat-error *ngIf="form.get('unit_educational_address').hasError('required') && form.get('unit_educational_address').touched">Dirección es obligatoria.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Disciplina/Académia</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_academy" appToUpperCase>
+          <mat-error *ngIf="form.get('unit_educational_academy').hasError('required') && form.get('unit_educational_academy').touched">Disciplina/Académia es obligatoria.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ruc</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_ruc" appOnlyNumbers>
+          <mat-error *ngIf="form.get('unit_educational_ruc').hasError('required') && form.get('unit_educational_ruc').touched">Ruc es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Producto a Cobrar</mat-label>
+          <mat-select formControlName="unit_educational_product">
+            <mat-option *ngFor="let product of products" [value]="product">
+              {{product}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('unit_educational_product').hasError('required') && form.get('unit_educational_product').touched">Producto a Cobrar es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Valor</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_value" appOnlyNumbers>
+          <mat-error *ngIf="form.get('unit_educational_value').hasError('required') && form.get('unit_educational_value').touched">Valor es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email de Factura</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_email">
+          <mat-error *ngIf="form.get('unit_educational_email').hasError('required') && form.get('unit_educational_email').touched">Email es obligatorio.</mat-error>
+          <mat-error *ngIf="form.get('unit_educational_email').hasError('email') && form.get('unit_educational_email').touched">Email debe ser válido.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono Factura</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_phone" appOnlyNumbers>
+          <mat-error *ngIf="form.get('unit_educational_phone').hasError('required') && form.get('unit_educational_phone').touched">Teléfono Factura es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono Soporte Whatsapp</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_phoneBill" appOnlyNumbers>
+          <mat-error *ngIf="form.get('unit_educational_phoneBill').hasError('required') && form.get('unit_educational_phoneBill').touched">Teléfono Soporte Whatsapp es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button mat-stroked-button color="warn" (click)="openModalAUploadLogo()">Agregar logo</button>
+          <label>{{ fileName }}</label>
+        </div>
+      </div>
+    </mat-card>
+  </mat-dialog-content>
+  <br>
+  <div class="grid-container">
+    <div class="grid-item">
+        <h3>Módulo de Noticias</h3>
+        <h3><span>Módulo de Entrenamiento</span></h3>
+        <h3><span>Módulo de Campeonatos</span></h3>
+        <h3><span>Módulo de Control de Pagos</span></h3>
+    </div>
+    <div class="grid-item"> 
+        <mat-slide-toggle formControlName="moduloNoticias"></mat-slide-toggle>
+        <mat-slide-toggle formControlName="moduloEntrenamiento"></mat-slide-toggle>
+        <mat-slide-toggle formControlName="moduloCampeonatos"></mat-slide-toggle>
+        <mat-slide-toggle formControlName="moduloControlPagos"></mat-slide-toggle>
+    </div>
+    <div class="grid-item">
+        <div style="background-color: #109CF1; color: white; padding: 10px; border-radius: 20px;">
+              <i class="fa fa-calendar"></i> Año Lectivo <br>
+              <mat-form-field  appearance="standard">
+                <mat-label  class="text-white">Seleccionar</mat-label>
+                <mat-select [(value)]="selectedAcademyId" formControlName="unit_educational_academyId_fk">
+                  <mat-option *ngFor="let year of academicYears" [value]="year.academic_year_id">
+                    {{formatAcademicYear(year)}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('unit_educational_academyId_fk').hasError('required') && form.get('unit_educational_academyId_fk').touched">Año Académico es obligatorio.</mat-error>
+              </mat-form-field>
+        </div>
+    </div>
+</div>
+</form>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button class="custom-button-guardar" (click)="validateAndSave()">Guardar</button>
+  <button mat-stroked-button [mat-dialog-close]="true" cdkFocusInitial class="custom-button-cerrar">Salir</button>
+</mat-dialog-actions>

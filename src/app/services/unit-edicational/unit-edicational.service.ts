@@ -11,51 +11,107 @@ import {Parallels} from 'app/models/class/classdocument-parallels';
 import {Academyareadocum} from 'app/models/academyarea/academyareadocum.model';
 import {Subject} from 'app/models/class/classdocumentSubject';
 import swal from 'sweetalert2';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class UnitEdicationalService {
 
   levelCollection: AngularFirestoreCollection<UnitEducational>;
 
-  constructor(
-      private db: AngularFirestore,
-  ) {
-    this.levelCollection = this.db.collection<UnitEducational>(`cuenca` )
+  constructor(private db: AngularFirestore, private storage: AngularFireStorage) 
+  {
+    this.levelCollection = this.db.collection<UnitEducational>('cuenca');
   }
 
+
+  uploadFile(filePath: string, file: File): Promise<string> {
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    return task.snapshotChanges().toPromise().then(() => fileRef.getDownloadURL().toPromise());
+  }
+
+  deleteFile(filePath: string): Promise<void> {
+    const fileRef = this.storage.ref(filePath);
+    return fileRef.delete().toPromise();
+  }
+
+  /** Obtiene todas las UE */
   public allUnitEducationals() {
     return this.levelCollection.get().toPromise();
   }
+
 
   /**
    * Guardamos la unidad educativa
    * @param UnitEducational
    */
-  public saveUnitEducational(unitEducational: UnitEducational, isNew: boolean) {
-    const collection = this.db.collection<UnitEducational>(unitEducational.unit_educational_city.toLowerCase()).doc(`${unitEducational.unit_educational_id}`);
+  public async saveUnitEducational(unitEducational: UnitEducational, isNew: boolean) {
+    const collection: AngularFirestoreCollection<UnitEducational> = this.db.collection<UnitEducational>(unitEducational.unit_educational_city.toLowerCase());
+
     if (isNew) {
-      swal({
-        title: 'Ok',
-        text: 'Datos de la UE procesados correctamente!',
-        buttonsStyling: false,
-        confirmButtonClass: 'btn btn-fill btn-success',
-        type: 'success',
-      }).catch(swal.noop)
-      return collection.set(unitEducational);
+      try {
+        const docRef = await collection.add(unitEducational);
+        unitEducational.unit_educational_id = docRef.id; // Establece el ID generado por Firestore en el objeto
+        await docRef.update({ unit_educational_id: docRef.id }); // Actualiza el documento con el ID generado
+
+        swal({
+          title: 'Ok',
+          text: 'Datos de la UE procesados correctamente!',
+          buttonsStyling: false,
+          confirmButtonClass: 'btn btn-fill btn-success',
+          type: 'success',
+        }).catch(swal.noop);
+      } catch (error) {
+        console.error('Error al crear el documento:', error);
+      }
     } else {
-      swal({
-        title: 'Ok',
-        text: 'Datos de la UE editados correctamente!',
-        buttonsStyling: false,
-        confirmButtonClass: 'btn btn-fill btn-success',
-        type: 'success',
-      }).catch(swal.noop)
-      return collection.update(unitEducational)
+      const docRef = collection.doc(`${unitEducational.unit_educational_id}`);
+      try {
+        await docRef.update(unitEducational);
+        swal({
+          title: 'Ok',
+          text: 'Datos de la UE editados correctamente!',
+          buttonsStyling: false,
+          confirmButtonClass: 'btn btn-fill btn-success',
+          type: 'success',
+        }).catch(swal.noop);
+      } catch (error) {
+        console.error('Error al actualizar el documento:', error);
+      }
     }
   }
+
+
+  public async deleteUnitEducational(unitEducationalId: string, city: string): Promise<void> {
+    const collection: AngularFirestoreCollection<UnitEducational> = this.db.collection<UnitEducational>(city.toLowerCase());
+    const docRef = collection.doc(unitEducationalId);
+
+    try {
+      await docRef.delete();
+      swal({
+        title: 'Ok',
+        text: 'Unidad educativa eliminada correctamente!',
+        buttonsStyling: false,
+        confirmButtonClass: 'btn btn-fill btn-success',
+        type: 'success',
+      }).catch(swal.noop);
+    } catch (error) {
+      console.error('Error al eliminar el documento:', error);
+      swal({
+        title: 'Error',
+        text: 'Hubo un error al eliminar la unidad educativa. Inténtalo nuevamente.',
+        buttonsStyling: false,
+        confirmButtonClass: 'btn btn-fill btn-danger',
+        type: 'error',
+      }).catch(swal.noop);
+    }
+  }
+
+  
 
   /**
    * Actualizamos la unidad educativa

@@ -16,7 +16,7 @@
     <!--<div *ngIf="!isNotMobileMenu()">-->
 		<div>
         <ul class="nav">
-
+ 
             <li *ngIf="infoUser" style="background-color: #f77575;">
                 <a routerLinkActive = "active"
                    [routerLink]="infoUser.hasOwnProperty('student_name')? '/studentadmin': null">
@@ -34,7 +34,8 @@
                 <a [routerLink]="menuItem.menu_url">
                     <i class="{{menuItem.menu_icon}}"></i>
                     <p>{{menuItem.menu_name}}</p>
-                </a>
+                    
+                </a>    
             </li>
 
             <li (click)="SignOut()" >
@@ -46,7 +47,4 @@
 
         </ul>
     </div>
-
-
 </div>
-<!-- </div> -->

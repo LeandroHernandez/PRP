@@ -1,0 +1,21 @@
+/** Estilos para los botones (Cancelar, Guardar) */
+.custom-button-guardar {
+    background-color: #62B51A; /* Color de fondo personalizado */
+    color: white;             /* Color del texto */
+    border-radius: 4px;       /* Radio de los bordes */
+  }
+  
+  .custom-button-guardar:hover {
+    background-color: #4A8C14; /* Color de fondo al pasar el ratón */
+  }
+
+  .custom-button-cerrar {
+    background-color: #EB5757; /* Color de fondo personalizado */
+    color: white;             /* Color del texto */
+    border-radius: 4px;       /* Radio de los bordes */
+  }
+  
+  .custom-button-cerrar:hover {
+    background-color: #9C3A3A; /* Color de fondo al pasar el ratón */
+  }
+  

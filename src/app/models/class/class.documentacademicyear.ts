@@ -11,7 +11,7 @@ export class Academicyeardocum {
   month_end?: string;
   day_end?: string;
   year_end?: string;
-  academic_year_status?: boolean;
+  year_status?: boolean;
 
   constructor(Academicyeardocum: any) {
     this.academic_year_id = Academicyeardocum.academic_year_id;
@@ -22,6 +22,6 @@ export class Academicyeardocum {
     this.month_end = Academicyeardocum.month_end;
     this.day_end = Academicyeardocum.day_end;
     this.year_end = Academicyeardocum.year_end;
-    this.academic_year_status = Academicyeardocum.academic_year_status;
+    this.year_status = Academicyeardocum.year_status;
   }
 }

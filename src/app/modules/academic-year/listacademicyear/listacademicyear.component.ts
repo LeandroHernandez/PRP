@@ -44,17 +44,17 @@ export class ListacademicyearComponent implements OnInit {
           close: 'fa fa-remove'
       }
    });
-    this.dataTable = $('#datatables1').DataTable({});
+    this.dataTable = $('#datatables').DataTable({});
    
     this.AcadyearD = {
-      academic_year_id: new Date().getTime().toString(),
+      academic_year_id: '',
       month_start: '',
       day_start: '',
       year_start: '',
       month_end: '',
       day_end: '',
       year_end: '',
-      academic_year_status: false,
+      year_status: false,
     }
     this.dataTable = {
       headerRow: ['ID', 'Mes Inicia', 'Dia Inicia', 'Año Inicia', 'Mes Finaliza', 'Dia Finaliza', 'Año Finaliza', 'Estado'],
@@ -103,6 +103,7 @@ export class ListacademicyearComponent implements OnInit {
       console.log('*** ERROR INVALIDO ***');
     }
   }
+
   public editAcademicyear(AcadyearD : Academicyeardocum): void {
     if (AcadyearD) {
       this.AcadyearD = AcadyearD;
@@ -111,6 +112,8 @@ export class ListacademicyearComponent implements OnInit {
     }
 
   }
+
+  // Elimina un registro de "academic_year"
   async deleteAcademicyear(AcadyearD : Academicyeardocum) {
     swal({
       title: 'Desea eliminar este Registro?',
@@ -127,7 +130,7 @@ export class ListacademicyearComponent implements OnInit {
 
         swal({
           title: 'Ok',
-          text: 'Se inactivó el Representante! ' + AcadyearD.academic_year_id,
+          text: 'Se eliminó el Representante! ' + AcadyearD.academic_year_id,
           buttonsStyling: false,
           confirmButtonClass: 'btn btn-fill btn-success',
           type: 'success'
@@ -135,6 +138,7 @@ export class ListacademicyearComponent implements OnInit {
       }
     })
   }
+
   initDataTable() {
     let gridgeneral = this.tablaAcadyear;
     $('#datatables').DataTable().destroy();
