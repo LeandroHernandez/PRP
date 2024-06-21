@@ -7,11 +7,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ModalUploadLogoComponent } from '../modal-upload-logo/modal-upload-logo.component';
 import { ShareDataService } from 'app/services/ShareData/share-data.service';
 import { AcademicYearService } from 'app/services/academic_year/academic-year.service';
-import { Academicyeardocum } from 'app/models/class/class.documentacademicyear';
 import {StorageService} from 'app/services/storage/storage.service';
 import { AuthService } from 'app/services/login/auth.service';
 import swal from 'sweetalert2';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { FirebaseService } from 'app/services/firebaseService/firebase-service.service';
 
 @Component({

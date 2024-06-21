@@ -33,9 +33,6 @@ import { PlanComponent } from './pages/plan/plan.component';
 import { WeighModuleComponent } from './modules/weigh-module/weigh-module/weigh-module.component';
 import { ModalAddNewUEComponent } from './modals/modal-add-new-ue/modal-add-new-ue.component';
 import { ModalUploadLogoComponent } from './modals/modal-upload-logo/modal-upload-logo.component';
-import { OnlyNumbersDirective } from './directives/only-numbers.directive';
-import { ToUpperCaseDirective } from './directives/to-upper-case.directive';
-
 
 
 /** Configuration options for a router module */
@@ -55,7 +52,8 @@ const routerOptions: ExtraOptions = {
     AngularFireAuthModule,
     ReactiveFormsModule,
     MaterialdesingModule,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    
   ],
     declarations: [
       AppComponent,
@@ -69,9 +67,7 @@ const routerOptions: ExtraOptions = {
       PlanComponent,
       WeighModuleComponent,
       ModalAddNewUEComponent,
-      ModalUploadLogoComponent,
-      OnlyNumbersDirective,
-      ToUpperCaseDirective,
+      ModalUploadLogoComponent
     ],
     bootstrap: [AppComponent]
 })

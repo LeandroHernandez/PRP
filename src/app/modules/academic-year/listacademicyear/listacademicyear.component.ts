@@ -84,7 +84,7 @@ export class ListacademicyearComponent implements OnInit {
       month_end: '',
       day_end: '',
       year_end: '',
-      academic_year_status: false,
+      year_status:false,
     }
   }
   async saveAcademicyear(AcadyearD : Academicyeardocum, isValid: boolean) {
