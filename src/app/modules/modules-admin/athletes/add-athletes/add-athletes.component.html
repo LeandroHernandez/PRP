@@ -1,0 +1,308 @@
+<div class="container">
+
+    <div class="toolbar">
+        <button mat-icon-button routerLink="/athletes">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div>
+            <h2 style="display: inline;">Deportista</h2>
+        </div>
+        <!-- <button mat-raised-button color="primary">
+        Ingrese la registro
+        <mat-icon>settings</mat-icon>
+      </button> -->
+    </div>
+
+    <mat-tab-group>
+        <mat-tab label="Jugador">
+            <div class="player-details">
+                <div class="player-info">
+
+                    <!-- Importa los módulos de Angular Material necesarios en tu app.module.ts -->
+                    <div align="center">
+                        <mat-card class="circular-card">
+                            <img mat-card-image src="../../../../../assets/img/P2.jpg" alt="Goalkeeper">
+                            <button mat-mini-fab color="primary" class="edit-button">
+                              <mat-icon>edit</mat-icon>
+                            </button>
+                        </mat-card>
+                    </div>
+                     
+                    <div class="info-row">
+                        <span class="label">Nro. Identificacion</span>
+                        <mat-form-field class="example-full-width" appearance="outline" floatLabel="never">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Nombre</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Apellido</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Fecha de nacimiento</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Edad</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un número</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Unidad Educativa</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Telefono</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Sexo</span>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Seleccionar</mat-label>
+                            <mat-select>
+                                <mat-option>
+                                    {{"Masculino"}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Nivel</span>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Seleccionar</mat-label>
+                            <mat-select>
+                                <mat-option>
+                                    {{""}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!-- <button mat-raised-button color="primary">Fichas</button> -->
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Dirección</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row" style="padding-top: 30px;">   
+                        <button class="btn btn-success btn-edit">
+                            Editar Jugador
+                        </button>
+                    </div>
+                    <div class="info-row" style="padding-top: 30px;">
+                        <button class="btn btn-success btn-add" (click)="savePlayer()">
+                            Agregar Jugador
+                        </button>
+                    </div>
+                    <div class="info-row" style="padding-top: 30px;">
+                        <button class="btn btn-success btn-delete">
+                            Eliminar Jugador
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-access">
+                <h2>Acceso de usuario</h2>
+                <hr class="custom-hr">
+                <div class="player-info">
+                    <div class="info-row">
+                        <span class="label">Email</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Confirmación Email</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                
+                <button class="btn btn-success btn-add">
+                    Reeenviar Acceso
+                </button>
+            </div>
+        </mat-tab>
+
+
+        <mat-tab label="Representante 1">
+            <!-- Contenido del tab Representante 1 -->
+            <div class="player-details">
+                <div class="player-info">
+                    <div class="info-row">
+                        <span class="label">Nro. Identificacion</span>
+                        <mat-form-field class="example-full-width" appearance="outline" floatLabel="never">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Nombre</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Apellido</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Contacto 1</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un número</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Contacto 2</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Dirección</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="user-access">
+                <h2>Acceso de usuario</h2>
+                <hr class="custom-hr">
+                <div class="player-info">
+                    <div class="info-row">
+                        <span class="label">Email</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Confirmación Email</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button class="btn btn-success btn-add">
+                        Reenviar Acceso
+                    </button>
+                    <button class="btn btn-danger btn-delete">
+                        Eliminar representante
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+
+
+        <mat-tab label="Agregar Representante">
+            <!-- Contenido del tab Agregar Representante -->
+            <div class="player-details">
+                <div class="player-info">
+                    <div class="info-row">
+                        <span class="label">Nro. Identificacion</span>
+                        <mat-form-field class="example-full-width" appearance="outline" floatLabel="never">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Nombre</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Apellido</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Contacto 1</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un número</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Contacto 2</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Dirección</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="user-access">
+                <h2>Acceso de usuario</h2>
+                <hr class="custom-hr">
+                <div class="player-info">
+                    <div class="info-row">
+                        <span class="label">Email</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Confirmación Email</span>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ingrese un texto</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="">
+                    <button class="btn btn-success btn-add">
+                        Reenviar Acceso
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

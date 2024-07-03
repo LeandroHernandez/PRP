@@ -13,7 +13,7 @@
           <mat-label>ID</mat-label>
           <input matInput placeholder="Placeholder" formControlName="unit_educational_id">
         </mat-form-field> -->
-
+        
         <mat-form-field appearance="outline">
           <mat-label>Nombre</mat-label>
           <input matInput placeholder="Placeholder" formControlName="unit_educational_name" appToUpperCase>
@@ -41,22 +41,24 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Dirección</mat-label>
-          <textarea matInput formControlName="unit_educational_address"></textarea>
-          <mat-error *ngIf="form.get('unit_educational_address').hasError('required') && form.get('unit_educational_address').touched">Dirección es obligatoria.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
           <mat-label>Disciplina/Académia</mat-label>
           <input matInput placeholder="Placeholder" formControlName="unit_educational_academy" appToUpperCase>
           <mat-error *ngIf="form.get('unit_educational_academy').hasError('required') && form.get('unit_educational_academy').touched">Disciplina/Académia es obligatoria.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <!-- <mat-form-field appearance="outline">
           <mat-label>Ruc</mat-label>
           <input matInput placeholder="Placeholder" formControlName="unit_educational_ruc" appOnlyNumbers>
           <mat-error *ngIf="form.get('unit_educational_ruc').hasError('required') && form.get('unit_educational_ruc').touched">Ruc es obligatorio.</mat-error>
+        </mat-form-field> -->
+        <mat-form-field appearance="outline">
+          <mat-label>Ruc</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_ruc" appOnlyNumbers>
+          <mat-error *ngIf="form.get('unit_educational_ruc').hasError('invalidRuc')">
+            Ruc inválido. Debe tener 13 caracteres y terminar en 001.
+          </mat-error>
         </mat-form-field>
+        
 
         <mat-form-field appearance="outline">
           <mat-label>Producto a Cobrar</mat-label>
@@ -75,16 +77,23 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Email de Factura</mat-label>
+          <mat-label>Teléfono Factura</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="unit_educational_phone" appOnlyNumbers>
+          <mat-error *ngIf="form.get('unit_educational_phone').hasError('required') && form.get('unit_educational_phone').touched">Teléfono Factura es obligatorio.</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
           <input matInput placeholder="Placeholder" formControlName="unit_educational_email">
           <mat-error *ngIf="form.get('unit_educational_email').hasError('required') && form.get('unit_educational_email').touched">Email es obligatorio.</mat-error>
           <mat-error *ngIf="form.get('unit_educational_email').hasError('email') && form.get('unit_educational_email').touched">Email debe ser válido.</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Teléfono Factura</mat-label>
-          <input matInput placeholder="Placeholder" formControlName="unit_educational_phone" appOnlyNumbers>
-          <mat-error *ngIf="form.get('unit_educational_phone').hasError('required') && form.get('unit_educational_phone').touched">Teléfono Factura es obligatorio.</mat-error>
+          <mat-label> Contraseña</mat-label>
+          <input matInput formControlName="unit_educational_password">
+          <mat-error *ngIf="form.get('unit_educational_password').hasError('required') && form.get('unit_educational_password').touched">Contraseña es obligatorio.</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -93,8 +102,18 @@
           <mat-error *ngIf="form.get('unit_educational_phoneBill').hasError('required') && form.get('unit_educational_phoneBill').touched">Teléfono Soporte Whatsapp es obligatorio.</mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <textarea matInput formControlName="unit_educational_address"></textarea>
+          <mat-error *ngIf="form.get('unit_educational_address').hasError('required') && form.get('unit_educational_address').touched">Dirección es obligatoria.</mat-error>
+        </mat-form-field>
+
+
         <div style="display: flex; align-items: center; gap: 10px;">
-          <button mat-stroked-button color="warn" (click)="openModalAUploadLogo()">Agregar logo</button>
+          <button mat-stroked-button color="basic" (click)="openModalAUploadLogo()">
+            <i class="fa fa-file-image-o"></i>
+            <span style="margin-left: 5px;">Cargar logo</span>
+          </button>
           <label>{{ fileName }}</label>
         </div>
       </div>

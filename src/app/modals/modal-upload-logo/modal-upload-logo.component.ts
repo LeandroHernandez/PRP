@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShareDataService } from 'app/services/ShareData/share-data.service';
 import { MatDialogRef  } from '@angular/material/dialog';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-upload-logo',
@@ -34,7 +35,13 @@ export class ModalUploadLogoComponent implements OnInit {
       this.dataShareService.setFile(this.selectedFile);  // Enviar el archivo al servicio
       this.dialogRef.close();  // Cerrar el modal
     } else {
-      console.error('No file selected');  // Manejar casos donde no se seleccionó un archivo
+      swal({
+        title: 'Error',
+        text: 'Debe seleccionar una imagen',
+        buttonsStyling: false,
+        confirmButtonClass: 'btn btn-fill btn-danger',
+        type: 'error',
+      });
     }
   }
   

@@ -36,6 +36,8 @@ export class SidebarComponent {
     public menuItems: any[];
     public infoUser;
 
+    backgroundColor: string = '';
+
     isNotMobileMenu() {
         return $(window).width() <= 991;
     }
@@ -48,14 +50,23 @@ export class SidebarComponent {
 
     }
 
-
     ngOnInit() {
-        this.infoUser = JSON.parse(localStorage.getItem('infoUser'))
+        //this.infoUser = JSON.parse(localStorage.getItem('infoUser'))
+        
+        const userJson = localStorage.getItem('user');
+        const user = userJson ? JSON.parse(userJson) : null;
+
+        if (user && user.name === 'admin') {
+            console.log("usuasrio aux ------>" , user)
+            this.backgroundColor = '#219653'; // Cambia a rojo, por ejemplo
+        }else if(user && user.name === 'sadmin'){
+            this.backgroundColor = '#EB5757';
+        }
 
         this.sidebarService
             .renderMenu()
             .subscribe(resp => {
-             console.log('hola',resp)
+             //console.log('hola11111', resp)
              
               this.menuItems = resp;
             });

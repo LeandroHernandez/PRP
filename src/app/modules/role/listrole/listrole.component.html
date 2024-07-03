@@ -167,7 +167,7 @@
                         <span class="btn-label">
                             <i class="fa fa-save"></i>
                         </span>
-                        Guardar
+                        Guardar prubaf
                     </button>
                 </div>
 
@@ -178,6 +178,9 @@
     </div>
 
 </div>
+
+
+
 
 <div class="modal fade" id="Modalassingmenu" tabindex="-1" role="dialog" aria-labelledby="Modalassingmenu" aria-hidden="true">
 
@@ -208,6 +211,9 @@
                                         <th class="text-center">
                                             Opciones
                                         </th>
+                                        <th class="text-center">
+                                            id
+                                        </th>
                                         </thead>
 
                                         <tbody>
@@ -216,12 +222,13 @@
                                             <td class="text-center">{{ menu.menu_name }}</td>
                                             <td class="text-center">{{ menu.menu_url }}</td>
                                             <td class="text-center">{{ menu.menu_icon }}</td>
+                                            <td class="text-center">{{ menu.menu_id }}</td>
                                             <td class="text-center">
                                                 <button class="btn btn-warning btn-fill btn-sm" (click)="assign_menu_to_role(menu)">
                                         <span class="btn-label">
                                             <i class="fa fa-check"></i>
                                         </span>
-                                                    Asignar
+                                                    Asignar hola
                                                 </button>
                                             </td>
                                         </tr>

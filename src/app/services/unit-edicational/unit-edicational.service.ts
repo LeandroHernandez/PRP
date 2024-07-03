@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {AngularFirestoreCollection, AngularFirestore} from '@angular/fire/firestore';
+import {Observable,throwError} from 'rxjs';
+import {AngularFirestoreCollection, AngularFirestore, DocumentReference} from '@angular/fire/firestore';
 
 /**Models */
 import {UnitEducational} from '../../models/class/class.documentUnitEducational';
@@ -28,22 +28,30 @@ export class UnitEdicationalService {
   }
 
 
+  /** Método para subir una imganen a Storage */
   uploadFile(filePath: string, file: File): Promise<string> {
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, file);
     return task.snapshotChanges().toPromise().then(() => fileRef.getDownloadURL().toPromise());
   }
 
+  /** Método para eliminar una imganen de Storage */
   deleteFile(filePath: string): Promise<void> {
     const fileRef = this.storage.ref(filePath);
     return fileRef.delete().toPromise();
   }
 
-  /** Obtiene todas las UE */
-  public allUnitEducationals() {
-    return this.levelCollection.get().toPromise();
+   /** Obtiene todas las UE */
+  public allUnitEducationals(): Observable<any[]> {
+    return this.levelCollection.valueChanges({ idField: 'playerId' })
   }
 
+  /** Método para capturar los errores */
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      return throwError(error); // Rethrow it back to subscriber
+    };
+  }
 
   /**
    * Guardamos la unidad educativa
@@ -110,8 +118,6 @@ export class UnitEdicationalService {
       }).catch(swal.noop);
     }
   }
-
-  
 
   /**
    * Actualizamos la unidad educativa

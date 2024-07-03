@@ -12,12 +12,12 @@
     </a>
 </div>
 
-<div class="sidebar-wrapper">
+<div class="sidebar-wrapper"  [style.background-color]="backgroundColor">
     <!--<div *ngIf="!isNotMobileMenu()">-->
 		<div>
         <ul class="nav">
  
-            <li *ngIf="infoUser" style="background-color: #f77575;">
+            <li *ngIf="infoUser">
                 <a routerLinkActive = "active"
                    [routerLink]="infoUser.hasOwnProperty('student_name')? '/studentadmin': null">
                     <i class="fa fa-user" aria-hidden="true"></i>

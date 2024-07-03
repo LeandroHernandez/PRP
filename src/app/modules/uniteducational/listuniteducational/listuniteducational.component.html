@@ -41,7 +41,8 @@
                       <td><img *ngIf="item.unit_educational_logo" [src]="item.unit_educational_logo "
                           class="avatar logo" alt=""></td>
                       <td>{{item.unit_educational_name}}</td>
-                      <td>#{{item.unit_educational_id.substring(8)}}</td>
+                      <!-- <td>#{{item.unit_educational_id.substring(8)}}</td> -->
+                      <td>#{{ item.unit_educational_id ? item.unit_educational_id.substring(8) : 'Default' }}</td>
                       <td>{{item.unit_educational_password}}</td>
                       <td>
                         <ng-container *ngIf="item.unit_educational_status==true; else elseEstado">
@@ -290,8 +291,10 @@
                     </div>
                     <div class="col-sm-4">
                       <label class="control-label">Logo<span class="star">*</span></label>
-                      <br>
-                      <button type="button" class="btn btn-primary btn-fill" (click)="openModalEditLogo()">Seleccionar Logo
+                      <input id="unit_educational_logo" type="text" class="form-control" name="unit_educational_logo"
+                        placeholder="logo" [ngModel]="unitEducational.unit_educational_logo" disabled
+                        #unit_educational_name="ngModel">
+                      <button type="button" class="btn btn-primary btn-fill" (click)="openModalEditLogo()">Nuevo Logo
                       </button>
                       <label>{{ nameImagen }}</label>
                     </div>

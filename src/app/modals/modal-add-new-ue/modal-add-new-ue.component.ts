@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { UnitEducational } from 'app/models/class/class.documentUnitEducational';
 import { UnitEdicationalService } from 'app/services/unit-edicational/unit-edicational.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn  } from '@angular/forms';
 import { ModalUploadLogoComponent } from '../modal-upload-logo/modal-upload-logo.component';
 import { ShareDataService } from 'app/services/ShareData/share-data.service';
 import { AcademicYearService } from 'app/services/academic_year/academic-year.service';
@@ -11,6 +11,8 @@ import {StorageService} from 'app/services/storage/storage.service';
 import { AuthService } from 'app/services/login/auth.service';
 import swal from 'sweetalert2';
 import { FirebaseService } from 'app/services/firebaseService/firebase-service.service';
+import { ValidationService } from 'app/services/validationRuc/validation.service';
+
 
 @Component({
   selector: 'app-modal-add-new-ue',
@@ -21,7 +23,6 @@ import { FirebaseService } from 'app/services/firebaseService/firebase-service.s
 
 export class ModalAddNewUEComponent implements OnInit, OnDestroy {
   
-  selectedAcademyId = '';
   file: File | null = null;
   subscription: Subscription;
   fileName: string = '';
@@ -39,20 +40,21 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
     private dialog: MatDialog, private shareDataService: ShareDataService,
     private unitEdicationalService: UnitEdicationalService, 
     private academicyearService: AcademicYearService, private storageService: StorageService, 
-    public auth: AuthService, private firebaseService: FirebaseService) {
+    public auth: AuthService, private firebaseService: FirebaseService,  
+    private validationService: ValidationService) {
    }
 
   ngOnInit(): void {
     this.subscription = this.shareDataService.file$.subscribe(file => {
       this.file = file;
-      if (file) {
+      if (file != null) {
         this.fileName = file.name;  // Almacenar el nombre del archivo en la variable
         //console.log('Archivo recibido:', file.name);
       } else {
         this.fileName = '';  // Limpiar el nombre si no hay archivo
       }
     });
-
+   
     this.unidadEducativa = new UnitEducational({});
     this.getCountries();
     this.getCities();
@@ -65,10 +67,21 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  /** Valida el ruc en el form agregar nueva UE */
+  rucValidator(): ValidatorFn  {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const ruc = control.value;
+      if (!this.validationService.validateRuc(ruc)) {
+        return { invalidRuc: true };
+      }
+      return null;
+    };
+  }
+
   // Abrir Modal para seleccionar un logo para UE
   openModalAUploadLogo(): void {
     const dialogRef = this.dialog.open(ModalUploadLogoComponent, {
-      width: '500px',
+      width: '400px',
       disableClose: true // Esto deshabilita el cierre automático
     });
 
@@ -92,9 +105,11 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
   }
 
 
+  /**Validamos antes de guardar la Unidad Educativa */
   async validateAndSave(): Promise<void> {
     if (!this.form.valid) {
-      this.form.markAllAsTouched(); // Marca todos los controles como tocados para activar los mensajes de error
+      this.form.markAllAsTouched();
+       // Marca todos los controles como tocados para activar los mensajes de error
       //console.error('The form contains errors.');
       swal({
         title: 'Error',
@@ -114,59 +129,60 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
   
     await this.save(formData, this.form.valid);
   }
-  
-  
+   
   /**
     * Guardamos una nueva UE
     * @param unitEdicational
     * @param isValid
   */
   async save(unitEducational: UnitEducational, isValid: boolean): Promise<void> {
+    let newLogoUrl: string | undefined;
+  
     if (this.file) {
       try {
-        unitEducational.unit_educational_logo = await this.storageService.uploadFile(
-          `UnitEducational/${unitEducational.unit_educational_name}/logo_${unitEducational.unit_educational_id}.png`,
-          this.file
+        newLogoUrl = await this.unitEdicationalService.uploadFile(
+          `UnitEducational/logo_${unitEducational.unit_educational_id || Date.now()}.png`, this.file
         );
       } catch (error) {
-        //console.error('Error uploading image:', error);
         swal({
           title: 'Error',
-          text: 'Hubo un error al guardar la imagen. Vuelve a intentarlo.',
+          text: 'Hubo un error al guardar la imagen. Vuelve a intentarlo.' + error,
           buttonsStyling: false,
           confirmButtonClass: 'btn btn-fill btn-danger',
           type: 'error',
-        })
+        });
+
         return;
       }
-    } else {
-      unitEducational.unit_educational_logo = this.unidadEducativa.unit_educational_logo || '';
     }
-
+  
+    // Solo actualiza el logo si se ha subido una nueva imagen
+    if (newLogoUrl) {
+      unitEducational.unit_educational_logo = newLogoUrl;
+    }
+  
     try {
-      // Inicializar la conexión a Firestore antes de guardar los datos
-        await this.firebaseService.initializeFirestoreConnection();
-      
+      //await this.firebaseService.initializeFirestoreConnection();
+  
       if (this.isEdit) {
         await this.unitEdicationalService.saveUnitEducational(unitEducational, false);
-        // Limpiar el formulario después de guardar
-        this.form.reset();
+        //console.log("entre al if")
       } else {
+        //console.log("entre la else")
         await this.auth.registerUserAuth(unitEducational, true);
         await this.unitEdicationalService.saveUnitEducational(unitEducational, true);
-        // Limpiar el formulario después de guardar
-        this.form.reset();
       }
-      //console.log('Data successfully saved or updated.');
-    } catch (error) {
-      //console.error('Error saving or updating data:', error);
+  
+      this.form.reset();
       swal({
-        title: 'Error',
-        text: 'Hubo un error al guardar los datos. Vuelve a intentarlo.',
+        title: 'Ok',
+        text: this.isEdit ? 'Datos de la UE editados correctamente!' : 'Datos de la UE procesados correctamente!',
         buttonsStyling: false,
-        confirmButtonClass: 'btn btn-fill btn-danger',
-        type: 'error',
-      })
+        confirmButtonClass: 'btn btn-fill btn-success',
+        type: 'success',
+      }).catch(swal.noop);
+    } catch (error) {
+      //console.log("Error")
     }
   }
 
@@ -179,13 +195,14 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
       'unit_educational_city': new FormControl(this.unidadEducativa.unit_educational_city, Validators.required),
       'unit_educational_address': new FormControl(this.unidadEducativa.unit_educational_address, Validators.required),
       'unit_educational_academy': new FormControl(this.unidadEducativa.unit_educational_academy, Validators.required),
-      'unit_educational_ruc': new FormControl(this.unidadEducativa.unit_educational_ruc, Validators.required),
+      'unit_educational_ruc': new FormControl(this.unidadEducativa.unit_educational_ruc, [Validators.required, this.rucValidator()]),
       'unit_educational_product': new FormControl(this.unidadEducativa.unit_educational_product, Validators.required),
       'unit_educational_value': new FormControl(this.unidadEducativa.unit_educational_value, Validators.required),
       'unit_educational_email': new FormControl(this.unidadEducativa.unit_educational_email, [Validators.required, Validators.email]),
       'unit_educational_phone': new FormControl(this.unidadEducativa.unit_educational_phone, Validators.required),
       'unit_educational_phoneBill': new FormControl(this.unidadEducativa.unit_educational_phoneBill, Validators.required),
       'unit_educational_academyId_fk': new FormControl(this.unidadEducativa.unit_educational_academyId_fk, Validators.required),
+      'unit_educational_password': new FormControl(this.unidadEducativa.unit_educational_password, Validators.required),
       'moduloNoticias': new FormControl(false),
       'moduloEntrenamiento': new FormControl(false),
       'moduloCampeonatos': new FormControl(false),
@@ -200,6 +217,7 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Metodo para formatear los datos y poner seleccionar un periodo */
   formatAcademicYear(year: any): string {
     return `${year.month_start} a ${year.month_end} ${year.year_end}`;
   }

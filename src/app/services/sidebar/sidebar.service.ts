@@ -18,6 +18,7 @@ export class SidebarService {
       return of(this.menuItems)
     } else {
       const aux = JSON.parse(localStorage.getItem('user'));
+      
       return this.afs.collection(`config/role_config/role/${aux.role}/menu`).get()
           .pipe(
               map(response => {

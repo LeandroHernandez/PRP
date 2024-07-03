@@ -79,6 +79,10 @@ export class MenuService {
     return this.db.collection("config").doc("menu_config").collection("menu").doc(uid).set(data);
   }
 
+  editMenuRole(uid, data){
+
+  }
+
   /**
    * Modifica el estado del menu
    * Modify the menu status

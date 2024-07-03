@@ -10,6 +10,7 @@ import { DataTable } from '../../../models/interfaces/data-table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 declare var $: any;
 
@@ -70,7 +71,7 @@ export class ListmenuComponent implements OnInit {
   constructor(
     private menuService: MenuService,
     private submenuService: SubmenuService,
-    private formulario: FormBuilder
+    private formulario: FormBuilder, private firestore: AngularFirestore
   ) {
     this.init_form_menu();
     this.init_form_submenu();
@@ -242,22 +243,56 @@ export class ListmenuComponent implements OnInit {
       menu_url : urlmenu,
       menu_icon : this.menu_form.value.menu_icon,
       menu_state : (this.flag_action_menu === true) ? true : this.data_menu_selected_for_edit.menu.menu_state
-    }
-    await this.menuService.add_menu(uid, object_menu).then().catch();
-    for (let i = 0; i < this.data_submenu.length; i++) {
-      const object_submenu = {
-        submenu_uid : this.data_submenu[i].submenu_uid,
-        submenu_name : this.data_submenu[i].submenu_name,
-        submenu_url : this.data_submenu[i].submenu_url,
-        submenu_icon : this.data_submenu[i].submenu_icon,
-        submenu_state : this.data_submenu[i].submenu_state
-      }
+    };
 
-      await this.submenuService.add_submenu(uid, this.data_submenu[i].submenu_uid, object_submenu).then().catch();
+    if (this.flag_action_menu) {
+        await this.menuService.add_menu(uid, object_menu).then().catch();
+        for (let i = 0; i < this.data_submenu.length; i++) {
+          const object_submenu = {
+            submenu_uid : this.data_submenu[i].submenu_uid,
+            submenu_name : this.data_submenu[i].submenu_name,
+            submenu_url : this.data_submenu[i].submenu_url,
+            submenu_icon : this.data_submenu[i].submenu_icon,
+            submenu_state : this.data_submenu[i].submenu_state
+          };
+          await this.submenuService.add_submenu(uid, this.data_submenu[i].submenu_uid, object_submenu).then().catch();
+        }
+    } else {
+        //console.log("Entreer alEditar ")
+        // Aquí se llama al nuevo método EditMenuRol() cuando flag_action_menu es false
+        await this.menuService.add_menu(uid, object_menu).then().catch();
+        await this.updateMenuInAllRoles(uid, object_menu);
+
     }
+
     const message_action_menu = (this.flag_action_menu === true) ? 'registrado' : 'actualizado';
-    await swal('Aviso', 'Se ha ' + message_action_menu + 'correctamente.', 'success');
+    await swal('Aviso', 'Se ha ' + message_action_menu + ' correctamente.', 'success');
+}
+
+
+// Función para actualizar un menú en todos los roles que lo contienen
+async updateMenuInAllRoles(menuId: string, updatedMenuData: any) {
+  // Obtener un snapshot de todos los documentos en la colección 'role'
+  const rolesSnapshot = await this.firestore.collection("config/role_config/role").get().toPromise();
+
+  // Iterar sobre cada documento de rol
+  for (const roleDoc of rolesSnapshot.docs) {
+    // Referencia a la subcolección de menús dentro del rol actual
+    const menuDocRef = this.firestore.doc(`config/role_config/role/${roleDoc.id}/menu/${menuId}`);
+    const menuDoc = await menuDocRef.get().toPromise();
+
+    if (menuDoc.exists) {
+      // Si el documento del menú existe, actualízalo
+      await menuDocRef.set(updatedMenuData, { merge: true });
+      //console.log(`Menu ${menuId} updated in role ${roleDoc.id}`);
+    } else {
+      //console.log(`Menu ${menuId} not found in role ${roleDoc.id}`);
+    }
   }
+}
+
+
+
 
   action_submenu() {
     const convert_url_lowercase = this.submenu_form.value.submenu_url;

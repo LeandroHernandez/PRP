@@ -88,7 +88,13 @@ export class AuthService implements OnDestroy {
               this.ngZone.run(() => {
                 this.router.navigate(['representativehome']);
               });
-            } else {
+            }
+            else if (this.userData.user_type === 'admin') {
+              
+                this.router.navigate(['athletes']);
+              
+            } 
+            else {
               this.ngZone.run(() => {
                 this.router.navigate(['listuniteducational']);
               });
@@ -111,9 +117,44 @@ export class AuthService implements OnDestroy {
     return this.afAuth.createUserWithEmailAndPassword(login_email, login_pass);
   }
 
+  // async registerUserAuth(unitEducational: UnitEducational, isEdit: boolean) {
+  //   console.log("entre al auythh")
+  //   // const email = unitEducational.unit_educational_email;
+  //   // const password = unitEducational.unit_educational_password;
+  //   const email = "roland@gmail.com";
+  //   const password = 'rolando123456'; 
+  //   try {
+  //     await this.afAuth.createUserWithEmailAndPassword(email, password)
+  //         .then((user) => {
+  //           this.unitEducationalService.saveUnitEducational(unitEducational, isEdit);
+  //           this.saveUserData(user.user, '1595275681084', 'unidad_educativa', unitEducational);
+  //         }).catch((e) => {
+  //           if (e.code === 'auth/user-not-found') {
+  //         swal('Atención', 'No hay registro de usuario correspondiente a este email. El usuario puede haber sido eliminado', 'error');
+  //       }
+  //           if (e.code === 'auth/email-already-in-use') {
+  //         swal('Atención', 'El email ingresado ya está en uso', 'error');
+  //       }
+  //           if (e.code === 'auth/wrong-password') {
+  //         swal('Atención', 'La contraseña no es válida o el usuario no tiene una contraseña', 'error');
+  //       }
+  //           if (e.code === 'auth/too-many-requests') {
+  //         swal('Atención', 'Demasiados intentos de inicio de sesión fallidos.', 'error');
+  //       }
+  //           if (e.code === 'auth/invalid-email') {
+  //         swal('Atención', 'El email no tiene un formato válido.', 'error');
+  //       }
+  //         });
+  //   } catch (e) {
+  //     console.log('error al guardar register User');
+  //     console.log(e);
+  //   }
+  // }
+
+
+  /** Agrega un usuario a "Firestore" */
   private saveUserData(user, role, type, unitEducational: UnitEducational) {
-    const userRef = this.afs.collection('users')
-        .doc(user.email);
+    const userRef = this.afs.collection('users').doc(user.email);
     const userData: User = {
       uid: user.uid,
       email: user.email,
@@ -126,43 +167,63 @@ export class AuthService implements OnDestroy {
     }
     return userRef.set(userData)
         .then(function() {
-          console.log('User correct Creation!!!');
+          //console.log('User correct Creation!!!');
         }).catch(reason => {
-          console.log('Error Creating User: ', reason);
+          //console.log('Error Creating User: ', reason);
         });
   }
 
 
+  /** Crea un usuario en el módulo de "Authentication" y guarda el mismo en "Firestore". */
   async registerUserAuth(unitEducational: UnitEducational, isEdit: boolean) {
     const email = unitEducational.unit_educational_email;
     const password = unitEducational.unit_educational_password;
+    
     try {
-      await this.afAuth.createUserWithEmailAndPassword(email, password)
-          .then((user) => {
-            this.unitEducationalService.saveUnitEducational(unitEducational, isEdit);
-            this.saveUserData(user.user, '1595275681084', 'unidad_educativa', unitEducational);
-          }).catch((e) => {
-            if (e.code === 'auth/user-not-found') {
-          swal('Atención', 'No hay registro de usuario correspondiente a este email. El usuario puede haber sido eliminado', 'error');
-        }
-            if (e.code === 'auth/email-already-in-use') {
-          swal('Atención', 'El email ingresado ya está en uso', 'error');
-        }
-            if (e.code === 'auth/wrong-password') {
-          swal('Atención', 'La contraseña no es válida o el usuario no tiene una contraseña', 'error');
-        }
-            if (e.code === 'auth/too-many-requests') {
-          swal('Atención', 'Demasiados intentos de inicio de sesión fallidos.', 'error');
-        }
-            if (e.code === 'auth/invalid-email') {
-          swal('Atención', 'El email no tiene un formato válido.', 'error');
-        }
-          });
-    } catch (e) {
-      console.log('error al guardar register User');
-      console.log(e);
+      // Crear usuario en Firebase Authentication
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      //console.log("Usuario creado exitosamente", userCredential.user);
+
+      // Guardar datos en Firestore
+      await this.saveUserData(userCredential.user, '1595275681084', 'ADMIN', unitEducational);
+
+      //console.log("Datos de usuario guardados exitosamente");
+      //swal('Éxito', 'Usuario registrado correctamente', 'success');
+      return userCredential.user;
+    } catch (error) {
+      //console.error('Error al registrar usuario:', error);
+      this.handleAuthError(error);
+      throw error;
     }
   }
+
+  /** Validar errores al crear un usuario */
+  private handleAuthError(error: any) {
+    let message = 'Ocurrió un error al registrar el usuario: ' + error.message;
+
+    switch (error.code) {
+        case 'auth/email-already-in-use':
+            message = 'El email ingresado ya está en uso. Por favor, use otro email.';
+            break;
+        case 'auth/invalid-email':
+            message = 'El email no tiene un formato válido';
+            break;
+        case 'auth/weak-password':
+            message = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.';
+            break;
+        case 'auth/operation-not-allowed':
+            message = 'La creación de cuentas está deshabilitada temporalmente.';
+            break;
+    }
+    swal({
+      title: 'Atención',
+      text: message,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Ok',
+      type: 'error',
+    });
+}
+
 
   // Returns true when user is looged in and email is verified
   /*get isLoggedIn(): boolean {
@@ -174,6 +235,8 @@ export class AuthService implements OnDestroy {
    *  Set user data in Firestore
    * @param user
    */
+
+
   SetUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.email}`);
     const userData: User = {
@@ -201,6 +264,7 @@ export class AuthService implements OnDestroy {
         .doc(email)
         .get().toPromise();
   }
+
   /**Academic Periodic Active*/
   GetPeriodActive() {
     return this.afs.collection('academic_year', ref => ref.where('active', '==' , true)).valueChanges();

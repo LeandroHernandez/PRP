@@ -1,0 +1,96 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div id="botones" class="row" align="center" style="margin: 15px;">
+          <div class="col-md-12 align-left">
+            <button type="submit" class="btn btn-success btn-import space-btn" >
+              Importar Jugadores
+            </button>
+          
+            <button  type="submit" class="btn btn-success btn-export space-btn">
+              Exportar Jugadores
+            </button>
+          
+            <!-- <button routerLink="/athletes/add-athletes" class="btn btn-success btn-add">
+              Agregar Jugadores
+            </button> -->
+            
+          </div>    
+        </div>
+
+        <div id="titlePag" style="margin: 15px;">
+            <h2>Listado de Jugadores</h2>
+        </div>
+
+        <div  class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="align-right ">
+                    <!-- <button *ngIf="!isEdit" type="submit" class="btn btn-success btn-add" (click)="openModalAddNewUE()">
+                      Ingrese el registro <i class="fa fa-cog"></i>
+                    </button> -->
+                     <button routerLink="/athletes/add-athletes" class="btn btn-success btn-add">
+                        Agregar Jugadores
+                    </button>
+                  </div>
+                    <div class="card">
+                        <div class="content">
+                            <div class="fresh-datatables">
+                              <div class="table-responsive">
+                                <div class="filters-container">
+                                  <input type="text" [(ngModel)]="searchTerm" (keyup)="applyFilters()" placeholder="Buscar...">
+                                  
+                                  <select [(ngModel)]="selectedYear" (change)="applyFilters()">
+                                    <option value="">Este Año</option>
+                                    <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                                  </select>
+                                
+                                  <select [(ngModel)]="selectedMonth" (change)="applyFilters()">
+                                    <option value="">Este Mes</option>
+                                    <option *ngFor="let month of months" [value]="month">{{month}}</option>
+                                  </select>
+                                
+                                  <select [(ngModel)]="selectedLevel" (change)="applyFilters()">
+                                    <option value="">Nivel</option>
+                                    <option *ngFor="let level of levels" [value]="level">{{level}}</option>
+                                  </select>
+                                </div>
+                                
+                                <table id="datatablesAthletes" class="table table-striped table-hover">
+                                  <thead>
+                                    <tr>
+                                      <th>ID</th>
+                                      <th>Nombre</th>
+                                      <th>Apellido</th>
+                                      <th>Nivel</th>
+                                      <th>Estado</th>
+                                      <th>Accesos</th>
+                                      <th>Opciones</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let player of filteredPlayers">
+                                      <td>{{ player.playerId }}</td>
+                                      <td>{{ player.firstName }}</td>
+                                      <td>{{ player.lastName }}</td>
+                                      <td>{{ player.level }}</td>
+                                      <td>
+                                        <span class="badge badge-success" *ngIf="player.status" style="background-color: #62B51A;">Activo</span>
+                                        <span class="badge badge-secondary" *ngIf="!player.status">Inactivo</span>
+                                      </td>
+                                      <td>
+                                        <button class="btn btn-success">Acceso y Representante</button>
+                                      </td>
+                                      <td>
+                                        <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-info"><i class="fa fa-folder-open"></i> Fichas</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

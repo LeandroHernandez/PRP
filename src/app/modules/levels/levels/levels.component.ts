@@ -131,13 +131,13 @@ export class LevelsComponent implements OnInit {
    */
   async deleteLevel(level: Level): Promise<void> {
     swal({
-      title: 'Desea eliminar el nivel?',
+      title: 'Actualizar el estado del nivel ?',
       text: level.level_name,
       type: 'warning',
       showCancelButton: true,
       confirmButtonClass: 'btn btn-fill btn-success btn-mr-5',
       cancelButtonClass: 'btn btn-fill btn-danger',
-      confirmButtonText: 'Sí, eliminar!',
+      confirmButtonText: 'Sí, actulizar!',
       buttonsStyling: false,
     }).then((result) => {
       if (result.value) {
@@ -152,33 +152,30 @@ export class LevelsComponent implements OnInit {
         }).catch(swal.noop)
       }
     })
-
-
-
   }
 
   /**
    * Inicializa la datatable
    */
   initDataTable() {
-    let aaa = this.tablaLevels;
-    $('#datatablesLevel').DataTable().destroy();
-    setTimeout(function () {
-      /***
-       * Opciones del datatable
-       ***/
-      aaa = $('#datatablesLevel').DataTable({
-        'paging': true,
-        'ordering': true,
-        'info': true,
-        'pagingType': 'full_numbers',
-        'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, 'All']],
-        responsive: true,
-        language: {
-          search: '_INPUT_',
-          searchPlaceholder: 'Buscar',
-        },
-      });
-    }, 10)
+    // Destruir DataTable si ya está inicializada
+    if ($.fn.DataTable.isDataTable('#datatablesLevel')) {
+      $('#datatablesLevel').DataTable().destroy();
+    }
+    
+    // Inicializar DataTable
+    this.tablaLevels = $('#datatablesLevel').DataTable({
+      'paging': true,
+      'ordering': true,
+      'info': true,
+      'pagingType': 'full_numbers',
+      'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, 'All']],
+      responsive: true,
+      language: {
+        search: '_INPUT_',
+        searchPlaceholder: 'Buscar',
+      },
+    });
   }
+  
 }

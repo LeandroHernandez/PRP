@@ -1,0 +1,90 @@
+/* Estilo para el botón "Nueva UE" */
+.btn-import {
+    padding: 6px 12px; /* Ajusta el padding según sea necesario */
+    border-radius: 6px; /* Asegúrate de que el borde esté redondeado */
+    color: white; /* Texto en color blanco */
+    font-size: 16px; /* Tamaño del texto */
+    background-color: #219653; /* Fondo verde (usa el color exacto que prefieras) */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra ligera para dar profundidad */
+  }
+
+  .btn-export {
+    padding: 6px 12px; /* Ajusta el padding según sea necesario */
+    border-radius: 6px; /* Asegúrate de que el borde esté redondeado */
+    color: white; /* Texto en color blanco */
+    font-size: 16px; /* Tamaño del texto */
+    background-color: red; /* Fondo verde (usa el color exacto que prefieras) */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra ligera para dar profundidad */
+  }
+
+  .btn-add {
+    padding: 6px 12px; /* Ajusta el padding según sea necesario */
+    border-radius: 6px; /* Asegúrate de que el borde esté redondeado */
+    color: white; /* Texto en color blanco */
+    font-size: 16px; /* Tamaño del texto */
+    background-color: #30B700; /* Fondo verde (usa el color exacto que prefieras) */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra ligera para dar profundidad */
+  }
+
+  #titlePag {
+    border: 1px solid #C3C6C8; /* Borde de 2 píxeles de grosor y color negro */
+    padding: 5px;         /* Espaciado interno para darle algo de margen al contenido */
+    border-radius: 5px;    /* Bordes ligeramente redondeados */
+    margin: 15px;
+  }
+  
+  h2{
+    margin: 5px;
+  }
+
+  .align-left {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 0;
+    margin-left: 0;
+    margin-right: 15px;
+  }
+  
+  .align-center {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    margin-left: 0;
+  }
+  
+  .align-right {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 0;
+    margin-right: 0;
+    padding-bottom: 10px;
+  }
+  
+
+  .space-btn {
+    margin-right: 10px; /* Ajusta el valor según el espacio deseado */
+  }
+
+  
+  /** Estilos para el input de "Buscar" */
+  
+  .filters-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filters-container input,
+  .filters-container select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .filters-container input {
+    flex-grow: 1;
+  }
+  
+  .filters-container select {
+    min-width: 120px;
+  }

@@ -76,6 +76,16 @@
                                                             [value]="sublevel.sublevel_id">{{sublevel.sublevel_name}}
                                                         </option>
                                                     </select>
+
+                                                    <!-- <select [(ngModel)]="subject.sublevel_id" name="sublevel_id"
+                                                        id="sublevel_id" class="form-control"
+                                                        (change)="onChangeSublevel(subject.sublevel_id)">
+                                                        <option value="">Selecciona una opción</option>
+                                                        <option *ngFor="let sublevel of arraySublevels" [value]="sublevel.sublevel_id">
+                                                            {{sublevel.sublevel_name}}
+                                                        </option>
+                                                    </select> -->
+
                                                     <small
                                                         [hidden]="subject.sublevel_id || (subject_id.pristine && !formulariosubject.submitted)"
                                                         class="text-danger">

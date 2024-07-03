@@ -1,0 +1,96 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <!-- <div id="botones" class="row" align="center" style="margin: 15px;">
+          <div class="col-md-12 align-left">
+            <button type="submit" class="btn btn-success btn-import space-btn" >
+              Importar Jugadores
+            </button>
+          
+            <button  type="submit" class="btn btn-success btn-export space-btn">
+              Exportar Jugadores
+            </button>
+          </div>    
+        </div> -->
+
+        <div id="titlePag" style="margin: 15px;">
+            <h2>Listado de Usuarios</h2>
+        </div>
+
+        <div  class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="align-right ">
+                    <!-- <button *ngIf="!isEdit" type="submit" class="btn btn-success btn-add" (click)="openModalAddNewUE()">
+                      Ingrese el registro <i class="fa fa-cog"></i>
+                    </button> -->
+                     <button routerLink="/athletes/add-athletes" class="btn btn-success btn-add">
+                        Agregar Usuario
+                    </button>
+                  </div>
+                    <div class="card">
+                        <div class="content">
+                            <div class="fresh-datatables">
+                              <div class="table-responsive">
+                                <div class="filters-container" style="padding-bottom: 15px;">
+                                  <input type="text" [(ngModel)]="searchTerm" (keyup)="applyFilters()" placeholder="Buscar...">
+                                </div>
+                                
+                                <div *ngIf="loading" class="text-center">
+                                  <p>Cargando usuarios...</p>
+                                </div>
+                                
+                                <div *ngIf="error" class="alert alert-danger">
+                                  {{ error }}
+                                </div>
+                                
+                                <table id="datatablesAthletes" class="table table-striped table-hover" *ngIf="!loading && !error">
+                                  <thead>
+                                    <tr>
+                                      <th>Email</th>
+                                      <th>Password</th>
+                                      <th>Role</th>
+                                      <th>User Type</th>
+                                      <th>Opciones</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let user of users">
+                                      <td>{{ user.email || '...' }}</td>
+                                      <td>{{ user.password || '...' }}</td>
+                                      <td>{{ user.role || '...' }}</td>
+                                      <td>{{ user.user_type || '...' }}</td>
+                                      <td>
+                                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                                          <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                          <button mat-menu-item>
+                                            <mat-icon>block</mat-icon>
+                                            <span>Inhabilitar cuenta</span>
+                                          </button>
+                                          <!-- <button mat-menu-item>
+                                            <mat-icon>refresh</mat-icon>
+                                            <span>Restablecer contraseña</span>
+                                          </button> -->
+                                          <button mat-menu-item (click)="deleteUser(user)">
+                                            <mat-icon>delete_outline</mat-icon>
+                                            <span>Borrar cuenta</span>
+                                          </button>
+                                        </mat-menu>
+                                        <!-- <button class="btn btn-warning" (click)="editUser(user)"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-danger" (click)="deleteUser(user)"><i class="fa fa-trash"></i></button> -->
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                
+                                <div *ngIf="!loading && !error && users.length === 0" class="alert alert-info">
+                                  No se encontraron usuarios.
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

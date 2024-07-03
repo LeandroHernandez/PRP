@@ -85,6 +85,7 @@ export class ListroleComponent implements OnInit {
     this.menuService.get_all_menu_only_data().subscribe(
       datamenu => {
         this.data_menu = datamenu;
+        //console.log("Data del Menu --->" , this.data_menu)
       },
       () => {
         this.data_menu = [];
@@ -143,7 +144,7 @@ export class ListroleComponent implements OnInit {
     this.roleService.get_all_menu_by_role(data.role_uid).subscribe(
       datamenubyrole => {
         this.data_menu_assing_to_rol = datamenubyrole;
-        console.log(datamenubyrole)
+        //console.log(datamenubyrole)
       },
         () => {
         this.data_menu_assing_to_rol = [];

@@ -1,0 +1,131 @@
+.container {
+    padding: 10px;
+    margin: 20px;
+    width: 100%;
+  }
+  
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .player-details {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 0;
+  }
+  
+  .player-info {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  
+  .info-row {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+  
+  .label {
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    font-size: 12px;
+  }
+  
+  .user-access {
+    padding: 20px 0;
+  }
+  
+  button[mat-button] {
+    margin-top: 10px;
+  }
+  
+  button[mat-raised-button] {
+    margin: 10px 0;
+  }
+
+  .btn-add {
+    padding: 12px 12px; /* Ajusta el padding según sea necesario */
+    border-radius: 6px; /* Asegúrate de que el borde esté redondeado */
+    color: white; /* Texto en color blanco */
+    font-size: 16px; /* Tamaño del texto */
+    background-color: #30B700; /* Fondo verde (usa el color exacto que prefieras) */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra ligera para dar profundidad */
+  }
+  
+  .custom-hr {
+    border: 0; /* Elimina el borde predeterminado */
+    height: 2px; /* Establece el grosor del hr */
+    background-color: #C3C6C8; /* Establece el color del hr */
+    margin: 20px 0; /* Añade márgenes superior e inferior si es necesario */
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.4); /* Sombra ligera para dar profundidad */
+    padding: 0;
+  }
+  
+  .btn-delete {
+    padding: 12px 12px; /* Ajusta el padding según sea necesario */
+    border-radius: 6px; /* Asegúrate de que el borde esté redondeado */
+    color: white; /* Texto en color blanco */
+    font-size: 16px; /* Tamaño del texto */
+    background-color: red; /* Fondo verde (usa el color exacto que prefieras) */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra ligera para dar profundidad */
+  }
+
+  .btn-edit {
+    padding: 12px 12px; /* Ajusta el padding según sea necesario */
+    border-radius: 6px; /* Asegúrate de que el borde esté redondeado */
+    color: white; /* Texto en color blanco */
+    font-size: 16px; /* Tamaño del texto */
+    background-color: #219653; /* Fondo verde (usa el color exacto que prefieras) */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra ligera para dar profundidad */
+  }
+
+  .button-container {
+    display: flex;
+    gap: 20px; /* Añade un espacio de 10px entre los botones */
+  }
+
+
+
+  /** CSS para la foto del Jugador /
+  /* Agrega estos estilos en tu styles.css o en el componente CSS específico */
+  .circular-card {
+    width: 110px;  /* Diámetro del círculo */
+    height: 110px;
+    border-radius: 50%;  /* Crea un borde redondo */
+    overflow: visible;  /* Permite que el botón sea visible fuera del círculo */
+    position: relative;  /* Para posicionar absolutamente el botón y la imagen */
+  }
+  
+  .circular-card img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-35%, -35%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* Asegura que la imagen cubra todo el espacio */
+    border-radius: 50%;  /* Mantiene la imagen circular */
+  }
+  
+  .edit-button {
+    position: absolute;
+    right: -1px;  /* Ajusta este valor según el tamaño de tu botón */
+    bottom: -1px;  /* Ajusta este valor según el tamaño de tu botón */
+    z-index: 10;  /* Asegura que el botón esté por encima de la imagen */
+  }
+  
+  
+  
+  
+  
+
+  
+  

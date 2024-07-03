@@ -5,7 +5,6 @@ import { LandingpageComponent } from './pages/landingpage/landingpage.component'
 import {RegisterComponent} from './pages/register/register.component';
 import {LoginComponent} from './pages/login/login.component';
 import {PlanComponent} from './pages/plan/plan.component';
-import { ListacademicyearComponent } from './modules/academic-year/listacademicyear/listacademicyear.component';
 
 export const AppRoutes: Routes = [
   {
@@ -33,6 +32,7 @@ export const AppRoutes: Routes = [
     path: 'login',
     component: LoginComponent
   },
+  
   {
     path: '',
     component: AdminLayoutComponent,
@@ -157,13 +157,23 @@ export const AppRoutes: Routes = [
         {
             path: 'weighmodule',
             loadChildren: './modules/weigh-module/weigh-module-routing.module#WeighModuleRoutingModule'
-        }
-
-        /*,
+        },
+        // {
+        //     path: 'teachersubjectslist',
+        //     loadChildren: './modules/teacher-subjects/list-teacher-subjects.module#ListTeacherSubjectsModule'
+        // },
         {
-            path: 'teachersubjectslist',
-            loadChildren: './modules/teacher-subjects/list-teacher-subjects.module#ListTeacherSubjectsModule'
-        }*/
+            path: 'athletes',
+            loadChildren: './modules/modules-admin/athletes/athletes.module#AthletesModule'
+        },
+        {
+            path: 'athletes/add-athletes',
+            loadChildren: './modules/modules-admin/athletes/athletes.module#AthletesModule'
+        },
+        {
+            path: 'users',
+            loadChildren: './modules/users/users.module#UsersModule'
+        }
     ]
 },
 ];

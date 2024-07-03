@@ -41,7 +41,7 @@
                                                             class="star">*</span></label>
                                                     <input id="level_name" type="text" class="form-control"
                                                         name="level_name" placeholder="ej. Inicial"
-                                                        [ngModel]="level.level_name" required #level_name="ngModel">
+                                                        [ngModel]="level.level_name" required #level_name="ngModel" appOnlyNumbers> preuruafdkaj
                                                     <small
                                                         [hidden]="level_name.valid || (level_name.pristine && !formularioLevel.submitted)"
                                                         class="text-danger">
@@ -78,6 +78,8 @@
             </div>
         </div>
     </div>
+
+    
     <!-- DATA TABLE NIVEL-->
     <div class="container-fluid">
         <div class="row">
