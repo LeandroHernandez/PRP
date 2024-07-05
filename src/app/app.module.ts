@@ -35,6 +35,8 @@ import { ModalAddNewUEComponent } from './modals/modal-add-new-ue/modal-add-new-
 import { ModalUploadLogoComponent } from './modals/modal-upload-logo/modal-upload-logo.component';
 import { OnlyNumbersDirective } from './directives/only-numbers.directive';
 import { ToUpperCaseDirective } from './directives/to-upper-case.directive';
+import { ModalAddNewUserComponent } from './modals/modal-add-new-user/modal-add-new-user.component';
+import { ModalAddUsersUeComponent } from './modals/modal-add-users-ue/modal-add-users-ue.component';
 
 /** Configuration options for a router module */
 const routerOptions: ExtraOptions = {
@@ -70,7 +72,10 @@ const routerOptions: ExtraOptions = {
       ModalAddNewUEComponent,
       ModalUploadLogoComponent,
       OnlyNumbersDirective,
-      ToUpperCaseDirective
+      ToUpperCaseDirective,
+      ModalAddNewUserComponent,
+      ModalAddUsersUeComponent,
+      
 
     ],
     bootstrap: [AppComponent]

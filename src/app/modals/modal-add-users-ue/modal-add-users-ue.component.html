@@ -1,0 +1,95 @@
+<div class="container">
+    <form>
+        <mat-form-field appearance="fill" class="custom-form-field">
+            <mat-label>Buscar por Nombre o Identificación</mat-label>
+            <input matInput [formControl]="searchControl" class="custom-input">
+        </mat-form-field>
+    </form>
+
+    <table mat-table [dataSource]="filteredUsers$ | async" class="mat-elevation-z8 custom-table">
+
+        <ng-container matColumnDef="identification">
+            <th mat-header-cell *matHeaderCellDef> Identificación </th>
+            <td mat-cell *matCellDef="let user"> {{user.identification}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let user"> {{user.nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="apellido">
+            <th mat-header-cell *matHeaderCellDef> Apellido </th>
+            <td mat-cell *matCellDef="let user"> {{user.apellido}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="accion">
+            <th mat-header-cell *matHeaderCellDef> Acción </th>
+            <td mat-cell *matCellDef="let user">
+                <button mat-raised-button color="primary" (click)="assign_user_to_UE(user)">
+                    <mat-icon>add</mat-icon> Agregar Usuario
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['identification', 'nombre', 'apellido', 'email', 'accion']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['identification', 'nombre', 'apellido', 'email', 'accion'];"></tr>
+    </table>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="content">
+                <div class="table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <th class="text-center">
+                                Identificación
+                            </th>
+                            <th class="text-center">
+                                Nombre
+                            </th>
+                            <th class="text-center">
+                                Apellido
+                            </th>
+                            <th class="text-center">
+                                Email
+                            </th>
+                            <th class="text-center">
+                                Acción
+                            </th>
+                        </thead>
+
+                        <tbody>
+
+                            <tr *ngFor="let menu of data_user_assing_to_UE; let i=index">
+                                <td class="text-center">{{ menu.identification }}</td>
+                                <td class="text-center">{{ menu.nombre }}</td>
+                                <td class="text-center">{{ menu.apellido }}</td>
+                                <td class="text-center">{{ menu.email }}</td>
+                            
+                           
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<mat-dialog-actions align="end" class="custom-dialog-actions">
+    <button mat-stroked-button [mat-dialog-close]="true" cdkFocusInitial class="custom-button-cerrar">Salir</button>
+</mat-dialog-actions>

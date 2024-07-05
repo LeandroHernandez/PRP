@@ -52,7 +52,7 @@ export class AuthService implements OnDestroy {
         .then((result) => {
           this.GetUserData(result.user.email).then(async userFB => {
             console.log(userFB.data())
-            if (userFB.data().student_enabled === false) {
+            if (userFB.data().status_u === false) {
               swal({
                 title: 'Atención',
                 text: 'SU USUARIO A SIDO INHABILITADO, POR FAVOR COMUNICARSE CON SOPORTE ',
@@ -158,12 +158,15 @@ export class AuthService implements OnDestroy {
     const userData: User = {
       uid: user.uid,
       email: user.email,
+      nombre: null,
+      apellido: null,
       password: unitEducational.unit_educational_password,
       identification: unitEducational.unit_educational_id,
       displayName: unitEducational.unit_educational_name,
       emailVerified: user.emailVerified,
       role: role,
       user_type: type,
+      status_u: true,
     }
     return userRef.set(userData)
         .then(function() {
@@ -172,6 +175,8 @@ export class AuthService implements OnDestroy {
           //console.log('Error Creating User: ', reason);
         });
   }
+
+ 
 
 
   /** Crea un usuario en el módulo de "Authentication" y guarda el mismo en "Firestore". */
@@ -185,7 +190,7 @@ export class AuthService implements OnDestroy {
       //console.log("Usuario creado exitosamente", userCredential.user);
 
       // Guardar datos en Firestore
-      await this.saveUserData(userCredential.user, '1595275681084', 'ADMIN', unitEducational);
+      await this.saveUserData(userCredential.user, '0000000000000', 'NA', unitEducational);
 
       //console.log("Datos de usuario guardados exitosamente");
       //swal('Éxito', 'Usuario registrado correctamente', 'success');
@@ -241,6 +246,8 @@ export class AuthService implements OnDestroy {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.email}`);
     const userData: User = {
       identification: user.identification || '000000000',
+      nombre: user.nombre,
+      apellido: user.appellido,
       password: user.password,
       uid: user.uid,
       email: user.email,

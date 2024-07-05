@@ -1,0 +1,56 @@
+<form [formGroup]="form">
+    <div class="dialog-header">
+        <h2 mat-dialog-title>Registro de nuevo usuario</h2>
+      </div>
+    <mat-card>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Cédula</mat-label>
+          <input matInput formControlName="identificacion" required>
+          <mat-error *ngIf="form.get('identificacion').hasError('required')">Cédula es obligatorio</mat-error>
+          <mat-error *ngIf="form.get('identificacion').hasError('pattern')">Cédula debe tener solo 10 dígitos</mat-error>
+
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre" required>
+          <mat-error *ngIf="form.get('nombre').hasError('required')">Nombre es obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="apellido" required>
+            <mat-error *ngIf="form.get('apellido').hasError('required')">Apellido es obligatorio</mat-error>
+          </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required>
+            <mat-error *ngIf="form.get('email').hasError('required')">Email es obligatorio</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('email')">Email no válido</mat-error>
+          </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="password" type="password" required>
+          <mat-error *ngIf="form.get('password').hasError('required')">Contraseña es obligatoria</mat-error>
+          <mat-error *ngIf="form.get('password').hasError('minlength')">La contraseña debe tener al menos 6 caracteres</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="role" (selectionChange)="onRoleSelectionChange($event)" required>
+              <mat-option *ngFor="let role of roles" [value]="role.role_uid">
+                {{ role.role_name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('role').hasError('required')">Rol es obligatorio</mat-error>
+          </mat-form-field>
+        
+  
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="save()">Guardar</button>
+        <button mat-stroked-button [mat-dialog-close]="true" cdkFocusInitial class="custom-button-cerrar">Salir</button>
+    </mat-card-actions>
+    </mat-card>
+  </form>
+  

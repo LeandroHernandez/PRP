@@ -10,6 +10,7 @@ export class UnitEducational {
     unit_educational_logo?: string;
     unit_educational_status?: boolean;
     unit_educational_password?: string;
+    unit_educational_status_u?: boolean;
     unit_educational_Confirmpassword?: string;
     unit_educational_ruc?: string;
     unit_educational_product?: string;
@@ -31,6 +32,7 @@ export class UnitEducational {
         this.unit_educational_logo = unit_educational.logo;
         this.unit_educational_status = unit_educational.status;
         this.unit_educational_password = unit_educational.password;
+        this.unit_educational_status_u = unit_educational.status_u;
         this.unit_educational_Confirmpassword = unit_educational.confirmPassword;
         this.unit_educational_emailBill = unit_educational.emailBill;
         this.unit_educational_phoneBill= unit_educational.unit_educational_phoneBill;

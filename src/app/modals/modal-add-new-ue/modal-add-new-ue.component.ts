@@ -12,6 +12,7 @@ import { AuthService } from 'app/services/login/auth.service';
 import swal from 'sweetalert2';
 import { FirebaseService } from 'app/services/firebaseService/firebase-service.service';
 import { ValidationService } from 'app/services/validationRuc/validation.service';
+import { ModalAddUsersUeComponent } from '../modal-add-users-ue/modal-add-users-ue.component';
 
 
 @Component({
@@ -82,6 +83,17 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
   openModalAUploadLogo(): void {
     const dialogRef = this.dialog.open(ModalUploadLogoComponent, {
       width: '400px',
+      disableClose: true // Esto deshabilita el cierre automático
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Puedes hacer algo con el resultado aquí
+    });
+  }
+  openModalUsers(): void {
+    const dialogRef = this.dialog.open(ModalAddUsersUeComponent, {
+      width: '1000px',
+      
       disableClose: true // Esto deshabilita el cierre automático
     });
 
@@ -169,7 +181,7 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
         //console.log("entre al if")
       } else {
         //console.log("entre la else")
-        await this.auth.registerUserAuth(unitEducational, true);
+
         await this.unitEdicationalService.saveUnitEducational(unitEducational, true);
       }
   
@@ -198,11 +210,9 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
       'unit_educational_ruc': new FormControl(this.unidadEducativa.unit_educational_ruc, [Validators.required, this.rucValidator()]),
       'unit_educational_product': new FormControl(this.unidadEducativa.unit_educational_product, Validators.required),
       'unit_educational_value': new FormControl(this.unidadEducativa.unit_educational_value, Validators.required),
-      'unit_educational_email': new FormControl(this.unidadEducativa.unit_educational_email, [Validators.required, Validators.email]),
       'unit_educational_phone': new FormControl(this.unidadEducativa.unit_educational_phone, Validators.required),
       'unit_educational_phoneBill': new FormControl(this.unidadEducativa.unit_educational_phoneBill, Validators.required),
       'unit_educational_academyId_fk': new FormControl(this.unidadEducativa.unit_educational_academyId_fk, Validators.required),
-      'unit_educational_password': new FormControl(this.unidadEducativa.unit_educational_password, Validators.required),
       'moduloNoticias': new FormControl(false),
       'moduloEntrenamiento': new FormControl(false),
       'moduloCampeonatos': new FormControl(false),

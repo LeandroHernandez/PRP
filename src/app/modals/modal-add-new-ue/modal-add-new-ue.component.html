@@ -83,18 +83,7 @@
         </mat-form-field>
 
 
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput placeholder="Placeholder" formControlName="unit_educational_email">
-          <mat-error *ngIf="form.get('unit_educational_email').hasError('required') && form.get('unit_educational_email').touched">Email es obligatorio.</mat-error>
-          <mat-error *ngIf="form.get('unit_educational_email').hasError('email') && form.get('unit_educational_email').touched">Email debe ser válido.</mat-error>
-        </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label> Contraseña</mat-label>
-          <input matInput formControlName="unit_educational_password">
-          <mat-error *ngIf="form.get('unit_educational_password').hasError('required') && form.get('unit_educational_password').touched">Contraseña es obligatorio.</mat-error>
-        </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Teléfono Soporte Whatsapp</mat-label>
@@ -146,6 +135,10 @@
                 <mat-error *ngIf="form.get('unit_educational_academyId_fk').hasError('required') && form.get('unit_educational_academyId_fk').touched">Año Académico es obligatorio.</mat-error>
               </mat-form-field>
         </div>
+        <div (click)="openModalUsers()" style=" background-color: #09e054; color: white; padding: 40px; border-radius: 20px; margin-top: 20px; text-align: center;">
+          <i class="fa fa-user-plus" ></i>Usuarios<br>
+         
+    </div>
     </div>
 </div>
 </form>
