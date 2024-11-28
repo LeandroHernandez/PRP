@@ -1,0 +1,82 @@
+<!-- <p>chips works!</p> -->
+
+<div *ngIf="!parametersView" class="chips-container">
+  <h4 class="title">Nombre de la Ficha</h4>
+  <form [formGroup]="chipForm" (ngSubmit)="onSubmit()" class="form">
+    <input
+      type="text"
+      placeholder="Ingresar el nombre"
+      class="name-input"
+      formControlName="name"
+    />
+    <label class="checkbox-label">
+      Ficha de acceso publico
+      <input
+        type="checkbox"
+        title="Ficha de acceso publico"
+        class="checkbox-input"
+        formControlName="accessPublicChip"
+      />
+    </label>
+    <div class="buttons-div">
+      <div>
+        <button
+          *ngIf="
+            chipForm.controls['name'].value &&
+            chipForm.controls['name'].value.length > 0
+          "
+          type="button"
+          class="button add-parameters-button"
+          (click)="
+            parametersSelected = parametersSelected ? parametersSelected : [];
+            parametersView = true
+          "
+        >
+          Agregar Métricas
+        </button>
+      </div>
+      <div *ngIf="parametersSelected" class="parameters-selected-list">
+        <div
+          *ngFor="let parameter of parametersSelected; let i = index"
+          class="parameters-selected-list-item"
+        >
+          <label> {{ parameter.name }} </label>
+
+          <i
+            class="fa fa-times-circle remove-button"
+            aria-hidden="true"
+            title="Remover {{ parameter.name }}"
+            (click)="removeParameterSelected(i)"
+          ></i>
+        </div>
+      </div>
+      <div class="buttons">
+        <div *ngIf="chip" class="dropdown dropdown-with-icons">
+          <i
+            class="fa fa-trash-o dropdown-toggle"
+            data-toggle="dropdown"
+            aria-hidden="true"
+            title="Eliminar Ficha"
+          ></i>
+          <button
+            *ngIf="chip"
+            type="button"
+            class="button dropdown-menu dropdown-with-icons"
+            title="Eliminar"
+            (click)="deleteChip(chip)"
+          >
+            Eliminar
+          </button>
+        </div>
+        <button *ngIf="!chip" type="button" class="button" (click)="cancel()" >Cancelar</button>
+        <button type="submit" class="button submit-button">Guardar</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="parameters-container" *ngIf="parametersSelected && parametersView">
+  <app-parameters
+    [parametersSelected]="parametersSelected"
+    (parametersSelectedEmitter)="parametersSelectedEmitter($event)"
+  ></app-parameters>
+</div>

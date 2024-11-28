@@ -1,0 +1,242 @@
+<!-- <p>modal-add-or-edit-new-eu works!</p> -->
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="modal-container">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>Nueva Unidad Educativa</h2>
+    <div class="toggle-container">
+      <h2><span>Estado</span></h2>
+      <mat-slide-toggle
+        formControlName="state"
+        class="mat-slide-toggle mat-accent ng-valid ng-dirty ng-touched"
+      >
+      </mat-slide-toggle>
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <mat-card>
+      <div class="form-row mat-card-div">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <!-- appToUpperCase -->
+          <input matInput placeholder="Nombre" formControlName="name" />
+          <!-- *ngIf="
+              form.get('name').hasError('required') && form.get('name').touched
+            " -->
+          <mat-error>Nombre es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>País</mat-label>
+          <mat-select formControlName="country">
+            <mat-option *ngFor="let country of countryList" [value]="country">
+              <!-- {{ country.country_name }} -->
+              {{ country.name }}
+            </mat-option>
+          </mat-select>
+          <!-- *ngIf="
+              form.get('country').hasError('required') &&
+              form.get('country').touched
+            " -->
+          <mat-error>País es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ciudad</mat-label>
+          <mat-select formControlName="city">
+            <mat-option *ngFor="let city of cityList" [value]="city.city_name">
+              {{ city.city_name }}
+            </mat-option>
+          </mat-select>
+          <!-- *ngIf="
+              form.get('city').hasError('required') && form.get('city').touched
+            " -->
+          <mat-error>Ciudad es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Disciplina/Académia</mat-label>
+          <input
+            matInput
+            placeholder="Disciplina/Académia"
+            formControlName="academicDiscipline"
+          />
+          <!-- *ngIf="
+            form.get('unit_educational_academy').hasError('required') &&
+            form.get('unit_educational_academy').touched
+          " -->
+          <mat-error>Disciplina/Académia es obligatoria.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ruc</mat-label>
+          <input
+            matInput
+            placeholder="Ruc"
+            formControlName="ruc"
+            appOnlyNumbers
+          />
+          <!-- *ngIf="form.get('unit_educational_ruc').hasError('invalidRuc')" -->
+          <mat-error>
+            Ruc inválido. Debe tener 13 caracteres y terminar en 001.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Producto a Cobrar</mat-label>
+          <!-- <mat-select formControlName="unit_educational_product"></mat-select> -->
+          <mat-select formControlName="product">
+            <mat-option *ngFor="let product of products" [value]="product">
+              {{ product }}
+            </mat-option>
+          </mat-select>
+          <!-- *ngIf="
+            form.get('unit_educational_product').hasError('required') &&
+            form.get('unit_educational_product').touched
+          " -->
+          <mat-error>Producto a Cobrar es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Valor</mat-label>
+          <input
+            matInput
+            placeholder="Placeholder"
+            formControlName="value"
+            appOnlyNumbers
+          />
+          <!-- *ngIf="
+            form.get('unit_educational_value').hasError('required') &&
+            form.get('unit_educational_value').touched
+          " -->
+          <mat-error>Valor es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono Factura</mat-label>
+          <input
+            matInput
+            placeholder="Placeholder"
+            formControlName="billPhone"
+            appOnlyNumbers
+          />
+          <!-- *ngIf="
+            form.get('unit_educational_phone').hasError('required') &&
+            form.get('unit_educational_phone').touched
+          " -->
+          <mat-error>Teléfono Factura es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono Soporte Whatsapp</mat-label>
+          <input
+            matInput
+            placeholder="Placeholder"
+            formControlName="phoneNumber"
+            appOnlyNumbers
+          />
+          <!-- *ngIf="
+            form.get('unit_educational_phoneBill').hasError('required') &&
+            form.get('unit_educational_phoneBill').touched
+          " -->
+          <mat-error>Teléfono Soporte Whatsapp es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <textarea
+            matInput
+            placeholder="Dirección"
+            formControlName="address"
+          ></textarea>
+          <!-- *ngIf="
+              form.get('address').hasError('required') &&
+              form.get('address').touched
+            " -->
+          <mat-error>Dirección es obligatoria.</mat-error>
+        </mat-form-field>
+
+        <div class="loadLogo">
+          <button
+            type="button"
+            mat-stroked-button
+            color="basic"
+            (click)="openModalAUploadLogo()"
+          >
+            <i class="fa fa-file-image-o"></i>
+            <span>Cargar logo</span>
+          </button>
+          <label>{{ fileName }}</label>
+        </div>
+      </div>
+    </mat-card>
+    <div class="grid-container">
+      <!-- <div class="grid-item">
+        <h3>Módulo de Noticias</h3>
+        <h3><span>Módulo de Entrenamiento</span></h3>
+        <h3><span>Módulo de Campeonatos</span></h3>
+        <h3><span>Módulo de Control de Pagos</span></h3>
+      </div> -->
+      <div class="grid-item" formGroupName="modules">
+        <div>
+          <span>Módulo de Noticias</span>
+          <mat-slide-toggle formControlName="newsModule"></mat-slide-toggle>
+        </div>
+        <div>
+          <span>Módulo de Entrenamiento</span>
+          <mat-slide-toggle formControlName="trainingModule"></mat-slide-toggle>
+        </div>
+        <div>
+          <span>Módulo de Campeonatos</span>
+          <mat-slide-toggle formControlName="copsModule"></mat-slide-toggle>
+        </div>
+        <div>
+          <span>Módulo de Control de Pagos</span>
+          <mat-slide-toggle
+            formControlName="payControlModule"
+          ></mat-slide-toggle>
+        </div>
+      </div>
+      <div class="grid-item">
+        <div class="academicYear-div">
+          <i class="fa fa-calendar"></i> Año Lectivo <br />
+          <mat-form-field appearance="standard">
+            <mat-label class="text-white">Seleccionar</mat-label>
+            <mat-select formControlName="academicYearId">
+              <!-- [(value)]="selectedAcademyId" -->
+              <mat-option
+                *ngFor="let year of academicYears"
+                [value]="year.academic_year_id"
+              >
+                {{ formatAcademicYear(year) }}
+              </mat-option>
+            </mat-select>
+            <!-- *ngIf="
+              form
+                .get('unit_educational_academyId_fk')
+                .hasError('required') &&
+              form.get('unit_educational_academyId_fk').touched
+            " -->
+            <mat-error>Año Académico es obligatorio.</mat-error>
+          </mat-form-field>
+        </div>
+        <div (click)="openModalUsers()" class="users-div">
+          <i class="fa fa-user-plus"></i>Usuarios<br />
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <!-- (click)="validateAndSave()" -->
+  <mat-dialog-actions align="end">
+    <button type="submit" mat-raised-button class="custom-button-guardar">
+      Guardar
+    </button>
+    <button
+      type="button"
+      mat-stroked-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      class="custom-button-cerrar"
+    >
+      Salir
+    </button>
+  </mat-dialog-actions>
+</form>

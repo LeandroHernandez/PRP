@@ -1,0 +1,26 @@
+<!-- <p>modals works!</p> -->
+<section class="container-section">
+  <div class="dialog-header">
+    <!-- <h2 mat-dialog-title>Nueva Unidad Educativa</h2> -->
+    <h2 mat-dialog-title>{{ "modalInfo.title" }}</h2>
+    <div class="toggle-container">
+      <h2><span>Estado</span></h2>
+      <mat-slide-toggle
+        formControlName="unit_educational_status"
+      ></mat-slide-toggle>
+    </div>
+  </div>
+
+  <!-- (click)="validateAndSave()" -->
+  <mat-dialog-actions align="end">
+    <button mat-raised-button class="custom-button-guardar">Guardar</button>
+    <button
+      mat-stroked-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      class="custom-button-cerrar"
+    >
+      Salir
+    </button>
+  </mat-dialog-actions>
+</section>

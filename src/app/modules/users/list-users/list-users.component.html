@@ -1,6 +1,6 @@
 <div class="main-content">
-    <div class="container-fluid">
-        <!-- <div id="botones" class="row" align="center" style="margin: 15px;">
+  <div class="container-fluid">
+    <!-- <div id="botones" class="row" align="center" style="margin: 15px;">
           <div class="col-md-12 align-left">
             <button type="submit" class="btn btn-success btn-import space-btn" >
               Importar Jugadores
@@ -12,108 +12,140 @@
           </div>    
         </div> -->
 
-        <div id="titlePag" style="margin: 15px;">
-            <h2>Listado de Usuarios</h2>
-        </div>
+    <div id="titlePag" style="margin: 15px">
+      <h2>Listado de Usuarios</h2>
+    </div>
 
-        <div  class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                  <div class="align-right ">
-                    <!-- <button *ngIf="!isEdit" type="submit" class="btn btn-success btn-add" (click)="openModalAddNewUE()">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="align-right">
+            <!-- <button *ngIf="!isEdit" type="submit" class="btn btn-success btn-add" (click)="openModalAddNewUE()">
                       Ingrese el registro <i class="fa fa-cog"></i>
                     </button> -->
-                     <button (click)="openModalAddUser()" class="btn btn-success btn-add">
-                        Agregar Usuario
-                    </button>
+            <button
+              (click)="openModalAddUser()"
+              class="btn btn-success btn-add"
+            >
+              Agregar Usuario
+            </button>
+          </div>
+          <div class="card">
+            <div class="content">
+              <div class="fresh-datatables">
+                <div class="table-responsive">
+                  <div class="filters-container" style="padding-bottom: 15px">
+                    <!-- [(ngModel)]="searchTerm"
+                    (keyup)="applyFilters()" -->
+                    <input type="text" placeholder="Buscar..." />
                   </div>
-                    <div class="card">
-                        <div class="content">
-                            <div class="fresh-datatables">
-                              <div class="table-responsive">
-                                <div class="filters-container" style="padding-bottom: 15px;">
-                                  <input type="text" [(ngModel)]="searchTerm" (keyup)="applyFilters()" placeholder="Buscar...">
-                                </div>
-                                
-                                <div *ngIf="loading" class="text-center">
-                                  <p>Cargando usuarios...</p>
-                                </div>
-                                
-                                <div *ngIf="error" class="alert alert-danger">
-                                  {{ error }}
-                                </div>
-                                
-                                <table id="datatablesAthletes" class="table table-striped table-hover" *ngIf="!loading && !error">
-                                  <thead>
-                                    <tr>
-                                      <th>Cédula</th>
-                                      <th>Nombre</th>
-                                      <th>Apellido</th>
-                                      <th>Email</th>
-                                      <th>Password</th>
-                                      <th>Role</th>
-                                      <th>User Type</th>
-                                      <th>Estado</th>
-                                      <th>Opciones</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr *ngFor="let user of users">
-                                      <td>{{ user.identification || '...' }}</td>
-                                      <td>{{ user.nombre || '...' }}</td>
-                                      <td>{{ user.apellido || '...' }}</td>
-                                      <td>{{ user.email || '...' }}</td>
-                                      <td>{{ user.password || '...' }}</td>
-                                      <td>{{ user.role || '...' }}</td>
-                                      <td>{{ user.user_type || '...' }}</td>
-                                      <td>{{ user.status_u ? 'Habilitado' : 'Inhabilitado' }}</td>
-                                      <td>
-                                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                                          <mat-icon>more_vert</mat-icon>
-                                        </button>
-                                        <mat-menu #menu="matMenu">
-                                          <button mat-menu-item (click)="question_user(user)">
-                                            <mat-icon>{{ user.status_u ? 'block' : 'check_circle' }}</mat-icon>
-                                            <span>{{ user.status_u ? 'Inhabilitar cuenta' : 'Habilitar cuenta' }}</span>
-                                          </button>
-                                          <!-- <button mat-menu-item>
+
+                  <div *ngIf="loading" class="text-center">
+                    <p>Cargando usuarios...</p>
+                  </div>
+
+                  <div *ngIf="error" class="alert alert-danger">
+                    {{ error }}
+                  </div>
+
+                  <table
+                    id="datatablesAthletes"
+                    class="table table-striped table-hover"
+                    *ngIf="!loading && !error"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Role</th>
+                        <th>User Type</th>
+                        <th>Estado</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let user of users">
+                        <td>{{ user.identification || "..." }}</td>
+                        <td>{{ user.nombre || "..." }}</td>
+                        <td>{{ user.apellido || "..." }}</td>
+                        <td>{{ user.email || "..." }}</td>
+                        <td>{{ user.password || "..." }}</td>
+                        <td>{{ user.role || "..." }}</td>
+                        <td>{{ user.user_type || "..." }}</td>
+                        <td>
+                          {{ user.status_u ? "Habilitado" : "Inhabilitado" }}
+                        </td>
+                        <td>
+                          <button
+                            mat-icon-button
+                            [matMenuTriggerFor]="menu"
+                            aria-label="Example icon-button with a menu"
+                          >
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="question_user(user)">
+                              <mat-icon>{{
+                                user.status_u ? "block" : "check_circle"
+                              }}</mat-icon>
+                              <span>{{
+                                user.status_u
+                                  ? "Inhabilitar cuenta"
+                                  : "Habilitar cuenta"
+                              }}</span>
+                            </button>
+                            <!-- <button mat-menu-item>
                                             <mat-icon>refresh</mat-icon>
                                             <span>Restablecer contraseña</span>
                                           </button> -->
-                                          <button mat-menu-item [matMenuTriggerFor]="submenu" >
-                                            <mat-icon>assignment_ind</mat-icon>
-                                            <span>Asignar rol</span>
-                                          </button>
-                                          <mat-menu #submenu="matMenu">
-                                            <ng-container *ngIf="roles.length > 0; else noRoles">
-                                              <button mat-menu-item *ngFor="let role of roles" (click)="question_add_role(user, role)">
-                                                <mat-icon>person</mat-icon>
-                                                <span>{{ role.role_name }}</span>
-                                              </button>
-                                            </ng-container>
-                                            <ng-template #noRoles>
-                                              <button mat-menu-item disabled>
-                                                <mat-icon>error</mat-icon>
-                                                <span>No hay roles disponibles</span>
-                                              </button>
-                                            </ng-template>
-                                          </mat-menu>
-                                        </mat-menu>
-                                        
-                                        <!-- <button class="btn btn-warning" (click)="editUser(user)"><i class="fa fa-edit"></i></button>
+                            <button mat-menu-item [matMenuTriggerFor]="submenu">
+                              <mat-icon>assignment_ind</mat-icon>
+                              <span>Asignar rol</span>
+                            </button>
+                            <mat-menu #submenu="matMenu">
+                              <ng-container
+                                *ngIf="roles.length > 0; else noRoles"
+                              >
+                                <button
+                                  mat-menu-item
+                                  *ngFor="let role of roles"
+                                  (click)="question_add_role(user, role)"
+                                >
+                                  <mat-icon>person</mat-icon>
+                                  <span>{{ role.role_name }}</span>
+                                </button>
+                              </ng-container>
+                              <ng-template #noRoles>
+                                <button mat-menu-item disabled>
+                                  <mat-icon>error</mat-icon>
+                                  <span>No hay roles disponibles</span>
+                                </button>
+                              </ng-template>
+                            </mat-menu>
+                          </mat-menu>
+
+                          <!-- <button class="btn btn-warning" (click)="editUser(user)"><i class="fa fa-edit"></i></button>
                                         <button class="btn btn-danger" (click)="deleteUser(user)"><i class="fa fa-trash"></i></button> -->
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                                
-                                <div *ngIf="!loading && !error && users.length === 0" class="alert alert-info">
-                                  No se encontraron usuarios.
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div
+                    *ngIf="!loading && !error && users.length === 0"
+                    class="alert alert-info"
+                  >
+                    No se encontraron usuarios.
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>

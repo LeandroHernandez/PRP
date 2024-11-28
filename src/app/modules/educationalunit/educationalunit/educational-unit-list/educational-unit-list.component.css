@@ -1,0 +1,46 @@
+.main-table {
+  width: 100%;
+}
+
+th,
+td {
+  text-align: center;
+}
+
+tr:hover .logo-img {
+  transform: scale(1.1);
+}
+
+.text-right {
+  text-align: end;
+}
+
+.logo-img {
+  height: 70px;
+  width: 70px;
+  display: inline-block;
+  object-fit: cover;
+  margin: auto;
+  transition: 0.2s transform ease-out;
+}
+
+@keyframes loading {
+  to {
+    color: rgb(0, 141, 0);
+    transform: rotate(360deg);
+  }
+}
+
+.loading-p,
+.empty-p {
+  min-width: max-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.loading-p .fa {
+  animation: 1s loading infinite linear;
+}

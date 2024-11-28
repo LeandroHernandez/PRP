@@ -1,0 +1,105 @@
+<!-- <p>add-level works!</p> -->
+
+<div class="modal-header">
+  <h5 class="modal-title">
+    {{ !level ? "REGISTRAR NIVEL" : "EDITAR NIVEL" }}
+  </h5>
+  <button
+    type="button"
+    class="close"
+    data-dismiss="modal"
+    aria-label="Close"
+    (click)="close()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="content">
+          <form
+            [formGroup]="form"
+            (ngSubmit)="submit()"
+            class="form-horizontal"
+            novalidate
+          >
+            <div class="form-group">
+              <div class="col-sm-4">
+                <label class="control-label"
+                  >ID<span *ngIf="level" class="star">*</span></label
+                >
+                <input
+                  readonly
+                  id="uid"
+                  type="text"
+                  class="form-control"
+                  name="uid"
+                  placeholder="ej. Inicial"
+                  formControlName="uid"
+                />
+                <small
+                  [hidden]="form.controls['uid'].valid"
+                  class="text-danger"
+                >
+                  Obligatorio
+                </small>
+              </div>
+              <div class="col-sm-4">
+                <label class="control-label"
+                  >Nivel<span class="star">*</span></label
+                >
+                <input
+                  id="name"
+                  type="text"
+                  class="form-control"
+                  name="name"
+                  formControlName="name"
+                  placeholder="ej. Inicial"
+                />
+                <small
+                  [hidden]="form.controls['name'].valid"
+                  class="text-danger"
+                >
+                  Obligatorio /<i> sin carácteres especiales </i>
+                </small>
+              </div>
+              <br />
+              <label class="col-sm-1 control-label"
+                >Estado<span class="star">*</span></label
+              >
+              <div class="checkbox col-sm-1">
+                <div class="checkbox">
+                  <input
+                    id="status"
+                    name="status"
+                    type="checkbox"
+                    formControlName="state"
+                    title="Estado"
+                  />
+                  <label class="" for="status"> </label>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <button type="submit" class="btn btn-success btn-fill">
+                  {{ !level ? "AGREGAR" : "EDITAR" }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-fill btn-xs btn-danger btn-icon"
+    data-dismiss="modal"
+    (click)="close()"
+  >
+    Cerrar
+  </button>
+</div>

@@ -1,125 +1,132 @@
-.dialog-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.container-section {
+  max-height: 85vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
+form {
+  overflow-y: auto;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-  background-color: #4caf50; 
+  background-color: #4caf50;
 }
 
 ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: #8bc34a; 
+  background-color: #8bc34a;
 }
 
 ::ng-deep .mat-slide-toggle {
-    /* Ajustar el tamaño del componente */
-    transform: scale(1);
-  
-    /* Ajustar el tamaño del pulgar (thumb) */
-    .mat-slide-toggle-thumb {
-      width: 35px; /* Ancho del pulgar */
-      height: 32px; /* Altura del pulgar */
-    }
-  
-    /* Ajustar el tamaño de la barra deslizante */
-    .mat-slide-toggle-bar {
-      width: 70px; /* Ancho de la barra deslizante ajustado */
-      height: 28px; /* Altura de la barra deslizante original */
-      border-radius: 12px; /* Radio de la barra deslizante original */
-    }
+  /* Ajustar el tamaño del componente */
+  transform: scale(1);
+
+  /* Ajustar el tamaño del pulgar (thumb) */
+  .mat-slide-toggle-thumb {
+    width: 35px; /* Ancho del pulgar */
+    height: 32px; /* Altura del pulgar */
   }
-  
-  ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-    transform: translate3d(30px, 0, 0); /* Ajusta este valor para asegurar que el thumb se desplace completamente a la derecha */
+
+  /* Ajustar el tamaño de la barra deslizante */
+  .mat-slide-toggle-bar {
+    width: 70px; /* Ancho de la barra deslizante ajustado */
+    height: 28px; /* Altura de la barra deslizante original */
+    border-radius: 12px; /* Radio de la barra deslizante original */
   }
-  
-  .toggle-container {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Espacio entre el texto y el slide toggle */
 }
 
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  transform: translate3d(
+    30px,
+    0,
+    0
+  ); /* Ajusta este valor para asegurar que el thumb se desplace completamente a la derecha */
+}
 
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacio entre el texto y el slide toggle */
+}
 
 mat-card {
-    max-width: 900px; /* Ajusta según el diseño */
-    margin: auto;
+  max-width: 900px; /* Ajusta según el diseño */
+  margin: auto;
 }
 
 .form-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; /* Asegura que haya espacio entre los campos */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Asegura que haya espacio entre los campos */
 }
 
 .form-field {
-    margin-bottom: 20px; /* Espacio entre campos */
+  margin-bottom: 20px; /* Espacio entre campos */
 }
 
 mat-card {
-    border: 1px solid #D7D9DA; /* Borde temporal para depuración */
-  }
-  
+  border: 1px solid #d7d9da; /* Borde temporal para depuración */
+}
 
 /*Estilos para la parte inferior del card */
 .toggle-group {
-    display: flex;
-    flex-direction: column; /* Alinea los toggles verticalmente */
-    align-items: center; /* Centra los toggles en el contenedor */
-    flex-basis: 5%; /* Opcional, ajusta según necesidades de diseño */
+  display: flex;
+  flex-direction: column; /* Alinea los toggles verticalmente */
+  align-items: center; /* Centra los toggles en el contenedor */
+  flex-basis: 5%; /* Opcional, ajusta según necesidades de diseño */
 }
 
 mat-slide-toggle {
-    margin-bottom: 20px; /* Espacio entre cada toggle */
+  margin-bottom: 20px; /* Espacio entre cada toggle */
 }
 
-
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    justify-items: start;
-  }
-  
-  .grid-item {
-    padding: 15px;
-    text-align: left;
-  }
-  
-  /* Estilos para la segunda columna (controles deslizantes) */
-  .grid-item:nth-child(2) {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Alinea los elementos hacia la izquierda */
-  }
-  
-  
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  justify-items: start;
+}
+
+.grid-item {
+  padding: 15px;
+  text-align: left;
+}
+
+/* Estilos para la segunda columna (controles deslizantes) */
+.grid-item:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea los elementos hacia la izquierda */
+}
+
 /** Estilos para los botones (Cancelar, Guardar) */
-  .custom-button-guardar {
-    background-color: #62B51A; /* Color de fondo personalizado */
-    color: white;             /* Color del texto */
-    border-radius: 4px;       /* Radio de los bordes */
-  }
-  
-  .custom-button-guardar:hover {
-    background-color: #4A8C14; /* Color de fondo al pasar el ratón */
-  }
+.custom-button-guardar {
+  background-color: #62b51a; /* Color de fondo personalizado */
+  color: white; /* Color del texto */
+  border-radius: 4px; /* Radio de los bordes */
+}
 
-  .custom-button-cerrar {
-    background-color: #EB5757; /* Color de fondo personalizado */
-    color: white;             /* Color del texto */
-    border-radius: 4px;       /* Radio de los bordes */
-  }
-  
-  .custom-button-cerrar:hover {
-    background-color: #9C3A3A; /* Color de fondo al pasar el ratón */
-  }
-  
+.custom-button-guardar:hover {
+  background-color: #4a8c14; /* Color de fondo al pasar el ratón */
+}
 
-  #inputGroupFile04 {
-    display: none; /** Oculta el input para dejar solo el boton "Seleccionar Logo" */
+.custom-button-cerrar {
+  background-color: #eb5757; /* Color de fondo personalizado */
+  color: white; /* Color del texto */
+  border-radius: 4px; /* Radio de los bordes */
+}
+
+.custom-button-cerrar:hover {
+  background-color: #9c3a3a; /* Color de fondo al pasar el ratón */
+}
+
+#inputGroupFile04 {
+  display: none; /** Oculta el input para dejar solo el boton "Seleccionar Logo" */
 }
 
 .text-white {

@@ -1,4 +1,21 @@
 .modal .modal-dialog {
-    width: 80% !important;
-    height: 80% !important;
+  width: 80% !important;
+  height: 80% !important;
+}
+
+.add-level-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 15px;
+}
+
+.level-table {
+  width: 100%;
+  min-width: 700px;
+}
+
+th,
+td {
+  text-align: center;
 }

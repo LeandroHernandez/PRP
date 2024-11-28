@@ -1,0 +1,211 @@
+<!-- <p>parameters works!</p> -->
+
+<div class="parameters-container">
+  <header class="header">
+    <h4 class="title">
+      {{ parameterToView ? "Lista de metricas" : "Lista general de metricas" }}
+    </h4>
+    <div class="interactions">
+      <div *ngIf="!parameterToView" class="interactions-input-container">
+        <!-- <input
+          *ngIf="parameters.length > 0"
+          type="text"
+          placeholder="Buscar"
+          class="input filter"
+          /> -->
+        <select
+          *ngIf="parameters.length > 0"
+          title="Metricas"
+          class="select filter"
+          placeholder="Buscar"
+          [(ngModel)]="parametersValueFilter"
+        >
+          <option *ngFor="let parameter of parameters" [value]="parameter.name">
+            {{ parameter.name }}
+          </option>
+        </select>
+        <i
+          *ngIf="parametersValueFilter !== ''"
+          class="fa fa-times-circle clear-filter"
+          aria-hidden="true"
+          title="Limpiar filtro"
+          (click)="clear()"
+        ></i>
+      </div>
+      <button
+        *ngIf="parameterToView"
+        type="button"
+        class="button"
+        (click)="parameterToView = null; clear()"
+      >
+        Seleccionar Métricas
+      </button>
+      <button
+        *ngIf="!parameterToView && !parametersSelected"
+        type="button"
+        class="button"
+        (click)="registerAction = true"
+      >
+        Agregar Metricas
+      </button>
+    </div>
+  </header>
+  <section class="parameter-list-section">
+    <!-- (click)="parameterToEdit = parameter; registerAction = true" -->
+    <div
+      *ngFor="let parameter of getItemsFiltered()"
+      class="parameter-list-item {{
+        parameterToView ? 'parameter-list-item-view' : ''
+      }}"
+      (click)="
+        parametersSelected ? selectAction(parameter) : viewAction(parameter)
+      "
+    >
+      <div class="parameter-list-item-container">
+        <header class="parameter-list-item-header">
+          <div>
+            <i
+              class="fa fa-{{ iSquareClass(parameter) }}"
+              aria-hidden="true"
+              title="{{ parametersSelected ? 'Seleccionar' : 'Editar' }}"
+              (click)="parameterToView ? editAcion(parameterToView) : false"
+            ></i>
+            <h6>{{ parameter.name }}</h6>
+          </div>
+          <p *ngIf="!parameterToView">
+            {{ parameter.assignedChip ? parameter.assignedChip : "Sin Ficha" }}
+          </p>
+        </header>
+        <div class="parameter-list-item-content">
+          <div *ngFor="let section of parameter.sections" class="section">
+            <header class="section-header">
+              <!-- <textarea
+              placeholder="Escribir Titulo&#10; de la Metrica"
+              [value]="section.name"
+              ></textarea> -->
+              <p>{{ section.name }}</p>
+              <i
+                *ngIf="!parameterToView && !parametersSelected"
+                class="fa fa-trash section-delete-button"
+                aria-hidden="true"
+              ></i>
+            </header>
+            <div
+              class="section-body {{
+                section.type === 'Calculo' ? 'section-body-calc' : ''
+              }}"
+            >
+              <div class="section-body-item section-type">
+                <p>
+                  {{ section.type }}
+                </p>
+              </div>
+              <div
+                *ngIf="section.type === 'Número'"
+                class="section-body-item number-type-div"
+              >
+                <p>Tipo</p>
+                <div>
+                  <p>{{ section.unitOfMeasurement }}</p>
+                  <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="calc-subsection" *ngIf="section.type === 'Calculo'">
+                <p
+                  class="calc-subsection-p-item"
+                  *ngFor="let calcSubsection of section.calcSubsectionItems"
+                >
+                  {{ calcSubsection }}
+                </p>
+                <details class="calc-add-details">
+                  <summary class="add-calc-subsection-summary">
+                    <i class="fa fa-plus-circle" aria-hidden="true"> </i>
+                  </summary>
+                  <div class="calc-options-div">
+                    <!-- <details
+                    *ngFor="let calcItem of typesOfCalcSubsections"
+                    class="calc-options-details"
+                  >
+                    <summary>
+                      {{ calcItem.label }}
+                      <i class="fa fa-caret-right" aria-hidden="true"></i>
+                    </summary>
+                    <div class="cal-subsection-options">
+                      <div
+                        *ngFor="let option of calcItem.options; let j = index"
+                      >
+                        <label
+                          (click)="
+                            option !== '' ? addCalcSubsection(i, option) : false
+                          "
+                          class="{{ i === j ? 'dont-show' : '' }}"
+                        >
+                          {{ option !== "" ? option : "-SIN NOMBRE" }}
+                        </label>
+                      </div>
+                    </div>
+                  </details> -->
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <i
+        *ngIf="parameterToView"
+        class="fa fa-trash section-delete-button parameter-delete"
+        aria-hidden="true"
+        title="Eliminar metrica"
+        (click)="deleteParameter(parameterToView.uid)"
+      ></i>
+    </div>
+    <p *ngIf="!parametersFind">Cargando...</p>
+    <p *ngIf="parametersFind && parameters.length <= 0">No existen metricas</p>
+
+    <button
+      *ngIf="parametersSelected"
+      type="button"
+      class="button loadParametersSelected"
+      (click)="emitParamters()"
+    >
+      Cargar Métricas Seleccionadas
+    </button>
+  </section>
+  <div *ngIf="registerAction" class="register-component">
+    <!-- <div class="register-component-content">
+      <i
+        class="fa fa-times-circle modal-close-button"
+        aria-hidden="true"
+        (click)="close()"
+      ></i>
+      <app-parameter-register
+        [parameterToEdit]="parameterToEdit"
+        (closeEmitter)="getParameters(); close()"
+      ></app-parameter-register>
+    </div> -->
+    <nz-modal 
+      [nzStyle]="{ width: '90%', maxHeight: '90vh', top: '50%', transform: 'translateY(-50%)'}"
+      [(nzVisible)]="
+        registerAction" nzTitle="{{parameterToEdit ? 'Edición' : 'Registro'}} de Metrica
+        " 
+      (nzOnCancel)="registerAction = false; parameterToEdit = null"
+      (nzOnOk)="registerAction = false; parameterToEdit = null"
+      [nzBodyStyle]="{ maxHeight: '70vh', overflowY: 'auto' }"
+    >
+      <!-- <ng-container *nzModalContent>
+      </ng-container> -->
+      <div class="register-component-content">
+        <!-- <i
+          class="fa fa-times-circle modal-close-button"
+          aria-hidden="true"
+          (click)="close()"
+        ></i> -->
+        <app-parameter-register
+          [parameterToEdit]="parameterToEdit"
+          (closeEmitter)="getParameters(); close()"
+        ></app-parameter-register>
+      </div>
+    </nz-modal>
+  </div>
+</div>

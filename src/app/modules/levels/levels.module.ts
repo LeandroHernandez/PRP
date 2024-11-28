@@ -12,6 +12,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'environments/environment';
 import { LevelsRoutes } from './levels.routing';
+import { AddLevelComponent } from './levels/add-level/add-level.component';
 
 
 // const routes: Routes = [
@@ -19,7 +20,7 @@ import { LevelsRoutes } from './levels.routing';
 // ];
 
 @NgModule({
-  declarations: [ LevelsComponent],
+  declarations: [ LevelsComponent, AddLevelComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(LevelsRoutes),

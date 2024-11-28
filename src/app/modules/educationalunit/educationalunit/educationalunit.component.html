@@ -1,0 +1,38 @@
+<!-- <p>educationalunit works!</p> -->
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="buttons-actions">
+      <button
+        type="button"
+        class="btn btn-success {{
+          educationalUnit ? 'btn-fill' : 'btn-addNewUE'
+        }}"
+        (click)="
+          educationalUnit ? (educationalUnit = null) : openModalAddNewUE()
+        "
+      >
+        {{ !educationalUnit ? "Nueva UE" : null }}
+        <i class="fa {{ educationalUnit ? 'fa-plus' : 'fa-cog' }}"></i>
+        {{ educationalUnit ? "Listar unidades educativas" : null }}
+      </button>
+    </div>
+
+    <!-- Inicio -->
+
+    <div *ngIf="!educationalUnit" class="container-fluid">
+      <app-educational-unit-list
+        [educationalUnities]="educationalUnities"
+        (educationalUnitEmitter)="educationalUnit = $event"
+        (deleteEducationalUnitEmitter)="deleteEducationalUnit($event)"
+      ></app-educational-unit-list>
+    </div>
+
+    <div *ngIf="educationalUnit" class="row">
+      <app-educational-unit-edit
+        [educationalUnit]="educationalUnit"
+      ></app-educational-unit-edit>
+    </div>
+    <!-- Fin -->
+  </div>
+</div>

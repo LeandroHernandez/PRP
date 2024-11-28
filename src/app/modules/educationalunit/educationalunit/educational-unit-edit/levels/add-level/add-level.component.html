@@ -1,0 +1,39 @@
+<!-- <p>add-level works!</p> -->
+
+<ul class="list-group list-responsive">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Nivel
+    <span class="">Asignado</span>
+  </li>
+  <li
+    *ngFor="let level of levels; let i = index"
+    class="list-group-item d-flex justify-content-between align-items-center"
+  >
+    {{ level.name }}
+
+    <bSwitch
+      [switch-on-color]="'success'"
+      [ngModel]="validateLevel(level)"
+      (ngModelChange)="addLevel(level, $event, i)"
+    >
+    </bSwitch>
+  </li>
+</ul>
+<div class="button-div">
+  <button
+    [disabled]="!selectedLevels"
+    type="button"
+    class="btn btn-success"
+    (click)="send()"
+  >
+    Asignar
+  </button>
+  <button
+    type="button"
+    mat-stroked-button
+    class="custom-button-cerrar"
+    (click)="close()"
+  >
+    Salir
+  </button>
+</div>

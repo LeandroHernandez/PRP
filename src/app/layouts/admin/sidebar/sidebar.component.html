@@ -1,50 +1,59 @@
-
-
 <!-- <div class="otra sidebar " style="color: rgb(143, 192, 252);"> -->
-    <div class="logo " style="background-color: #ffffff;">
-    <a href="http://www.dydactico.com" class="simple-text logo-mini">
-        <div class="logo-img">
-            <img src="../../assets/img/favicon.ico" />
-        </div>
-    </a>
-    <a href="http://www.dydactico.com" class="simple-text logo-normal" style="color: rgb(14, 13, 13); text-transform: none !important;">
-        P.R.P
-    </a>
+<div class="logo" style="background-color: #ffffff">
+  <a href="http://www.dydactico.com" class="simple-text logo-mini">
+    <div class="logo-img">
+      <img src="../../assets/img/favicon.ico" />
+    </div>
+  </a>
+  <a
+    href="http://www.dydactico.com"
+    class="simple-text logo-normal"
+    style="color: rgb(14, 13, 13); text-transform: none !important"
+  >
+    P.R.P
+  </a>
 </div>
 
-<div class="sidebar-wrapper"  [style.background-color]="backgroundColor">
-    <!--<div *ngIf="!isNotMobileMenu()">-->
-		<div>
-        <ul class="nav">
- 
-            <li *ngIf="infoUser">
-                <a routerLinkActive = "active"
-                   [routerLink]="infoUser.hasOwnProperty('student_name')? '/studentadmin': null">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <p>
-                        {{infoUser.teacher_name}} {{infoUser.teacher_surname}}
-                        {{infoUser.student_name}} {{infoUser.student_lastname}}
-                        {{infoUser.unit_educational_name}}
-                        {{infoUser.representative_name}} {{infoUser.representative_surname}}
-                    </p>
-                </a>
-            </li>
+<div class="sidebar-wrapper" [style.background-color]="backgroundColor">
+  <!--<div *ngIf="!isNotMobileMenu()">-->
+  <div>
+    <ul class="nav">
+      <li *ngIf="infoUser">
+        <a
+          routerLinkActive="active"
+          [routerLink]="
+            infoUser.hasOwnProperty('student_name') ? '/studentadmin' : null
+          "
+        >
+          <i class="fa fa-user" aria-hidden="true"></i>
+          <p>
+            {{ infoUser.teacher_name }} {{ infoUser.teacher_surname }}
+            {{ infoUser.student_name }} {{ infoUser.student_lastname }}
+            {{ infoUser.unit_educational_name }}
+            {{ infoUser.representative_name }}
+            {{ infoUser.representative_surname }}
+          </p>
+        </a>
+      </li>
 
-            <li *ngFor="let menuItem of menuItems">
-                <a [routerLink]="menuItem.menu_url">
-                    <i class="{{menuItem.menu_icon}}"></i>
-                    <p>{{menuItem.menu_name}}</p>
-                    
-                </a>    
-            </li>
+      <li *ngFor="let menuItem of menuItems">
+        <a [routerLink]="menuItem.menu_url">
+          <div>
+            <i class="{{ menuItem.menu_icon }}"></i>
+          </div>
+          <!-- <p>{{ menuItem.menu_name }}</p> -->
+          <span>
+            {{ menuItem.menu_name }}
+          </span>
+        </a>
+      </li>
 
-            <li (click)="SignOut()" >
-                <a>
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    <p>SALIR</p>
-                </a>
-            </li>
-
-        </ul>
-    </div>
+      <li (click)="SignOut()">
+        <a>
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <p>SALIR</p>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>

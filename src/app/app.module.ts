@@ -37,6 +37,14 @@ import { OnlyNumbersDirective } from './directives/only-numbers.directive';
 import { ToUpperCaseDirective } from './directives/to-upper-case.directive';
 import { ModalAddNewUserComponent } from './modals/modal-add-new-user/modal-add-new-user.component';
 import { ModalAddUsersUeComponent } from './modals/modal-add-users-ue/modal-add-users-ue.component';
+import { ModalAddOrEditNewEuComponent } from './modals/modal-add-or-edit-new-eu/modal-add-or-edit-new-eu.component';
+import { HttpClientModule } from '@angular/common/http';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { es_ES } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import es from '@angular/common/locales/es';
+
+registerLocaleData(es);
 
 /** Configuration options for a router module */
 const routerOptions: ExtraOptions = {
@@ -56,6 +64,7 @@ const routerOptions: ExtraOptions = {
     ReactiveFormsModule,
     MaterialdesingModule,
     YouTubePlayerModule,
+    HttpClientModule,
     
   ],
     declarations: [
@@ -75,10 +84,12 @@ const routerOptions: ExtraOptions = {
       ToUpperCaseDirective,
       ModalAddNewUserComponent,
       ModalAddUsersUeComponent,
+      ModalAddOrEditNewEuComponent,
       
 
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    providers: [{ provide: NZ_I18N, useValue: es_ES }]
 })
 
 export class AppModule {

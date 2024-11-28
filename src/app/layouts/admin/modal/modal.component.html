@@ -1,0 +1,11 @@
+<!-- <p>modal works!</p> -->
+
+<div *ngIf="modal" class="modal-container">
+  <i
+    class="fa fa-times-circle modal-close-button"
+    aria-hidden="true"
+    (click)="close()"
+  ></i>
+  <app-parameters *ngIf="modal === 'parameters'"></app-parameters>
+  <app-chips *ngIf="modal === 'chips'" (cancelEmitter)="close()"></app-chips>
+</div>

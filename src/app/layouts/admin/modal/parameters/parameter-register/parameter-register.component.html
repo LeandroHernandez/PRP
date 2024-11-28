@@ -1,0 +1,379 @@
+<!-- <p>parameter-register works!</p> -->
+
+<div class="parameters-register-container">
+  <h5 class="title">
+    {{ parameterToEdit ? "Metrica" : "Nombre de la metrica" }}
+  </h5>
+  <form
+    action=""
+    class="form"
+    [formGroup]="parameterForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="form-content-header">
+      <label class="label-name">
+        Nombre del parametro
+        <input
+          type="text"
+          class="input parameter-name"
+          placeholder="Ingresar el nombre"
+          formControlName="name"
+        />
+      </label>
+      <label class="label-level">
+        Nivel
+        <select class="select" formControlName="level">
+          <option [value]="level.level_id" *ngFor="let level of levels">
+            {{ level.level_name }}
+          </option>
+        </select>
+      </label>
+    </div>
+    <div formArrayName="sections" class="parameterSections">
+      <!-- class="parameterSections-list" -->
+      <div
+        *ngFor="let section of sections.controls; let i = index"
+      >
+        <div [formGroupName]="i">
+            <!-- [nzTitle]="getSectionName(i)"  -->
+            <!-- class="parameter-card invalid" -->
+          <nz-card 
+            [nzTitle]="headerTemplate"
+            [nzExtra]="extraTemplate"
+            class="
+              parameter-card 
+              {{ 
+                calcSubsectionItemsValidator(i) ? 
+                'invalid' : 
+                ''
+              }}
+            "
+          >
+          <!-- <nz-card-meta [nzDescription]="sections.controls[i].controls['type'].value"></nz-card-meta> -->
+          <div class="parameter-card-body">
+            <div nz-card-grid
+              *ngIf="
+                getSectionType(i) !== 
+                'Calculo' && 
+                getSectionType(i) !== 
+                'Resultado Ideal'
+              "
+            >
+              <label>
+                Valor
+                <!-- [nzMax]="10"  -->
+                <nz-input-number 
+                  [nzMin]="1" 
+                  [nzStep]="1" 
+                  nzPlaceHolder="Sin valor"
+                  [nzDisabled]="getSectionConstant(i) ? false : true"
+                  formControlName="value"
+                  *ngIf="getSectionType(i) === 'Número'"
+                ></nz-input-number>
+
+                <input 
+                  nz-input 
+                  placeholder="Sin valor" 
+                  type="text" 
+                  [nzDisabled]="getSectionConstant(i) ? false : true" 
+                  formControlName="value" 
+                  *ngIf="getSectionType(i) === 'Texto'"
+                  />
+                  
+                  <nz-switch 
+                  [ngModel]="true" 
+                  nzCheckedChildren="Verdadero" 
+                  nzUnCheckedChildren="Falso"
+                  formControlName="value"
+                  [nzDisabled]="getSectionConstant(i) ? false : true" 
+                  *ngIf="getSectionType(i) === 'Verdadero/Falso'"
+                  ></nz-switch>
+
+              </label>
+            </div>
+            <div nz-card-grid *ngIf="getSectionType(i) === 'Número'">
+              <label>
+                Tipo
+                <nz-select nzAllowClear nzPlaceHolder="Selecciona" nzShowSearch formControlName="unitOfMeasurement">
+                  <nz-option-group 
+                    *ngFor="let unitGroup of unitsOfMeasurement"
+                    [nzLabel]="unitGroup.group"
+                    >
+                    <nz-option 
+                      *ngFor="let unit of unitGroup.options"
+                      [nzValue]="unit" 
+                      [nzLabel]="unit"
+                    ></nz-option>
+                  </nz-option-group>
+                </nz-select>
+              </label>
+            </div>
+            <div 
+              nz-card-grid 
+              *ngFor="
+                let calcSubsection of section.controls['calcSubsectionItems']
+                  .value; let n = index;
+              "
+              draggable="true"
+              (dragstart)="onDragStart(n)"
+              (dragover)="onDragOver($event)"
+              (drop)="onDrop(i, n)"
+              >
+              <span> 
+                {{ 
+                  calcSubsection.name ? 
+                  calcSubsection.name :
+                  calcSubsection
+                }} 
+              </span>
+            </div>
+            <div 
+              nz-dropdown 
+              [nzDropdownMenu]="menu"
+              nz-card-grid 
+              *ngIf="
+                getSectionType(i) === 
+                'Resultado' || 
+                getSectionType(i) === 
+                'Calculo'"
+              >
+              <span>
+                <i class="fa fa-plus-circle" aria-hidden="true"> </i>
+              </span>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu>
+                  <!-- *ngFor="let calcItem of typesOfCalcSubsections" -->
+                  <li
+                   nz-submenu 
+                   [nzTitle]="'Variable'"
+                   class="calc-options-details"
+                  >
+                    <ul>
+                      <!-- option !== null ? addCalcSubsection(i, option) : false -->
+                      <li 
+                        nz-menu-item
+                        *ngFor="let option of sections.controls; let j = index"
+                        class="{{ i === j ? 'dont-show' : '' }} {{option.value.name.length > 0 ? '' : 'not-add'}} "
+                        (click)="
+                            option.value.name.length > 0 ? addCalcSubsection(i, option.value) : false;
+                          "
+                      >
+                      <!-- // option.value.name !== '' ? addCalcSubsection(i, option.value) : false; -->
+                        <!-- <p>{{option | json}}</p> -->
+                        {{ option.value.name !== "" ? option.value.name : "-SIN NOMBRE" }}
+                      </li>
+                    </ul>
+                  </li>
+                  <li 
+                    nz-submenu 
+                    [nzTitle]="typesOfCalcSubsections[1].label"
+                    class="calc-options-details"
+                >
+                    <ul>
+                      <li 
+                        nz-menu-item
+                        *ngFor="let option of typesOfCalcSubsections[1].options; let j = index"
+                        (click)="
+                          option !== '' ? addCalcSubsection(i, option) : false
+                        "
+                      >
+                        {{ option !== "" ? option : "-SIN NOMBRE" }}
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </div>
+            <!-- <div nz-card-grid>Content</div>
+            <div nz-card-grid>Content</div>
+            <div nz-card-grid>Content</div> -->
+          </div>
+          <nz-collapse
+            *ngIf="
+              getSectionType(i) === 
+              'Resultado' || 
+              getSectionType(i) === 
+              'Calculo'"
+            >
+            <!-- <nz-collapse-panel [nzHeader]="Formula" [nzActive]="panel.active" [nzDisabled]="panel.disabled"> -->
+            <nz-collapse-panel [nzHeader]="'Formula'">
+              <p style="margin:0;">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum, nostrum pariatur tenetur, alias quas officia accusamus quod itaque ut et totam enim tempore, delectus asperiores placeat hic dolorem impedit obcaecati.
+              </p>
+            </nz-collapse-panel>
+          </nz-collapse>
+          </nz-card>
+          <ng-template #headerTemplate>
+            <div 
+              class="
+                section-header-texts 
+                  {{ 
+                    getSectionName(i) === 
+                      'Escribir Titulo de la Metrica' ? 
+                      'not-add' : 
+                      '' 
+                  }} 
+              " 
+            >
+              <p>{{getSectionName(i)}}</p>
+              <p>{{getSectionType(i)}}</p>
+            </div>
+          </ng-template>
+          <ng-template #extraTemplate>
+            <a nz-dropdown [nzDropdownMenu]="menu">
+              Más
+              <span nz-icon nzType="down"></span>
+            </a>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <div class="sections-options">
+                <textarea
+                  placeholder="Escribir Titulo&#10; de la Metrica"
+                  formControlName="name"
+                  (ngModelChange)="changeName()"
+                ></textarea>
+                <label 
+                  nz-checkbox 
+                  formControlName="constant"
+                  *ngIf="
+                    getSectionType(i) !== 
+                    'Resultado' && 
+                    getSectionType(i) !== 
+                    'Calculo'" 
+                  >
+                    Constante
+                  </label>
+                <i
+                  title="Eliminar parametro"
+                  class="fa fa-trash form-section-delete-button"
+                  aria-hidden="true"
+                  (click)="removeSection(i)"
+                ></i>
+              </div>
+            </nz-dropdown-menu>
+          </ng-template>
+        </div>
+      </div>
+      <!--  -->
+      <!-- <div
+        *ngFor="let section of sections.controls; let i = index"
+        class="parameterSections-list"
+      >
+        <div class="section-formGroup" [formGroupName]="i">
+          <header class="form-section-header">
+            <textarea
+              placeholder="Escribir Titulo&#10; de la Metrica"
+              formControlName="name"
+              (ngModelChange)="changeName()"
+            ></textarea>
+            <i
+              class="fa fa-trash form-section-delete-button"
+              aria-hidden="true"
+              (click)="removeSection(i)"
+            ></i>
+            <label nz-checkbox formControlName="constant">Constante</label>
+          </header>
+          <div class="form-section-body">
+            <input
+              class="name-of-section-input"
+              type="text"
+              placeholder="Número"
+              formControlName="type"
+              disabled
+            />
+            <label
+              *ngIf="sections.value[i].type === 'Número'"
+              class="number-type-label"
+            >
+              Tipo
+            </label>
+            <div
+              class="calc-subsection"
+              *ngIf="sections.value[i].type === 'Calculo'"
+            >
+              <label
+                class="calc-subsection-label-item"
+                *ngFor="
+                  let calcSubsection of section.controls['calcSubsectionItems']
+                    .value
+                "
+              >
+                {{ calcSubsection }}
+              </label>
+              <details class="calc-add-details">
+                <summary class="add-calc-subsection-summary">
+                  <i class="fa fa-plus-circle" aria-hidden="true"> </i>
+                </summary>
+                <div class="calc-options-div">
+                  <details
+                    *ngFor="let calcItem of typesOfCalcSubsections"
+                    class="calc-options-details"
+                  >
+                    <summary>
+                      {{ calcItem.label }}
+                      <i class="fa fa-caret-right" aria-hidden="true"></i>
+                    </summary>
+                    <div class="cal-subsection-options">
+                      <div
+                        *ngFor="let option of calcItem.options; let j = index"
+                      >
+                          (click)="
+                            option !== '' ? addCalcSubsection(i, option) : false
+                          "
+                        <label
+                          class="{{ i === j ? 'dont-show' : '' }}"
+                        >
+                          {{ option !== "" ? option : "-SIN NOMBRE" }}
+                        </label>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!-- <button
+        type="button"
+        class="addSection-button"
+        (click)="showTypes = !showTypes"
+      >
+        Agregar Parametro
+        <div *ngIf="showTypes" class="types-of-parameters-sections">
+          <label
+            *ngFor="let type of typesOfParametersSections"
+            (click)="addSection(type)"
+            >{{ type }}</label
+          >
+        </div>
+      </button> -->
+      <button nz-button nzType="primary"  nz-dropdown [nzDropdownMenu]="menu" >Agregar Parametro</button>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li 
+            nz-menu-item
+            *ngFor="let type of typesOfParametersSections"
+            (click)="addSection(type)"
+          >
+            {{ type }}
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
+    <div class="buttons-actions">
+      <button nz-button type="submit" class="button submit-button">
+        {{ parameterToEdit ? "Editar" : "Guardar" }}
+      </button>
+      <button 
+        nz-button 
+        nzDanger 
+        nzType="primary" 
+        type="button" 
+        class="button cancel-button" 
+        (click)="close()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

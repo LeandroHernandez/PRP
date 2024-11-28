@@ -1,0 +1,195 @@
+<!-- <p>general-info works!</p> -->
+
+<!-- (ngSubmit)="
+              editUE(
+                formularioeducationalUnit.value,
+                formularioeducationalUnit.valid,
+                formularioeducationalUnit
+              )
+            " -->
+<!-- #formularioeducationalUnit="ngForm" -->
+<!-- <form method="get" action="/" class="form-horizontal" novalidate></form> -->
+<form
+  [formGroup]="form"
+  class="form-horizontal"
+  (ngSubmit)="editUE(educationalUnit)"
+>
+  <div class="form-group">
+    <div class="col-sm-4">
+      <label class="control-label">ID<span class="star">*</span></label>
+      <!-- [ngModel]="educationalUnit.uid" -->
+      <input
+        readonly
+        id="id"
+        type="text"
+        class="form-control"
+        name="id"
+        placeholder="ej. Inicial"
+        formControlName="uid"
+      />
+      <!-- #id="ngModel" -->
+      <small [hidden]="form.controls['uid'].valid" class="text-danger">
+        Obligatorio
+      </small>
+    </div>
+
+    <div class="col-sm-4">
+      <label class="control-label">Nombre<span class="star">*</span></label>
+      <input
+        id="name"
+        type="text"
+        class="form-control"
+        name="name"
+        placeholder="Nombre"
+        formControlName="name"
+      />
+      <!-- #name="ngModel" -->
+      <small [hidden]="form.controls['name'].valid" class="text-danger">
+        Obligatorio
+      </small>
+    </div>
+    <div class="col-sm-4">
+      <label class="control-label">Dirección<span class="star">*</span></label>
+      <input
+        id="address"
+        type="text"
+        class="form-control"
+        name="address"
+        placeholder="Dirección"
+        formControlName="address"
+        required
+      />
+      <!-- #address="ngModel" -->
+      <small [hidden]="form.controls['address'].valid" class="text-danger">
+        Obligatorio
+      </small>
+    </div>
+    <div class="col-sm-4">
+      <label class="control-label">Teléfono<span class="star">*</span></label>
+      <!-- [ngModel]="educationalUnit.phone" -->
+      <input
+        id="phone"
+        type="number"
+        class="form-control"
+        name="phone"
+        formControlName="phoneNumber"
+        placeholder="Teléfono"
+        required
+      />
+      <!-- #phone="ngModel" -->
+      <small [hidden]="form.controls['phoneNumber'].valid" class="text-danger">
+        Obligatorio
+      </small>
+    </div>
+    <div class="col-sm-4">
+      <label class="control-label">Email<span class="star">*</span></label>
+      <!-- [ngModel]="educationalUnit.email" -->
+      <input
+        id="email"
+        type="text"
+        class="form-control"
+        name="email"
+        formControlName="email"
+        placeholder="Email"
+        required
+      />
+      <!-- #email="ngModel" -->
+      <small [hidden]="form.controls['email'].valid" class="text-danger">
+        Obligatorio
+      </small>
+    </div>
+    <div class="col-sm-4">
+      <label class="control-label">Plan<span class="star">*</span></label>
+      <!-- [ngModel]="educationalUnit.plan" -->
+      <input
+        id="plan"
+        type="number"
+        class="form-control"
+        name="plan"
+        formControlName="plan"
+        placeholder="Plan"
+        required
+      />
+      <!-- #plan="ngModel" -->
+      <small [hidden]="form.controls['plan'].valid" class="text-danger">
+        Obligatorio
+      </small>
+    </div>
+    <div class="col-sm-4">
+      <label class="control-label">País<span class="star">*</span></label>
+      <!-- [(ngModel)]="educationalUnit.country"
+      (change)="onChangeCountry()" -->
+      <select
+        title="País"
+        class="form-control"
+        id="country"
+        name="country"
+        formControlName="country"
+      >
+        <option *ngFor="let country of countryList" [value]="country">
+          {{ country.name }}
+        </option>
+        <!-- <option
+          *ngFor="let country of listCountries"
+          [value]="country.country_name"
+        >
+          {{ country.country_name }}
+        </option> -->
+      </select>
+      <!-- <small
+        [hidden]="!country || (country && !formularioeducationalUnit.submitted)"
+        class="text-danger"
+      >
+        Obligatorio
+      </small> -->
+    </div>
+    <div class="col-sm-4">
+      <label class="control-label">Ciudad<span class="star">*</span></label>
+      <!-- [(ngModel)]="educationalUnit.city" -->
+      <select
+        title="Ciudad"
+        class="form-control"
+        type="select"
+        id="city"
+        name="city"
+        formControlName="city"
+      >
+        <!-- <option value="" selected>Seleccione una opción</option> -->
+        <option *ngFor="let city of cityList" [value]="city.city_name">
+          {{ city.city_name }}
+        </option>
+      </select>
+      <!-- <small
+        [hidden]="!city || (city && !formularioeducationalUnit.submitted)"
+        class="text-danger"
+      >
+        Obligatorio
+      </small> -->
+    </div>
+    <div class="col-sm-4">
+      <label class="control-label">Logo<span class="star">*</span></label>
+      <!-- [ngModel]="educationalUnit.logo" -->
+      <input
+        id="logo"
+        type="text"
+        class="form-control"
+        name="logo"
+        placeholder="logo"
+        formControlName="logo"
+        disabled
+      />
+      <!-- #name="ngModel" -->
+      <button
+        type="button"
+        class="btn btn-primary btn-fill"
+        (click)="openModalEditLogo()"
+      >
+        Nuevo Logo
+      </button>
+      <!-- <label>{{ nameImagen }}</label> -->
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success btn-fill">
+    Editar unidad educativa
+  </button>
+</form>

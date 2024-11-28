@@ -105,6 +105,7 @@ export class ModalAddNewUEComponent implements OnInit, OnDestroy {
   // OBTENER LISTADO DE PAISES
   public getCountries() {
     this.unitEdicationalService.getCountries().subscribe(data => {
+      console.log({ countries: data })
       this.listCountries = data;
     });
   }

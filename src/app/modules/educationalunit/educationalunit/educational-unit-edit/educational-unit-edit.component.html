@@ -1,0 +1,64 @@
+<!-- <p>educational-unit-edit works!</p> -->
+
+<div class="col-md-12">
+  <div class="card">
+    <div class="header">
+      <div class="row">
+        <div class="col-sm-8">
+          <h4 class="title">
+            <img
+              *ngIf="educationalUnit.logo && educationalUnit.logo !== ''"
+              [src]="educationalUnit.logo"
+              class="avatar logo logo-img"
+              alt="Logo"
+              [title]="educationalUnit.name"
+            />
+            <i
+              *ngIf="!educationalUnit.logo || educationalUnit.logo === ''"
+              class="fa fa-picture-o"
+              aria-hidden="true"
+              title="Logo"
+            ></i>
+            <b>{{ educationalUnit.name }}</b>
+          </h4>
+        </div>
+        <div class="col-sm-4 text-center">
+          <br />
+          Estado
+          <bSwitch
+            [switch-on-color]="'success'"
+            (ngModelChange)="changeState(educationalUnit, $event)"
+            [ngModel]="educationalUnit.state"
+          >
+          </bSwitch>
+        </div>
+      </div>
+    </div>
+    <div class="content content-full-width">
+      <ul role="tablist" class="nav nav-tabs">
+        <li role="presentation" class="active">
+          <a href="#icon-info" data-toggle="tab"
+            ><i class="fa fa-info"></i> Información General</a
+          >
+        </li>
+        <li>
+          <a href="#icon-account" data-toggle="tab"
+            ><i class="fa fa-circle"></i> Niveles</a
+          >
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="icon-info" class="tab-pane active">
+          <app-general-info
+            [educationalUnit]="educationalUnit"
+            (educationalUnitEmitter)="educationalUnit = $event"
+          ></app-general-info>
+        </div>
+
+        <div id="icon-account" class="tab-pane">
+          <app-levels [educationalUnit]="educationalUnit"></app-levels>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
