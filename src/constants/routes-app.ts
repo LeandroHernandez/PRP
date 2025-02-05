@@ -10,4 +10,7 @@ export enum RoutesApp {
   id = "id",
   //
   playerChipsAndParameters = "fichas",
+  levels = "levels",
+  teachers = "teachers",
+  students = "students",
 }

@@ -23,7 +23,7 @@ interface InitProcessParams {
 @Injectable({
   providedIn: "root",
 })
-export class TeacherSubjectsService {
+export class TeacherSubjectsOriginalService {
   private weightUnitObjectDTOList: WeightUnitObjectDTO[] = [];
 
   constructor(public afs: AngularFirestore) {}
@@ -31,20 +31,20 @@ export class TeacherSubjectsService {
   /* Add new Unit to teacher subject
    ** @param teacherClass
    * */
-  setTeacherSubjectUnit(teacher: Teacher, teacherClass, period) {
+  setTeacherSubjectUnit(teacher: Teacher, teacherClass) {
     const unit_id = Date.now().toString();
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${teacherClass.parallel}/subjects/${teacherClass.subject}/units`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${teacherClass.parallel}/subjects/${teacherClass.subject}/units`
       )
       .doc(unit_id)
       .set({ unit_id, ...teacherClass, unit_notes: [] });
   }
 
-  public editTeacherSubjectUnit(teacher: Teacher, unit, period) {
+  public editTeacherSubjectUnit(teacher: Teacher, unit) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${unit.parallel}/subjects/${unit.subject}/units`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${unit.parallel}/subjects/${unit.subject}/units`
       )
       .doc(unit.unit_id)
       .update(unit);
@@ -53,17 +53,11 @@ export class TeacherSubjectsService {
   /* Add new class to Subject Unit
    ** @param classForm
    * */
-  setClassToSubject(
-    teacher: Teacher,
-    classForm,
-    activeSubject,
-    activeUnit,
-    period
-  ) {
+  setClassToSubject(teacher: Teacher, classForm, activeSubject, activeUnit) {
     const class_id = Date.now().toString();
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(class_id)
       .set({ class_id, ...classForm, class_status: false, class_notes: [] });
@@ -73,12 +67,11 @@ export class TeacherSubjectsService {
     teacher: Teacher,
     classForm,
     activeSubject,
-    activeUnit,
-    period
+    activeUnit
   ) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(classForm.class_id)
       .update(classForm);
@@ -95,20 +88,19 @@ export class TeacherSubjectsService {
     noteType,
     activeSubject,
     activeUnit,
-    activeClass,
-    period
+    activeClass
   ) {
     if (noteType === "class") {
       return this.afs
         .collection(
-          `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+          `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
         )
         .doc(activeClass.class_id)
         .update({ class_notes: activeClass.class_notes });
     } else if (noteType === "unit") {
       return this.afs
         .collection(
-          `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
+          `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
         )
         .doc(activeUnit.unit_id)
         .update({ unit_notes: activeUnit.unit_notes });
@@ -126,15 +118,14 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    resource: Resource,
-    period
+    resource: Resource
   ) {
     const resource_id = Date.now().toString();
     resource.resource_id = resource_id;
     let size = 0;
     this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .collection("resources")
@@ -150,7 +141,7 @@ export class TeacherSubjectsService {
           }
           return this.afs
             .collection(
-              `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+              `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
             )
             .doc(activeClass.class_id)
             .collection("resources")
@@ -167,7 +158,7 @@ export class TeacherSubjectsService {
           }
           return this.afs
             .collection(
-              `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+              `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
             )
             .doc(activeClass.class_id)
             .collection("resources")
@@ -209,14 +200,11 @@ export class TeacherSubjectsService {
     activeUnit,
     activeClass,
     evaluation,
-    weigh: number,
-    period
+    weigh: number
   ) {
     const resource = this.afs
       .collection("cuenca")
       .doc(teacher.teacher_unit_educational[0])
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -239,8 +227,7 @@ export class TeacherSubjectsService {
           teacher,
           activeSubject,
           activeUnit,
-          activeClass,
-          period
+          activeClass
         );
       })
       .catch(function (error) {
@@ -252,14 +239,11 @@ export class TeacherSubjectsService {
     teacher: Teacher,
     activeSubject,
     activeUnit,
-    activeClass,
-    period
+    activeClass
   ) {
     const unit = this.afs
       .collection("cuenca")
       .doc(teacher.teacher_unit_educational[0])
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -323,13 +307,12 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    video_conference,
-    period
+    video_conference
   ) {
     const video_conference_id = Date.now().toString();
     this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .update({
@@ -341,13 +324,12 @@ export class TeacherSubjectsService {
     teacher: Teacher,
     activeSubject,
     activeUnit,
-    video_conference,
-    period
+    video_conference
   ) {
     const video_conference_id = Date.now().toString();
     this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
       )
       .doc(activeUnit.unit_id)
       .update({
@@ -356,15 +338,10 @@ export class TeacherSubjectsService {
       });
   }
 
-  getVideoConferenciaFromUnit(
-    teacher: Teacher,
-    activeSubject,
-    activeUnit,
-    period
-  ) {
+  getVideoConferenciaFromUnit(teacher: Teacher, activeSubject, activeUnit) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
       )
       .doc(activeUnit.unit_id)
       .valueChanges();
@@ -374,12 +351,11 @@ export class TeacherSubjectsService {
     teacher: Teacher,
     activeSubject,
     activeUnit,
-    selectedVideo,
-    period
+    selectedVideo
   ) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`
       )
       .doc(activeUnit.unit_id)
       .update({
@@ -393,13 +369,12 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    video_class,
-    period
+    video_class
   ) {
     const video_class_id = Date.now().toString();
     this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .update({
@@ -412,14 +387,13 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    evaluation,
-    period
+    evaluation
   ) {
     const evaluation_id = Date.now().toString();
     let size = 0;
     this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .collection("evaluations")
@@ -429,7 +403,7 @@ export class TeacherSubjectsService {
         size = snap.size;
         return this.afs
           .collection(
-            `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+            `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
           )
           .doc(activeClass.class_id)
           .collection("evaluations")
@@ -443,12 +417,11 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    evaluation,
-    period
+    evaluation
   ) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .collection("evaluations")
@@ -461,19 +434,13 @@ export class TeacherSubjectsService {
    ** @param activeUnit
    ** @param resource
    * */
-  setResourceToUnit(
-    teacher: Teacher,
-    activeSubject,
-    activeUnit,
-    resources,
-    period
-  ) {
+  setResourceToUnit(teacher: Teacher, activeSubject, activeUnit, resources) {
     resources.forEach((resource) => {
       if (resource.selected) {
         delete resource.selected;
         this.afs
           .collection(
-            `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/resources`
+            `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/resources`
           )
           .doc(Date.now().toString())
           .set(resource);
@@ -492,13 +459,12 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    resourceList,
-    period
+    resourceList
   ) {
     resourceList.forEach((resource) => {
       this.afs
         .collection(
-          `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+          `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
         )
         .doc(activeClass.class_id)
         .collection("resources")
@@ -513,16 +479,10 @@ export class TeacherSubjectsService {
    ** @param activeClass
    ** @param resourceList
    * */
-  updateClassStatus(
-    teacher: Teacher,
-    activeSubject,
-    activeUnit,
-    activeClass,
-    period
-  ) {
+  updateClassStatus(teacher: Teacher, activeSubject, activeUnit, activeClass) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .update(activeClass);
@@ -543,16 +503,13 @@ export class TeacherSubjectsService {
    */
   public getParallelsFromTeacherId(
     teacherId: String,
-    uniteducationalId: String,
-    period: any
+    uniteducationalId: String
   ) {
     const collectionTeacher = this.afs
       .collection<Teacher>("teacher")
       .doc(`${teacherId}`)
       .collection("unit_educational")
       .doc(`${uniteducationalId}`)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("parallels")
       .valueChanges();
     if (collectionTeacher) {
@@ -568,16 +525,13 @@ export class TeacherSubjectsService {
   public getSubjectsFromParallelIid(
     teacherId: String,
     uniteducationalId: String,
-    parallel_id: String,
-    period: any
+    parallel_id: String
   ) {
     return this.afs
       .collection<Teacher>("teacher")
       .doc(`${teacherId}`)
       .collection("unit_educational")
       .doc(`${uniteducationalId}`)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("parallels")
       .doc(`${parallel_id}`)
       .collection("subjects")
@@ -587,21 +541,19 @@ export class TeacherSubjectsService {
   /* Get planification
    ** @param activeSubject
    */
-  getSubjectUnits(teacher: Teacher, activeSubject, period) {
+  getSubjectUnits(teacher: Teacher, activeSubject) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`,
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units`,
         (ref) => ref.orderBy("unit_id", "desc")
       )
       .valueChanges();
   }
 
-  getUnitsNoRealTimeQuery(teacher: Teacher, activeSubject, period): any {
+  getUnitsNoRealTimeQuery(teacher: Teacher, activeSubject): any {
     const docRef = this.afs
       .collection("cuenca")
       .doc(teacher.teacher_unit_educational[0])
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -616,12 +568,10 @@ export class TeacherSubjectsService {
    ** @param activeUnit
    ** @param activeSubject
    */
-  public getClassFromUnit(teacher: Teacher, activeUnit, activeSubject, period) {
+  public getClassFromUnit(teacher: Teacher, activeUnit, activeSubject) {
     return this.afs
       .collection("cuenca")
       .doc(`${teacher.teacher_unit_educational[0]}`)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -638,14 +588,11 @@ export class TeacherSubjectsService {
     teacher: Teacher,
     activeUnit,
     activeSubject,
-    lastDate,
-    period
+    lastDate
   ) {
     return this.afs
       .collection("cuenca")
       .doc(`${teacher.teacher_unit_educational[0]}`)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -663,18 +610,11 @@ export class TeacherSubjectsService {
       .valueChanges();
   }
 
-  public getClassFromUnitTrue(
-    teacher: Teacher,
-    activeUnit,
-    activeSubject,
-    period
-  ) {
+  public getClassFromUnitTrue(teacher: Teacher, activeUnit, activeSubject) {
     // console.log(teacher.teacher_unit_educational[0] + ' : ' + activeSubject.parallel_id + ' : ' + activeSubject.subject_id + ' : ' + activeUnit.unit_id)
     return this.afs
       .collection("cuenca")
       .doc(`${teacher.teacher_unit_educational[0]}`)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -690,14 +630,11 @@ export class TeacherSubjectsService {
   getClassFromUnitTrueNoRealTimeQuery(
     teacher: Teacher,
     activeUnit,
-    activeSubject,
-    period
+    activeSubject
   ): any {
     const docRef = this.afs
       .collection("cuenca")
       .doc(`${teacher.teacher_unit_educational[0]}`)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -715,16 +652,10 @@ export class TeacherSubjectsService {
    ** @param activeSubject
    ** @param activeClass
    */
-  getClassResources(
-    teacher: Teacher,
-    activeUnit,
-    activeSubject,
-    activeClass,
-    period
-  ) {
+  getClassResources(teacher: Teacher, activeUnit, activeSubject, activeClass) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .collection("resources", (ref) =>
@@ -737,12 +668,11 @@ export class TeacherSubjectsService {
     teacher: Teacher,
     activeUnit,
     activeSubject,
-    activeClass,
-    period
+    activeClass
   ) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .collection("evaluations", (ref) =>
@@ -756,10 +686,10 @@ export class TeacherSubjectsService {
    ** @param activeUnit
    ** @param activeSubject
    */
-  getUnitResources(teacher: Teacher, activeUnit, activeSubject, period) {
+  getUnitResources(teacher: Teacher, activeUnit, activeSubject) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/resources`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/resources`
       )
       .valueChanges();
   }
@@ -869,14 +799,12 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    resource,
-    period
+    resource
   ) {
+    console.log(resource);
     const resourceFound = this.afs
       .collection("cuenca")
       .doc(teacher.teacher_unit_educational[0])
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -905,8 +833,7 @@ export class TeacherSubjectsService {
                   teacher,
                   activeSubject,
                   activeUnit,
-                  activeClass,
-                  period
+                  activeClass
                 );
               })
               .catch((reason) =>
@@ -944,8 +871,7 @@ export class TeacherSubjectsService {
                               teacher,
                               activeSubject,
                               activeUnit,
-                              activeClass,
-                              period
+                              activeClass
                             );
                           })
                           .catch((reason) =>
@@ -975,12 +901,11 @@ export class TeacherSubjectsService {
     activeSubject,
     activeUnit,
     activeClass,
-    evaluation,
-    period
+    evaluation
   ) {
     return this.afs
       .collection(
-        `/cuenca/${teacher.teacher_unit_educational[0]}/PeriodosLectivos/${period}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
+        `/cuenca/${teacher.teacher_unit_educational[0]}/planification/planification_parallels/parallels/${activeSubject.parallel_id}/subjects/${activeSubject.subject_id}/units/${activeUnit.unit_id}/classes`
       )
       .doc(activeClass.class_id)
       .collection("evaluations")
@@ -1001,14 +926,11 @@ export class TeacherSubjectsService {
     parallelID: string,
     subjectID: string,
     unitID: string,
-    statusUnit: boolean,
-    period: any
+    statusUnit: boolean
   ) {
     const unit = this.afs
       .collection("cuenca")
       .doc(educationalUnitID)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -1037,14 +959,11 @@ export class TeacherSubjectsService {
   public getSubjectUnitList(
     unitEducationalID: string,
     parallelID: string,
-    subjectID: string,
-    period: any
+    subjectID: string
   ) {
     const unitList = this.afs
       .collection("cuenca")
       .doc(unitEducationalID)
-      .collection("PeridosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")
@@ -1063,14 +982,11 @@ export class TeacherSubjectsService {
     parallelID: string,
     subjectID: string,
     unitID: string,
-    classID: string,
-    period: any
+    classID: string
   ) {
     const unitList = this.afs
       .collection("cuenca")
       .doc(unitEducationalID)
-      .collection("PeriodosLectivos")
-      .doc(period)
       .collection("planification")
       .doc("planification_parallels")
       .collection("parallels")

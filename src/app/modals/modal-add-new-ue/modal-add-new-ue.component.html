@@ -238,14 +238,10 @@
           <i class="fa fa-calendar"></i> Año Lectivo <br />
           <mat-form-field appearance="standard">
             <mat-label class="text-white">Seleccionar</mat-label>
-            <mat-select
-              [(value)]="selectedAcademyId"
-              formControlName="unit_educational_academyId_fk"
-            >
-              <mat-option
-                *ngFor="let year of academicYears"
-                [value]="year.academic_year_id"
-              >
+            <!-- [(value)]="selectedAcademyId" -->
+            <mat-select formControlName="unit_educational_academyId_fk">
+              <!-- [value]="year.academic_year_id" -->
+              <mat-option *ngFor="let year of academicYears">
                 {{ formatAcademicYear(year) }}
               </mat-option>
             </mat-select>

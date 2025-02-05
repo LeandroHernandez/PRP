@@ -7,8 +7,10 @@ export interface IParameter {
   level?: string;
   sections: Array<IParameterSection>;
   assignedChip?: IChip | string;
+  finalResult?: FinalResult[];
 }
 
+export type FinalResult = number | string;
 interface IParameterSection {
   name: string;
   // type: string | number | ICalc | boolean | IDealResult;

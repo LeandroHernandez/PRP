@@ -73,8 +73,10 @@ export const AppRoutes: Routes = [
         loadChildren: "./modules/role/role.module#RoleModule",
       },
       {
-        path: "levels",
-        loadChildren: "./modules/levels/levels.module#LevelsModule",
+        path: RoutesApp.levels,
+        // loadChildren: "./modules/levels/levels.module#LevelsModule",
+        loadChildren:
+          "./modules/admin-educational-unit/admin-educational-unit.module#AdminEducationalUnitModule",
       },
       {
         path: "sublevels",
@@ -98,7 +100,7 @@ export const AppRoutes: Routes = [
         loadChildren: "./modules/subject/subject.module#SubjectModule",
       },
       {
-        path: "teachers",
+        path: RoutesApp.teachers,
         loadChildren: "./modules/teachers/teachers.module#TeachersModule",
       },
       {
@@ -107,7 +109,7 @@ export const AppRoutes: Routes = [
           "./modules/representative/representative.module#RepresentativeModule",
       },
       {
-        path: "student",
+        path: RoutesApp.students,
         loadChildren: "./modules/student/student.module#StudentModule",
       },
       {

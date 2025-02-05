@@ -10,18 +10,19 @@ import { ParametersComponent } from "./admin/modal/parameters/parameters.compone
 import { ChipsComponent } from "./admin/modal/chips/chips.component";
 import { ParameterRegisterComponent } from "./admin/modal/parameters/parameter-register/parameter-register.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NzCheckboxModule  } from "ng-zorro-antd/checkbox";
+import { NzCheckboxModule } from "ng-zorro-antd/checkbox";
 import { NzModalModule } from "ng-zorro-antd/modal";
 import { NzCardModule } from "ng-zorro-antd/card";
 import { NzDropDownModule } from "ng-zorro-antd/dropdown";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzSelectModule } from "ng-zorro-antd/select";
-import { NzInputModule  } from "ng-zorro-antd/input";
-import { NzInputNumberModule  } from "ng-zorro-antd/input-number";
-import { NzSwitchModule  } from "ng-zorro-antd/switch";
-import { NzCollapseModule  } from "ng-zorro-antd/collapse";
-import { NzButtonModule  } from "ng-zorro-antd/button";
-import { NzMessageModule  } from "ng-zorro-antd/message";
+import { NzInputModule } from "ng-zorro-antd/input";
+import { NzInputNumberModule } from "ng-zorro-antd/input-number";
+import { NzSwitchModule } from "ng-zorro-antd/switch";
+import { NzCollapseModule } from "ng-zorro-antd/collapse";
+import { NzButtonModule } from "ng-zorro-antd/button";
+import { NzMessageModule } from "ng-zorro-antd/message";
+import { NzFormModule } from "ng-zorro-antd/form";
 
 @NgModule({
   declarations: [
@@ -35,21 +36,22 @@ import { NzMessageModule  } from "ng-zorro-antd/message";
     ParameterRegisterComponent,
   ],
   imports: [
-    CommonModule, 
-    SidebarModule, 
-    ReactiveFormsModule, 
-    FormsModule, 
-    NzModalModule, 
-    NzCardModule, 
+    CommonModule,
+    SidebarModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NzModalModule,
+    NzCardModule,
     NzDropDownModule,
     NzIconModule,
     NzSelectModule,
-    NzInputNumberModule, 
-    NzInputModule, 
-    NzSwitchModule, 
+    NzInputNumberModule,
+    NzInputModule,
+    NzSwitchModule,
     NzCollapseModule,
     NzButtonModule,
     NzMessageModule,
+    NzFormModule,
   ],
   exports: [
     FixedPluginComponent,
@@ -60,7 +62,7 @@ import { NzMessageModule  } from "ng-zorro-antd/message";
     ParametersComponent,
     ChipsComponent,
     ParameterRegisterComponent,
-    NzCheckboxModule, 
+    NzCheckboxModule,
   ],
 })
 export class LayoutsModule {}

@@ -2,120 +2,291 @@
 	*** Muestra estadísticas de los estudiantes en lecciones, prácticas, etc ***
 -->
 <div class="main-content" *ngIf="!isShowForum">
-	<div class="container-fluid">
-		<!--Tarjeta que se debe ocultar-->
-		<div *ngIf=" showHome &&  !showDetails ">
-			<div style=" margin: 8px;">
-				<button (click)="returnShowSubjects()" class="btn btn-primary btn-fill">
-					<i class="fa fa-bars" aria-hidden="true"></i> Listar
-				</button>
-			</div>
-			<div class="card">
-				<mat-tab-group [color]="Primary" [backgroundColor]="Primary" selectedIndex="0"
-				               (selectedIndexChange)="setActiveUnit( $event )" *ngIf="units.length > 0; else noTabs "
-				               style="width: 100%;">
-					<!--<mat-tab *ngFor="let unit of units; let index = index" label="Unidad {{index + 1}}">-->
-					<mat-tab *ngFor="let unit of units; let index = index" [label]="unit.unitName">
-						<div class="main-content">
-							<div class="card-body car-table">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="content">
-											<div class="fresh-datatables " *ngIf="arrayClasses.length > 0; else noClass">
-												<table id="datatablesStudents"
-												       class="table table-striped table-bordered table-hover table-responsive" style="width:100%">
-													<thead>
-													<tr>
-														<th>
-															<div style=" min-width: 30vh"></div>
-														</th>
-														<th colspan="2" class="header-class row"
-														    *ngFor="let class of arrayClasses; let i=index">
-															<div class="text-center">
-																<!--<span style="font-weight: bold">lección {{totalSessions - i}}</span><br>-->
-																<span
-																		style="font-weight: bold">{{class.className ? class.className : 'Lección sin nombre'}}</span><br>
-																<span style="font-size: 12px;">{{class.fromDate}} / {{class.toDate}}</span>
-															</div>
-															<div class="" (click)="showDataForum(class.class_id, unit.unit_id)"
-															     style="cursor: pointer;"
-															     *ngIf="forumEnableValidation(class.class_id, unit.unit_id)">
-																<span style="font-size: 11px; color: #4c93ff; font-weight: bold;">Foro activo</span>
-																<span class="cssCard">Ir<span class="badge badge-red"
-																                              *ngIf="getMessagesNumber(class.class_id, unit.unit_id) > 0">
-																				{{getMessagesNumber(class.class_id, unit.unit_id)}}
-																			</span></span>
-																<span class="badge badge-grey"
-																      *ngIf="getMessagesNumber(class.class_id, unit.unit_id) == 0">
-																			{{getMessagesNumber(class.class_id, unit.unit_id)}}
-																		</span>
-															</div>
-															<div class="" *ngIf="!forumEnableValidation(class.class_id, unit.unit_id)">
-																<span style="font-size: 11px; color: red;">Foro inactivo</span>
-															</div>
-														</th>
-														<th style="cursor: pointer" (click)="getPreviousClass()">
-															<span class="header-class" style="text-transform: uppercase; font-weight: bold">Mostrar siguiente lección</span>
-														</th>
-													</tr>
-													<tr class="head-table">
-														<th>
-															Nombres
-														</th>
-														<ng-container *ngFor="let class of arrayClasses; let i=index">
-															<th class="header-class row">
-																<span style="font-size: 12px;">Avance de la lección</span>
-															</th>
-															<th class="header-class row">
-																<span style="font-size: 12px;">Número de ingresos</span>
-															</th>
-														</ng-container>
-														<th></th>
-													</tr>
-													</thead>
-													<tbody id="tBodyStudentLection">
-													<tr *ngFor="let student of studentClassResources; let i = index" style="cursor: pointer" (click)="showDetail(student.student_id,unit.subject,unit.unit_id)">
-														<td class="student-name">
-															{{student.student_name}}, {{student.student_lastname}}
-														</td>
-														
-														
-														<ng-container *ngFor="let classes of student.student_classes; let j = index">
-															<th class="header-class row">
-																<div
-																		style="display: flex; flex-direction: column;  align-items: center;justify-items: center;">
-																			<span
-																					*ngIf="classes.student_porcentage_resources < 100 ">{{classes.student_porcentage_resources || 0}}
-																				%</span>
-																	<div
-																			*ngIf="classes.student_porcentage_resources>50&&classes.student_porcentage_resources<75"
-																			class="barBackgroud text-center">
-																		<div [ngStyle]="{'width.%': classes.student_porcentage_resources  || 0}"
-																		     class="barprogresW">
-																		</div>
-																	</div>
-																	<div *ngIf="classes.student_porcentage_resources<=50"
-																	     class="barBackgroud text-center">
-																		<div [ngStyle]="{'width.%': classes.student_porcentage_resources  || 0}"
-																		     class="barprogresD">
-																		</div>
-																	</div>
-																	<span *ngIf="classes.student_porcentage_resources >= 100">{{100}}%</span>
-																	<div *ngIf="classes.student_porcentage_resources >= 100"
-																	     class="barBackgroud text-center">
-																		<div [ngStyle]="{'width.%': 100}" class="barprogres">
-																		</div>
-																	</div>
-																</div>
-															</th>
-															<th class="header-class row">
-																<div style="display: flex; flex-direction: column; margin-left: 5px;">
-																	<span>{{ classes.student_total_attempts || 0}}</span>
-																</div>
-															</th>
-														</ng-container>
-														
-														<!--<td
+  <div class="container-fluid">
+    <!--Tarjeta que se debe ocultar-->
+    <div *ngIf="showHome && !showDetails">
+      <div style="margin: 8px">
+        <button (click)="returnShowSubjects()" class="btn btn-primary btn-fill">
+          <i class="fa fa-bars" aria-hidden="true"></i> Listar
+        </button>
+      </div>
+      <div class="card">
+        <mat-tab-group
+          [color]="Primary"
+          [backgroundColor]="Primary"
+          selectedIndex="0"
+          (selectedIndexChange)="setActiveUnit($event)"
+          *ngIf="units.length > 0; else noTabs"
+          style="width: 100%"
+        >
+          <!--<mat-tab *ngFor="let unit of units; let index = index" label="Unidad {{index + 1}}">-->
+          <mat-tab
+            *ngFor="let unit of units; let index = index"
+            [label]="unit.unitName"
+          >
+            <div class="main-content">
+              <div class="card-body car-table">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="content">
+                      <div
+                        class="fresh-datatables"
+                        *ngIf="arrayClasses.length > 0; else noClass"
+                      >
+                        <table
+                          id="datatablesStudents"
+                          class="table table-striped table-bordered table-hover table-responsive"
+                          style="width: 100%"
+                        >
+                          <thead>
+                            <tr>
+                              <th>
+                                <div style="min-width: 30vh"></div>
+                              </th>
+                              <th
+                                colspan="2"
+                                class="header-class row"
+                                *ngFor="
+                                  let class of arrayClasses;
+                                  let i = index
+                                "
+                              >
+                                <div class="text-center">
+                                  <!--<span style="font-weight: bold">lección {{totalSessions - i}}</span><br>-->
+                                  <span style="font-weight: bold">{{
+                                    class.className
+                                      ? class.className
+                                      : "Lección sin nombre"
+                                  }}</span
+                                  ><br />
+                                  <span style="font-size: 12px"
+                                    >{{ class.fromDate }} /
+                                    {{ class.toDate }}</span
+                                  >
+                                </div>
+                                <div
+                                  class=""
+                                  (click)="
+                                    showDataForum(class.class_id, unit.unit_id)
+                                  "
+                                  style="cursor: pointer"
+                                  *ngIf="
+                                    forumEnableValidation(
+                                      class.class_id,
+                                      unit.unit_id
+                                    )
+                                  "
+                                >
+                                  <span
+                                    style="
+                                      font-size: 11px;
+                                      color: #4c93ff;
+                                      font-weight: bold;
+                                    "
+                                    >Foro activo</span
+                                  >
+                                  <span class="cssCard"
+                                    >Ir<span
+                                      class="badge badge-red"
+                                      *ngIf="
+                                        getMessagesNumber(
+                                          class.class_id,
+                                          unit.unit_id
+                                        ) > 0
+                                      "
+                                    >
+                                      {{
+                                        getMessagesNumber(
+                                          class.class_id,
+                                          unit.unit_id
+                                        )
+                                      }}
+                                    </span></span
+                                  >
+                                  <span
+                                    class="badge badge-grey"
+                                    *ngIf="
+                                      getMessagesNumber(
+                                        class.class_id,
+                                        unit.unit_id
+                                      ) == 0
+                                    "
+                                  >
+                                    {{
+                                      getMessagesNumber(
+                                        class.class_id,
+                                        unit.unit_id
+                                      )
+                                    }}
+                                  </span>
+                                </div>
+                                <div
+                                  class=""
+                                  *ngIf="
+                                    !forumEnableValidation(
+                                      class.class_id,
+                                      unit.unit_id
+                                    )
+                                  "
+                                >
+                                  <span style="font-size: 11px; color: red"
+                                    >Foro inactivo</span
+                                  >
+                                </div>
+                              </th>
+                              <th
+                                style="cursor: pointer"
+                                (click)="getPreviousClass()"
+                              >
+                                <span
+                                  class="header-class"
+                                  style="
+                                    text-transform: uppercase;
+                                    font-weight: bold;
+                                  "
+                                  >Mostrar siguiente lección</span
+                                >
+                              </th>
+                            </tr>
+                            <tr class="head-table">
+                              <th>Nombres</th>
+                              <ng-container
+                                *ngFor="
+                                  let class of arrayClasses;
+                                  let i = index
+                                "
+                              >
+                                <th class="header-class row">
+                                  <span style="font-size: 12px"
+                                    >Avance de la lección</span
+                                  >
+                                </th>
+                                <th class="header-class row">
+                                  <span style="font-size: 12px"
+                                    >Número de ingresos</span
+                                  >
+                                </th>
+                              </ng-container>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody id="tBodyStudentLection">
+                            <tr
+                              *ngFor="
+                                let student of studentClassResources;
+                                let i = index
+                              "
+                              style="cursor: pointer"
+                              (click)="
+                                showDetail(
+                                  student.student_id,
+                                  unit.subject,
+                                  unit.unit_id
+                                )
+                              "
+                            >
+                              <td class="student-name">
+                                {{ student.student_name }},
+                                {{ student.student_lastname }}
+                              </td>
+
+                              <ng-container
+                                *ngFor="
+                                  let classes of student.student_classes;
+                                  let j = index
+                                "
+                              >
+                                <th class="header-class row">
+                                  <div
+                                    style="
+                                      display: flex;
+                                      flex-direction: column;
+                                      align-items: center;
+                                      justify-items: center;
+                                    "
+                                  >
+                                    <span
+                                      *ngIf="
+                                        classes.student_porcentage_resources <
+                                        100
+                                      "
+                                      >{{
+                                        classes.student_porcentage_resources ||
+                                          0
+                                      }}
+                                      %</span
+                                    >
+                                    <div
+                                      *ngIf="
+                                        classes.student_porcentage_resources >
+                                          50 &&
+                                        classes.student_porcentage_resources <
+                                          75
+                                      "
+                                      class="barBackgroud text-center"
+                                    >
+                                      <div
+                                        [ngStyle]="{
+                                          'width.%':
+                                            classes.student_porcentage_resources ||
+                                            0
+                                        }"
+                                        class="barprogresW"
+                                      ></div>
+                                    </div>
+                                    <div
+                                      *ngIf="
+                                        classes.student_porcentage_resources <=
+                                        50
+                                      "
+                                      class="barBackgroud text-center"
+                                    >
+                                      <div
+                                        [ngStyle]="{
+                                          'width.%':
+                                            classes.student_porcentage_resources ||
+                                            0
+                                        }"
+                                        class="barprogresD"
+                                      ></div>
+                                    </div>
+                                    <span
+                                      *ngIf="
+                                        classes.student_porcentage_resources >=
+                                        100
+                                      "
+                                      >{{ 100 }}%</span
+                                    >
+                                    <div
+                                      *ngIf="
+                                        classes.student_porcentage_resources >=
+                                        100
+                                      "
+                                      class="barBackgroud text-center"
+                                    >
+                                      <div
+                                        [ngStyle]="{ 'width.%': 100 }"
+                                        class="barprogres"
+                                      ></div>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th class="header-class row">
+                                  <div
+                                    style="
+                                      display: flex;
+                                      flex-direction: column;
+                                      margin-left: 5px;
+                                    "
+                                  >
+                                    <span>{{
+                                      classes.student_total_attempts || 0
+                                    }}</span>
+                                  </div>
+                                </th>
+                              </ng-container>
+
+                              <!--<td
 															*ngFor="let classes of student.student_classes; let j = index">
 															<div
 																style="display: flex; flex-direction: row; min-width: 25vh;">
@@ -140,600 +311,1086 @@
 
 																	</div>
 																</div> -->
-														<!-- <div
+                              <!-- <div
 																	style="min-width: 10vh;display: flex; flex-direction: column; margin-left: 5px; text-align: center;align-content: center; align-items: center;">
 																	<i class="fa fa-clock-o"></i><span>
 																		{{classes.student_total_time || 0}}</span>
 																</div> -->
-														<!-- <div
+                              <!-- <div
 																	style="display: flex; flex-direction: column; margin-left: 5px;">
 																	<i class="fa fa-share"></i>
 																	<span>{{ classes.student_total_attempts  || 0}}</span>
 																</div>
 															</div>
 														</td> -->
-													</tr>
-													</tbody>
-												</table>
-											</div>
-											
-											<ng-template #noClass>
-												<div
-														style="display: flex;flex-direction: row; align-content: center; justify-content: center; text-align: center;">
-													<h1 class="alert-danger"
-													    style="color: white; width: 80%; border-radius: 3px; font-size: medium;">
-														Aún no hay sesiones activas para la unidad.</h1>
-												</div>
-											</ng-template>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</mat-tab>
-				</mat-tab-group>
-			</div>
-		</div>
-		<!--Tarjeta que se debe ocultar-->
-		<div *ngIf="showDetails  && !showHome">
-			<button (click)="hideDetail()" class="btn btn-primary btn-fill">
-				<i class="fa fa-bars" aria-hidden="true"></i> Volver
-			</button>
-			<hr>
-			<h4 *ngIf="studentSelect">Estudiante : <span style="font-weight: bold">{{studentSelect.student_name}},
-				{{studentSelect.student_lastname}}.</span></h4>
-			<div class="card">
-				<div class="container" style="padding: 10px; width: 100%;">
-					<mat-tab-group [color]="Primary" [backgroundColor]="Primary" selectedIndex="0"
-					               (selectedIndexChange)="setActiveClass( $event )" style="width: 100%;">
-						<mat-tab *ngFor="let class of arrayClasses; let i=index">
-							<ng-template mat-tab-label>
-								<div class="grid">
-									<div class="row">
-										Lección {{i + 1 }}
-									</div>
-									<div class="row">
-										{{class.className | uppercase }}
-									</div>
-								</div>
-							
-							
-							</ng-template>
-							
-							<table id="" style="background-color: #fff;margin-top: 10px;"
-							       class="table table-striped table-no-bordered table-hover text-center" cellspacing="0">
-								<tr>
-									<td colspan="5">
-										<div class="panel-group" id="accordion" *ngIf="resourceList.length > 0 ">
-											<div class="row row-p">
-												<div class="col-sm-1 text-center">
-													#
-												</div>
-												<div class="col-sm-4 text-left">
-													Recursos de la lección
-												</div>
-												<div class="col-sm-3">
-													Ingresos
-												</div>
-												<div class="col-sm-3">
-													Tiempo en el recurso
-												</div>
-												
-												<div class="col-sm-1">
-													Ver
-												</div>
-											</div>
-											<hr>
-											<div class="panel panel-default" *ngFor="let resource of resourceList;  let i = index"
-											     style="padding: 10px;">
-												<div class="panel-heading">
-													<h4 class="panel-title">
-														<div class="row row-p">
-															<div class="col-sm-1 text-center">
-																{{i + 1}}
-															</div>
-															<div class="col-sm-4 text-left">
-																<img *ngIf="resource.resource_type=='text'" src="../../../../assets/img/icons/text.png"
-																     class="img-resource" alt="">
-																<img *ngIf="resource.resource_type=='video'"
-																     src="../../../../assets/img/icons/video.png" class="img-resource" alt="">
-																<img
-																		*ngIf="resource.resource_type=='practice' || resource.resource_type=='url' || resource.resource_type=='file'"
-																		src="../../../../assets/img/icons/practica.png" class="img-resource" alt="">
-																<img *ngIf="resource.resource_type === undefined"
-																     src="../../../../assets/img/icons/evaluacion.png" class="img-resource" alt="">
-																
-																&nbsp;
-																{{resource.resource_name || resource.evaluationData[0].evaluation_name | slice:0:60}}
-															</div>
-															<div class="col-sm-3">
-																{{resource.intents}}
-															</div>
-															<div class="col-sm-3">
-																{{resource.time_spend || resource.totalTime}}
-															</div>
-															
-															<div class="col-sm-1" (click)="showTryDetail(resource)" data-toggle="collapse"
-															     data-parent="#accordion" [attr.data-target]="'#test' + [[resource.resource_id]]"
-															     style="cursor: pointer;">
-																<div class="grid">
-																	<div class="col-sm-6">
-																		<i class="fa fa-eye" style="cursor: pointer"
-																		   (click)="showEssay(resource)"
-																		   *ngIf="resource.resource_type === 'essay'"></i>
-																	</div>
-																	<div class="col-sm-6">
-																		<i *ngIf="resource.resource_type === undefined" class="fa fa-refresh"
-																		   style="color: rgb(247, 150, 39); margin-right: 2px;" aria-hidden="true"
-																		   (click)="newAttempEvaluation(resource)"></i>
-																	</div>
-																</div>
-																
-																<i class="fa fa-chevron-down"></i>
-																<!-- </button> -->
-															</div>
-														</div>
-													</h4>
-												</div>
-												<div id="test{{resource.resource_id}}" class="panel-collapse collapse">
-													<div class="panel-body">
-														<div class="card-body">
-															<div class="container-fluid" style="margin-top: 5px;">
-																<div class="row">
-																	<div class="col-md-12">
-																		<div class="card">
-																			<div class="content">
-																				<div class="fresh-datatables">
-																					<table id="dataTableAttemptDetails"
-																					       class="table table-striped table-no-bordered table-hover text-center table-responsive"
-																					       cellspacing="0" width="100%">
-																						<thead>
-																						<tr>
-																							<th>#</th>
-																							<th *ngIf="resource.resource_type !== undefined"
-																							    style="text-align: center;">
-																								HORA
-																							</th>
-																							<th *ngIf="resource.resource_type === undefined"
-																							    style="text-align: center;">
-																								HORA INICIO / HORA FIN
-																							</th>
-																							
-																							<th style="text-align: center;">
-																								FECHA
-																							</th>
-																							<th style="text-align: center;">
-																								TIEMPO
-																							</th>
-																							<th style="text-align: center;">
-																								ESTADO
-																							</th>
-																							<th style="text-align: center;" *ngIf="resource.resource_type=='video'">
-																								COMPLETADO
-																							</th>
-																							<th style="text-align: center;"
-																							    *ngIf="resource.resource_type === undefined">
-																								PUNTUACIÓN
-																							</th>
-																							<th *ngIf="resource.resource_type =='practice'"
-																							    style="text-align: center;">
-																								Ver
-																							</th>
-																							<th style="text-align: center;"
-																							    *ngIf="resource.resource_type === undefined"> Ver
-																							</th>
-																						</tr>
-																						</thead>
-																						<tbody id="tBodyUnitEducationalAttemptDetails">
-																						<tr *ngFor="let attemptDetail of attemptDetailsList; let i = index">
-																							<td>{{i + 1}}</td>
-																							<td *ngIf="resource.resource_type !== undefined">
-																								{{attemptDetail.toTime }}
-																							</td>
-																							<td *ngIf="resource.resource_type === undefined">
-																								{{attemptDetail.startTime}} / {{attemptDetail.endTime || 0}}
-																							</td>
-																							<td>{{attemptDetail.toDate || attemptDetail.date}}
-																							</td>
-																							<td>{{attemptDetail.time_spend || attemptDetail.totalTime}}
-																							</td>
-																							<td *ngIf="resource.resource_type !== undefined">
-																								<ng-container
-																										*ngIf="attemptDetail.resource_status == true || resource.resource_type === undefined ; else elseEstado">
-																									<button class="btn btn-success btn-fill btn-xs">
-																										<i class="fa fa-check"></i>
-																									</button>
-																								</ng-container>
-																								<ng-template #elseEstado>
-																									<button class="btn btn-danger btn-fill btn-xs">
-																										<i class="fa fa-close"></i>
-																									</button>
-																								</ng-template>
-																							</td>
-																							<td *ngIf="resource.resource_type === undefined">
-																								<ng-container
-																										*ngIf="attemptDetail.evaluationStatus == true  else elseEstado">
-																									<button class="btn btn-success btn-fill btn-xs">
-																										<i class="fa fa-check"></i>
-																									</button>
-																								</ng-container>
-																								<ng-template #elseEstado>
-																									<button class="btn btn-danger btn-fill btn-xs">
-																										<i class="fa fa-close"></i>
-																									</button>
-																								</ng-template>
-																							</td>
-																							<ng-container>
-																								<td *ngIf="resource.resource_type=='video'">
-																									<ng-container
-																											*ngIf="attemptDetail.completed == true; else elseEstado">
-																										<button class="btn btn-success btn-fill btn-xs">
-																											<i class="fa fa-check"></i>
-																										</button>
-																									</ng-container>
-																									<ng-template #elseEstado>
-																										<button class="btn btn-danger btn-fill btn-xs">
-																											<i class="fa fa-close"></i>
-																										</button>
-																									</ng-template>
-																								</td>
-																								<td
-																										*ngIf="resource.resource_type === undefined && attemptDetail.evaluationData !== undefined">
-																										<span *ngIf="attemptDetail.totalScore <=5 "
-																										      style="color: red;">{{attemptDetail.totalScore  | number: '.2-2' }}</span>
-																									<span
-																											*ngIf="attemptDetail.totalScore >5 ">{{attemptDetail.totalScore | number: '.2-2'}}</span>
-																									/
-																									<span>{{attemptDetail.evaluationData[0].evaluation_scoring}}</span>
-																								</td>
-																								<td><i class="fa fa-eye" style="cursor: pointer"
-																								       (click)="showEvaluation(attemptDetail)"
-																								       *ngIf="resource.resource_type === undefined" data-toggle="modal"
-																								       data-target="#exampleModalCenterEvaluation"
-																								       style="color: rgb(37, 37, 143);"></i></td>
-																								<td><i class="fa fa-eye" style="cursor: pointer"
-																								       (click)="showPractice(attemptDetail)"
-																								       *ngIf="resource.resource_type === 'practice' "
-																								       data-toggle="modal" data-target="#exampleModalCenterPractices"
-																								       style="color: rgb(37, 37, 143);"></i></td>
-																							</ng-container>
-																						</tr>
-																						<!-- 	*ngFor="let attemptDetail of attemptDetailsList; let i = index">
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <ng-template #noClass>
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: row;
+                            align-content: center;
+                            justify-content: center;
+                            text-align: center;
+                          "
+                        >
+                          <h1
+                            class="alert-danger"
+                            style="
+                              color: white;
+                              width: 80%;
+                              border-radius: 3px;
+                              font-size: medium;
+                            "
+                          >
+                            Aún no hay sesiones activas para la unidad.
+                          </h1>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+    <!--Tarjeta que se debe ocultar-->
+    <div *ngIf="showDetails && !showHome">
+      <button (click)="hideDetail()" class="btn btn-primary btn-fill">
+        <i class="fa fa-bars" aria-hidden="true"></i> Volver
+      </button>
+      <hr />
+      <h4 *ngIf="studentSelect">
+        Estudiante :
+        <span style="font-weight: bold"
+          >{{ studentSelect.student_name }},
+          {{ studentSelect.student_lastname }}.</span
+        >
+      </h4>
+      <div class="card">
+        <div class="container" style="padding: 10px; width: 100%">
+          <mat-tab-group
+            [color]="Primary"
+            [backgroundColor]="Primary"
+            selectedIndex="0"
+            (selectedIndexChange)="setActiveClass($event)"
+            style="width: 100%"
+          >
+            <mat-tab *ngFor="let class of arrayClasses; let i = index">
+              <ng-template mat-tab-label>
+                <div class="grid">
+                  <div class="row">Lección {{ i + 1 }}</div>
+                  <div class="row">
+                    {{ class.className | uppercase }}
+                  </div>
+                </div>
+              </ng-template>
+
+              <table
+                id=""
+                style="background-color: #fff; margin-top: 10px"
+                class="table table-striped table-no-bordered table-hover text-center"
+                cellspacing="0"
+              >
+                <tr>
+                  <td colspan="5">
+                    <div
+                      class="panel-group"
+                      id="accordion"
+                      *ngIf="resourceList.length > 0"
+                    >
+                      <div class="row row-p">
+                        <div class="col-sm-1 text-center">#</div>
+                        <div class="col-sm-4 text-left">
+                          Recursos de la lección
+                        </div>
+                        <div class="col-sm-3">Ingresos</div>
+                        <div class="col-sm-3">Tiempo en el recurso</div>
+
+                        <div class="col-sm-1">Ver</div>
+                      </div>
+                      <hr />
+                      <div
+                        class="panel panel-default"
+                        *ngFor="let resource of resourceList; let i = index"
+                        style="padding: 10px"
+                      >
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <div class="row row-p">
+                              <div class="col-sm-1 text-center">
+                                {{ i + 1 }}
+                              </div>
+                              <div class="col-sm-4 text-left">
+                                <img
+                                  *ngIf="resource.resource_type == 'text'"
+                                  src="../../../../assets/img/icons/text.png"
+                                  class="img-resource"
+                                  alt=""
+                                />
+                                <img
+                                  *ngIf="resource.resource_type == 'video'"
+                                  src="../../../../assets/img/icons/video.png"
+                                  class="img-resource"
+                                  alt=""
+                                />
+                                <img
+                                  *ngIf="
+                                    resource.resource_type == 'practice' ||
+                                    resource.resource_type == 'url' ||
+                                    resource.resource_type == 'file'
+                                  "
+                                  src="../../../../assets/img/icons/practica.png"
+                                  class="img-resource"
+                                  alt=""
+                                />
+                                <img
+                                  *ngIf="resource.resource_type === undefined"
+                                  src="../../../../assets/img/icons/evaluacion.png"
+                                  class="img-resource"
+                                  alt=""
+                                />
+
+                                &nbsp;
+                                {{
+                                  resource.resource_name ||
+                                    resource.evaluationData[0].evaluation_name
+                                    | slice : 0 : 60
+                                }}
+                              </div>
+                              <div class="col-sm-3">
+                                {{ resource.intents }}
+                              </div>
+                              <div class="col-sm-3">
+                                {{ resource.time_spend || resource.totalTime }}
+                              </div>
+
+                              <div
+                                class="col-sm-1"
+                                (click)="showTryDetail(resource)"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                [attr.data-target]="
+                                  '#test' + [[resource.resource_id]]
+                                "
+                                style="cursor: pointer"
+                              >
+                                <div class="grid">
+                                  <div class="col-sm-6">
+                                    <i
+                                      class="fa fa-eye"
+                                      style="cursor: pointer"
+                                      (click)="showEssay(resource)"
+                                      *ngIf="resource.resource_type === 'essay'"
+                                    ></i>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <i
+                                      *ngIf="
+                                        resource.resource_type === undefined
+                                      "
+                                      class="fa fa-refresh"
+                                      style="
+                                        color: rgb(247, 150, 39);
+                                        margin-right: 2px;
+                                      "
+                                      aria-hidden="true"
+                                      (click)="newAttempEvaluation(resource)"
+                                    ></i>
+                                  </div>
+                                </div>
+
+                                <i class="fa fa-chevron-down"></i>
+                                <!-- </button> -->
+                              </div>
+                            </div>
+                          </h4>
+                        </div>
+                        <div
+                          id="test{{ resource.resource_id }}"
+                          class="panel-collapse collapse"
+                        >
+                          <div class="panel-body">
+                            <div class="card-body">
+                              <div
+                                class="container-fluid"
+                                style="margin-top: 5px"
+                              >
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="card">
+                                      <div class="content">
+                                        <div class="fresh-datatables">
+                                          <table
+                                            id="dataTableAttemptDetails"
+                                            class="table table-striped table-no-bordered table-hover text-center table-responsive"
+                                            cellspacing="0"
+                                            width="100%"
+                                          >
+                                            <thead>
+                                              <tr>
+                                                <th>#</th>
+                                                <th
+                                                  *ngIf="
+                                                    resource.resource_type !==
+                                                    undefined
+                                                  "
+                                                  style="text-align: center"
+                                                >
+                                                  HORA
+                                                </th>
+                                                <th
+                                                  *ngIf="
+                                                    resource.resource_type ===
+                                                    undefined
+                                                  "
+                                                  style="text-align: center"
+                                                >
+                                                  HORA INICIO / HORA FIN
+                                                </th>
+
+                                                <th style="text-align: center">
+                                                  FECHA
+                                                </th>
+                                                <th style="text-align: center">
+                                                  TIEMPO
+                                                </th>
+                                                <th style="text-align: center">
+                                                  ESTADO
+                                                </th>
+                                                <th
+                                                  style="text-align: center"
+                                                  *ngIf="
+                                                    resource.resource_type ==
+                                                    'video'
+                                                  "
+                                                >
+                                                  COMPLETADO
+                                                </th>
+                                                <th
+                                                  style="text-align: center"
+                                                  *ngIf="
+                                                    resource.resource_type ===
+                                                    undefined
+                                                  "
+                                                >
+                                                  PUNTUACIÓN
+                                                </th>
+                                                <th
+                                                  *ngIf="
+                                                    resource.resource_type ==
+                                                    'practice'
+                                                  "
+                                                  style="text-align: center"
+                                                >
+                                                  Ver
+                                                </th>
+                                                <th
+                                                  style="text-align: center"
+                                                  *ngIf="
+                                                    resource.resource_type ===
+                                                    undefined
+                                                  "
+                                                >
+                                                  Ver
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody
+                                              id="tBodyUnitEducationalAttemptDetails"
+                                            >
+                                              <tr
+                                                *ngFor="
+                                                  let attemptDetail of attemptDetailsList;
+                                                  let i = index
+                                                "
+                                              >
+                                                <td>{{ i + 1 }}</td>
+                                                <td
+                                                  *ngIf="
+                                                    resource.resource_type !==
+                                                    undefined
+                                                  "
+                                                >
+                                                  {{ attemptDetail.toTime }}
+                                                </td>
+                                                <td
+                                                  *ngIf="
+                                                    resource.resource_type ===
+                                                    undefined
+                                                  "
+                                                >
+                                                  {{
+                                                    attemptDetail.startTime
+                                                  }}
+                                                  /
+                                                  {{
+                                                    attemptDetail.endTime || 0
+                                                  }}
+                                                </td>
+                                                <td>
+                                                  {{
+                                                    attemptDetail.toDate ||
+                                                      attemptDetail.date
+                                                  }}
+                                                </td>
+                                                <td>
+                                                  {{
+                                                    attemptDetail.time_spend ||
+                                                      attemptDetail.totalTime
+                                                  }}
+                                                </td>
+                                                <td
+                                                  *ngIf="
+                                                    resource.resource_type !==
+                                                    undefined
+                                                  "
+                                                >
+                                                  <ng-container
+                                                    *ngIf="
+                                                      attemptDetail.resource_status ==
+                                                        true ||
+                                                        resource.resource_type ===
+                                                          undefined;
+                                                      else elseEstado
+                                                    "
+                                                  >
+                                                    <button
+                                                      class="btn btn-success btn-fill btn-xs"
+                                                    >
+                                                      <i
+                                                        class="fa fa-check"
+                                                      ></i>
+                                                    </button>
+                                                  </ng-container>
+                                                  <ng-template #elseEstado>
+                                                    <button
+                                                      class="btn btn-danger btn-fill btn-xs"
+                                                    >
+                                                      <i
+                                                        class="fa fa-close"
+                                                      ></i>
+                                                    </button>
+                                                  </ng-template>
+                                                </td>
+                                                <td
+                                                  *ngIf="
+                                                    resource.resource_type ===
+                                                    undefined
+                                                  "
+                                                >
+                                                  <ng-container
+                                                    *ngIf="
+                                                      attemptDetail.evaluationStatus ==
+                                                        true;
+                                                      else elseEstado
+                                                    "
+                                                  >
+                                                    <button
+                                                      class="btn btn-success btn-fill btn-xs"
+                                                    >
+                                                      <i
+                                                        class="fa fa-check"
+                                                      ></i>
+                                                    </button>
+                                                  </ng-container>
+                                                  <ng-template #elseEstado>
+                                                    <button
+                                                      class="btn btn-danger btn-fill btn-xs"
+                                                    >
+                                                      <i
+                                                        class="fa fa-close"
+                                                      ></i>
+                                                    </button>
+                                                  </ng-template>
+                                                </td>
+                                                <ng-container>
+                                                  <td
+                                                    *ngIf="
+                                                      resource.resource_type ==
+                                                      'video'
+                                                    "
+                                                  >
+                                                    <ng-container
+                                                      *ngIf="
+                                                        attemptDetail.completed ==
+                                                          true;
+                                                        else elseEstado
+                                                      "
+                                                    >
+                                                      <button
+                                                        class="btn btn-success btn-fill btn-xs"
+                                                      >
+                                                        <i
+                                                          class="fa fa-check"
+                                                        ></i>
+                                                      </button>
+                                                    </ng-container>
+                                                    <ng-template #elseEstado>
+                                                      <button
+                                                        class="btn btn-danger btn-fill btn-xs"
+                                                      >
+                                                        <i
+                                                          class="fa fa-close"
+                                                        ></i>
+                                                      </button>
+                                                    </ng-template>
+                                                  </td>
+                                                  <td
+                                                    *ngIf="
+                                                      resource.resource_type ===
+                                                        undefined &&
+                                                      attemptDetail.evaluationData !==
+                                                        undefined
+                                                    "
+                                                  >
+                                                    <span
+                                                      *ngIf="
+                                                        attemptDetail.totalScore <=
+                                                        5
+                                                      "
+                                                      style="color: red"
+                                                      >{{
+                                                        attemptDetail.totalScore
+                                                          | number : ".2-2"
+                                                      }}</span
+                                                    >
+                                                    <span
+                                                      *ngIf="
+                                                        attemptDetail.totalScore >
+                                                        5
+                                                      "
+                                                      >{{
+                                                        attemptDetail.totalScore
+                                                          | number : ".2-2"
+                                                      }}</span
+                                                    >
+                                                    /
+                                                    <span>{{
+                                                      attemptDetail
+                                                        .evaluationData[0]
+                                                        .evaluation_scoring
+                                                    }}</span>
+                                                  </td>
+                                                  <td>
+                                                    <i
+                                                      class="fa fa-eye"
+                                                      style="cursor: pointer"
+                                                      (click)="
+                                                        showEvaluation(
+                                                          attemptDetail
+                                                        )
+                                                      "
+                                                      *ngIf="
+                                                        resource.resource_type ===
+                                                        undefined
+                                                      "
+                                                      data-toggle="modal"
+                                                      data-target="#exampleModalCenterEvaluation"
+                                                      style="
+                                                        color: rgb(37, 37, 143);
+                                                      "
+                                                    ></i>
+                                                  </td>
+                                                  <td>
+                                                    <i
+                                                      class="fa fa-eye"
+                                                      style="cursor: pointer"
+                                                      (click)="
+                                                        showPractice(
+                                                          attemptDetail
+                                                        )
+                                                      "
+                                                      *ngIf="
+                                                        resource.resource_type ===
+                                                        'practice'
+                                                      "
+                                                      data-toggle="modal"
+                                                      data-target="#exampleModalCenterPractices"
+                                                      style="
+                                                        color: rgb(37, 37, 143);
+                                                      "
+                                                    ></i>
+                                                  </td>
+                                                </ng-container>
+                                              </tr>
+                                              <!-- 	*ngFor="let attemptDetail of attemptDetailsList; let i = index">
 																			<td>{{i+1}}</td>
 																			<td>{{attemptDetail.toDate}}</td>
 																			<td>{{attemptDetail.toTime}}</td>
 																			<td>{{attemptDetail.startDate}}</td>
 																			<td>-->
-																						</tbody>
-																					</table>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											
-											</div>
-										
-										</div>
-										<div *ngIf="resourceList.length === 0 "
-										     style="display: flex;flex-direction: row; align-content: center; justify-content: center; text-align: center;">
-											<h1 class="alert-danger" style="color: white; width: 80%; border-radius: 3px; font-size: medium;">
-												Aún no hay actividad del estudiante en esta lección.</h1>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</mat-tab>
-					</mat-tab-group>
-				</div>
-			</div>
-		</div>
-		<ng-template #noTabs>
-			<div
-					style="display: flex;flex-direction: row; align-content: center; justify-content: center; text-align: center;">
-				<h1 class="alert-danger" style="color: white; width: 80%; border-radius: 3px; font-size: medium;">Aún no
-					hay unidades asignadas a la materia.</h1>
-			</div>
-		</ng-template>
-	
-	</div>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="resourceList.length === 0"
+                      style="
+                        display: flex;
+                        flex-direction: row;
+                        align-content: center;
+                        justify-content: center;
+                        text-align: center;
+                      "
+                    >
+                      <h1
+                        class="alert-danger"
+                        style="
+                          color: white;
+                          width: 80%;
+                          border-radius: 3px;
+                          font-size: medium;
+                        "
+                      >
+                        Aún no hay actividad del estudiante en esta lección.
+                      </h1>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+    <ng-template #noTabs>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          text-align: center;
+        "
+      >
+        <h1
+          class="alert-danger"
+          style="
+            color: white;
+            width: 80%;
+            border-radius: 3px;
+            font-size: medium;
+          "
+        >
+          Aún no hay unidades asignadas a la materia.
+        </h1>
+      </div>
+    </ng-template>
+  </div>
 </div>
 
 <!-- SECCION DE VISUALIZACION DEL CHAT    -->
 
 <div *ngIf="isShowForum">
-	<div class="row card cardheader{{subjectSelect.color}} card-header-subject">
-		<div class="col-sm-1 text-center">
-			<img [src]="subjectSelect.icon" class="img-subject" alt="">
-		</div>
-		<div class="col-sm-8 text-left a-middle"><br>
-			<span class="title-subject">{{subjectSelect.subject_name}}</span>
-			<span class="title-subject"> {{subjectSelect.grade_name}} / {{subjectSelect.parallel_name}}</span>
-		</div>
-	</div>
+  <div class="row card cardheader{{ subjectSelect.color }} card-header-subject">
+    <div class="col-sm-1 text-center">
+      <img [src]="subjectSelect.icon" class="img-subject" alt="" />
+    </div>
+    <div class="col-sm-8 text-left a-middle">
+      <br />
+      <span class="title-subject">{{ subjectSelect.subject_name }}</span>
+      <span class="title-subject">
+        {{ subjectSelect.grade_name }} / {{ subjectSelect.parallel_name }}</span
+      >
+    </div>
+  </div>
 </div>
-<div class="container" *ngIf="isShowForum" style="width: 100%;">
-	<div class="div-float-right">
-		<button (click)="hideDataForum()" type="button" class="btn btn-primary btn-fill" data-toggle="modal">
-			<i class="fa fa-search"></i> Sesiones
-		</button>
-	</div>
-	<hr>
-	<div class="container" style="width: 100%;">
-		<div class="row card text-left" style="width: 70%;"><br>
-			<div class="col-sm-3 text-center card-danger-sp" style="width: 17%;">
-				<h2> Buscar </h2>
-			</div>
-			<div class="col-sm-9 text-center">
-				<input type="text" class="form-control" id="buscar" name="buscar" placeholder="Buscar"
-				       (keyup)="keyUpTimeout($event.target.value)" style="border-radius: 16px; border-color: black;">
-			</div>
-		</div>
-		
-		<div class="row card csstext" style="min-height: 77px; background-color: #E6F7FF; width: 100%;"><br>
-			<div class="col-sm-3 text-center card-danger-sp" style="width: 5%; font-size: 3em;">
-				<i class="fa fa-plus-circle fa-2" aria-hidden="true"></i>
-			</div>
-			<form id="saveNewQuestion" class="form-horizontal">
-				<div class="col-sm-9 text-center" style="margin-bottom: 10px;">
-					<input [(ngModel)]="forumQuestionDocumentSave.question" type="text" class="form-control" id="search"
-					       name="question" placeholder="Puedes añadir una nueva Consulta" style="background-color: #E6F7FF;
-                  border: 1px solid #747474;">
-				</div>
-				<div class="col-sm-2" style="justify-content: flex-end; display: flex; float: inline-end; margin-bottom: 10px;">
-					<button (click)="saveNewQuestion()" type="button" class="btn btn-primary btn-fill">
-						Añadir
-					</button>
-				</div>
-			</form>
-		</div>
-		
-		<div *ngFor="let questionForum of forumQuestionDocumentList;  let i = index">
-			<!-- card preguntas -->
-			<hr style="border-color: #9E9E9E; width: 95%;">
-			<div class="row card" style="min-height: 77px; width: 100%; margin-bottom: 20px;"
-			     [ngStyle]="{'background-color':getCardColor(i)}"><br>
-				<div class="col-sm-12">
-					<div class="col-sm-8 text-left card-danger-sp">
-						<i class="fa fa-star" aria-hidden="true"></i>
-						<img *ngIf="questionForum.user_type=='estudiante'"
-						     src="../../../../assets/img/icons/user-graduate-solid 1.png" class="img-resource" alt=""
-						     style="margin:10px;">
-						<img *ngIf="questionForum.user_type=='profesor'" src="../../../../assets/img/icons/user admin-01 1.png"
-						     class="img-resource" alt="" style="margin:10px;">
-						{{questionForum.question}}
-					</div>
-					<div class="col-sm-3 text-rigth card-danger-sp"
-					     style="justify-content: flex-end; display: flex; float: inline-end;">
-						{{questionForum.question_date}} - {{questionForum.question_time}}
-					</div>
-				</div>
-				<form id="saveNewAnswer" class="form-horizontal">
-					<div class="col-sm-10 text-center" style="margin-bottom: 10px;">
-						<input type="text" class="form-control" id="questionId{{i}}" style="border: 1px solid #747474;">
-					</div>
-					<div class="col-sm-2"
-					     style="justify-content: flex-end; display: flex; float: inline-end; margin-bottom: 10px;">
-						<button (click)="saveContribution(questionForum, i)" type="button" class="btn btn-primary btn-fill">
-							Enviar
-						</button>
-					</div>
-				</form>
-			</div>
-			
-			<!-- card respuestas -->
-			<div class="row card col-sm-3 cssBestAnswer cssRespuestas centerComponent testSize"
-			     *ngIf="questionForum.documentForumBestAnswer !== undefined" style="background-color: #62B51A;">
-				MEJOR RESPUESTA
-			</div>
-			<br>
-			<div class="row card" style="min-height: 57px; width: 100%;"
-			     *ngIf="questionForum.documentForumBestAnswer !== undefined" [ngStyle]="{'background-color':getCardColor(i)}">
-				<br>
-				<div class="col-sm-12" style="margin-bottom: 1%; ">
-					<div class="col-sm-8 text-left card-danger-sp testSize">
-						<i class="fa fa-star" style="color: yellow;" aria-hidden="true"></i>
-						<img *ngIf="questionForum.documentForumBestAnswer.answer_user_type=='estudiante'"
-						     src="../../../../assets/img/icons/user-graduate-solid 1.png" class="img-resource" alt=""
-						     style="margin:10px;">
-						<img *ngIf="questionForum.documentForumBestAnswer.answer_user_type=='profesor'"
-						     src="../../../../assets/img/icons/user admin-01 1.png" class="img-resource" alt=""
-						     style="margin:10px;">
-						{{questionForum.documentForumBestAnswer.answer_user_name !== undefined ? questionForum.documentForumBestAnswer.answer_user_name : 'S/N'}}
-					</div>
-					<div class="col-sm-3 text-rigth card-danger-sp  testSize" style="justify-content: flex-end; display: flex;">
-						
-						{{questionForum.documentForumBestAnswer.answer_count_like !== undefined ? questionForum.documentForumBestAnswer.answer_count_like.length : '0'}}
-						<i class="fa fa-star" style="color: yellow;"></i>
-					</div>
-				</div>
-				<hr>
-				<div class="col-sm-12" style="margin-bottom: 1%; ">
-					<div class="col-sm-8 text-left card-danger-sp testSize">
-						{{questionForum.documentForumBestAnswer.answer}}
-					</div>
-				</div>
-			</div>
-			
-			<div class="row card col-sm-3 cssRespuestas text-center centerComponent testSize" style="margin-bottom: auto;">
-				TODAS LAS RESPUESTAS
-			</div>
-			<br>
-			<div *ngFor="let answerForum of questionForum.documentForumAnswerList;  let indice = index">
-				<div class="row card" style="min-height: 57px; width: 100%; margin-bottom: 10px;"
-				     [ngStyle]="{'background-color':getCardColor(i)}"><br>
-					<div class="col-sm-12" style="margin-bottom: 1%;">
-						<div class="col-sm-8 text-left card-danger-sp testSize">
-							<ng-container *ngIf="getUserLikedAnswer(answerForum) == true; else elseEstado">
-								<i class="fa fa-star" style="color: yellow;" aria-hidden="true"></i>
-							</ng-container>
-							<ng-template #elseEstado>
-								<i class="fa fa-star-o" (click)="likeAnswer(questionForum, answerForum)"></i>
-							</ng-template>
-							<img *ngIf="answerForum.answer_user_type=='estudiante'"
-							     src="../../../../assets/img/icons/user-graduate-solid 1.png" class="img-resource" alt=""
-							     style="margin:10px;">
-							<img *ngIf="answerForum.answer_user_type=='profesor'"
-							     src="../../../../assets/img/icons/user admin-01 1.png" class="img-resource" alt=""
-							     style="margin:10px;">
-							{{answerForum.answer_user_name}}
-						</div>
-						<div class="col-sm-3 text-rigth card-danger-sp"
-						     style="justify-content: flex-end; display: flex; float: inline-end;">
-							{{getDateAnswer(answerForum.answer_id)}}
-						</div>
-					</div>
-					<div class="col-sm-12" style="margin-bottom: 1%; ">
-						<div class="col-sm-8 text-left card-danger-sp testSize">
-							{{answerForum.answer}}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="container" *ngIf="isShowForum" style="width: 100%">
+  <div class="div-float-right">
+    <button
+      (click)="hideDataForum()"
+      type="button"
+      class="btn btn-primary btn-fill"
+      data-toggle="modal"
+    >
+      <i class="fa fa-search"></i> Sesiones
+    </button>
+  </div>
+  <hr />
+  <div class="container" style="width: 100%">
+    <div class="row card text-left" style="width: 70%">
+      <br />
+      <div class="col-sm-3 text-center card-danger-sp" style="width: 17%">
+        <h2>Buscar</h2>
+      </div>
+      <div class="col-sm-9 text-center">
+        <input
+          type="text"
+          class="form-control"
+          id="buscar"
+          name="buscar"
+          placeholder="Buscar"
+          (keyup)="keyUpTimeout($event.target.value)"
+          style="border-radius: 16px; border-color: black"
+        />
+      </div>
+    </div>
+
+    <div
+      class="row card csstext"
+      style="min-height: 77px; background-color: #e6f7ff; width: 100%"
+    >
+      <br />
+      <div
+        class="col-sm-3 text-center card-danger-sp"
+        style="width: 5%; font-size: 3em"
+      >
+        <i class="fa fa-plus-circle fa-2" aria-hidden="true"></i>
+      </div>
+      <form id="saveNewQuestion" class="form-horizontal">
+        <div class="col-sm-9 text-center" style="margin-bottom: 10px">
+          <input
+            [(ngModel)]="forumQuestionDocumentSave.question"
+            type="text"
+            class="form-control"
+            id="search"
+            name="question"
+            placeholder="Puedes añadir una nueva Consulta"
+            style="background-color: #e6f7ff; border: 1px solid #747474"
+          />
+        </div>
+        <div
+          class="col-sm-2"
+          style="
+            justify-content: flex-end;
+            display: flex;
+            float: inline-end;
+            margin-bottom: 10px;
+          "
+        >
+          <button
+            (click)="saveNewQuestion()"
+            type="button"
+            class="btn btn-primary btn-fill"
+          >
+            Añadir
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngFor="let questionForum of forumQuestionDocumentList; let i = index">
+      <!-- card preguntas -->
+      <hr style="border-color: #9e9e9e; width: 95%" />
+      <div
+        class="row card"
+        style="min-height: 77px; width: 100%; margin-bottom: 20px"
+        [ngStyle]="{ 'background-color': getCardColor(i) }"
+      >
+        <br />
+        <div class="col-sm-12">
+          <div class="col-sm-8 text-left card-danger-sp">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <img
+              *ngIf="questionForum.user_type == 'estudiante'"
+              src="../../../../assets/img/icons/user-graduate-solid 1.png"
+              class="img-resource"
+              alt=""
+              style="margin: 10px"
+            />
+            <img
+              *ngIf="questionForum.user_type == 'profesor'"
+              src="../../../../assets/img/icons/user admin-01 1.png"
+              class="img-resource"
+              alt=""
+              style="margin: 10px"
+            />
+            {{ questionForum.question }}
+          </div>
+          <div
+            class="col-sm-3 text-rigth card-danger-sp"
+            style="justify-content: flex-end; display: flex; float: inline-end"
+          >
+            {{ questionForum.question_date }} -
+            {{ questionForum.question_time }}
+          </div>
+        </div>
+        <form id="saveNewAnswer" class="form-horizontal">
+          <div class="col-sm-10 text-center" style="margin-bottom: 10px">
+            <input
+              type="text"
+              class="form-control"
+              id="questionId{{ i }}"
+              style="border: 1px solid #747474"
+            />
+          </div>
+          <div
+            class="col-sm-2"
+            style="
+              justify-content: flex-end;
+              display: flex;
+              float: inline-end;
+              margin-bottom: 10px;
+            "
+          >
+            <button
+              (click)="saveContribution(questionForum, i)"
+              type="button"
+              class="btn btn-primary btn-fill"
+            >
+              Enviar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- card respuestas -->
+      <div
+        class="row card col-sm-3 cssBestAnswer cssRespuestas centerComponent testSize"
+        *ngIf="questionForum.documentForumBestAnswer !== undefined"
+        style="background-color: #62b51a"
+      >
+        MEJOR RESPUESTA
+      </div>
+      <br />
+      <div
+        class="row card"
+        style="min-height: 57px; width: 100%"
+        *ngIf="questionForum.documentForumBestAnswer !== undefined"
+        [ngStyle]="{ 'background-color': getCardColor(i) }"
+      >
+        <br />
+        <div class="col-sm-12" style="margin-bottom: 1%">
+          <div class="col-sm-8 text-left card-danger-sp testSize">
+            <i class="fa fa-star" style="color: yellow" aria-hidden="true"></i>
+            <img
+              *ngIf="
+                questionForum.documentForumBestAnswer.answer_user_type ==
+                'estudiante'
+              "
+              src="../../../../assets/img/icons/user-graduate-solid 1.png"
+              class="img-resource"
+              alt=""
+              style="margin: 10px"
+            />
+            <img
+              *ngIf="
+                questionForum.documentForumBestAnswer.answer_user_type ==
+                'profesor'
+              "
+              src="../../../../assets/img/icons/user admin-01 1.png"
+              class="img-resource"
+              alt=""
+              style="margin: 10px"
+            />
+            {{
+              questionForum.documentForumBestAnswer.answer_user_name !==
+              undefined
+                ? questionForum.documentForumBestAnswer.answer_user_name
+                : "S/N"
+            }}
+          </div>
+          <div
+            class="col-sm-3 text-rigth card-danger-sp testSize"
+            style="justify-content: flex-end; display: flex"
+          >
+            {{
+              questionForum.documentForumBestAnswer.answer_count_like !==
+              undefined
+                ? questionForum.documentForumBestAnswer.answer_count_like.length
+                : "0"
+            }}
+            <i class="fa fa-star" style="color: yellow"></i>
+          </div>
+        </div>
+        <hr />
+        <div class="col-sm-12" style="margin-bottom: 1%">
+          <div class="col-sm-8 text-left card-danger-sp testSize">
+            {{ questionForum.documentForumBestAnswer.answer }}
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="row card col-sm-3 cssRespuestas text-center centerComponent testSize"
+        style="margin-bottom: auto"
+      >
+        TODAS LAS RESPUESTAS
+      </div>
+      <br />
+      <div
+        *ngFor="
+          let answerForum of questionForum.documentForumAnswerList;
+          let indice = index
+        "
+      >
+        <div
+          class="row card"
+          style="min-height: 57px; width: 100%; margin-bottom: 10px"
+          [ngStyle]="{ 'background-color': getCardColor(i) }"
+        >
+          <br />
+          <div class="col-sm-12" style="margin-bottom: 1%">
+            <div class="col-sm-8 text-left card-danger-sp testSize">
+              <ng-container
+                *ngIf="getUserLikedAnswer(answerForum) == true; else elseEstado"
+              >
+                <i
+                  class="fa fa-star"
+                  style="color: yellow"
+                  aria-hidden="true"
+                ></i>
+              </ng-container>
+              <ng-template #elseEstado>
+                <i
+                  class="fa fa-star-o"
+                  (click)="likeAnswer(questionForum, answerForum)"
+                ></i>
+              </ng-template>
+              <img
+                *ngIf="answerForum.answer_user_type == 'estudiante'"
+                src="../../../../assets/img/icons/user-graduate-solid 1.png"
+                class="img-resource"
+                alt=""
+                style="margin: 10px"
+              />
+              <img
+                *ngIf="answerForum.answer_user_type == 'profesor'"
+                src="../../../../assets/img/icons/user admin-01 1.png"
+                class="img-resource"
+                alt=""
+                style="margin: 10px"
+              />
+              {{ answerForum.answer_user_name }}
+            </div>
+            <div
+              class="col-sm-3 text-rigth card-danger-sp"
+              style="
+                justify-content: flex-end;
+                display: flex;
+                float: inline-end;
+              "
+            >
+              {{ getDateAnswer(answerForum.answer_id) }}
+            </div>
+          </div>
+          <div class="col-sm-12" style="margin-bottom: 1%">
+            <div class="col-sm-8 text-left card-danger-sp testSize">
+              {{ answerForum.answer }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- SECCIÓN VISUALIZAR DETALLE DE EVALUACIÓN-->
-<div class="modal fade" id="exampleModalCenterEvaluation" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
-		<div class="modal-content">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Detalle de evaluación</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-12" style="text-align: right;">
-						<button (click)="exportToExcel()" class="btn btn-success btn-fill">
-							<i class="fa fa-download"></i> Excel
-						</button>
-					</div>
-				</div>
-				<div class="fresh-datatables table-responsive">
-					<table #datatablesEvaluation id="datatablesEvaluation"
-					       class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%"
-					       style="width:100%">
-						<thead>
-						<tr>
-							<th> #</th>
-							<th>Pregunta</th>
-							<th> Nº de Correctas</th>
-							<th>Nº de Errores</th>
-							<th>Tiempo</th>
-							<th>Respuestas</th>
-							<th>Puntuación</th>
-						</tr>
-						</thead>
-						<tbody id="tBodyUnitEducational">
-						<tr *ngFor="let question of arrayQuestionsFromEvaluation; let i = index">
-							<td class="text-center">{{i + 1}}</td>
-							<td class="text-center">{{question.question.option_description | uppercase}}</td>
-							<td class="text-center">{{question.numberOfCorrect}}</td>
-							<td class="text-center">{{question.numberOfErrors}}</td>
-							<td class="text-center">
-								{{question.time}} Seg.
-							</td>
-							<td class="text-center">
-								<div *ngFor="let option of question.answers">
-										<span *ngIf="option.option_item_description !== undefined">{{option.option_item_description}}
-										</span>
-									<span *ngIf="option.option_item_description === undefined">{{option}} </span>
-								</div>
-							</td>
-							<td class="text-center">
-								{{question.score | number: '.2-2'}}
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">Cerrar</button>
-			</div>
-		
-		
-		</div>
-	</div>
+<div
+  class="modal fade"
+  id="exampleModalCenterEvaluation"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="width: 80%"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <h4 class="modal-title">Detalle de evaluación</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12" style="text-align: right">
+            <button (click)="exportToExcel()" class="btn btn-success btn-fill">
+              <i class="fa fa-download"></i> Excel
+            </button>
+          </div>
+        </div>
+        <div class="fresh-datatables table-responsive">
+          <table
+            #datatablesEvaluation
+            id="datatablesEvaluation"
+            class="table table-striped table-no-bordered table-hover"
+            cellspacing="0"
+            width="100%"
+            style="width: 100%"
+          >
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pregunta</th>
+                <th>Nº de Correctas</th>
+                <th>Nº de Errores</th>
+                <th>Tiempo</th>
+                <th>Respuestas</th>
+                <th>Puntuación</th>
+              </tr>
+            </thead>
+            <tbody id="tBodyUnitEducational">
+              <tr
+                *ngFor="
+                  let question of arrayQuestionsFromEvaluation;
+                  let i = index
+                "
+              >
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">
+                  {{ question.question.option_description | uppercase }}
+                </td>
+                <td class="text-center">{{ question.numberOfCorrect }}</td>
+                <td class="text-center">{{ question.numberOfErrors }}</td>
+                <td class="text-center">{{ question.time }} Seg.</td>
+                <td class="text-center">
+                  <div *ngFor="let option of question.answers">
+                    <span *ngIf="option.option_item_description !== undefined"
+                      >{{ option.option_item_description }}
+                    </span>
+                    <span *ngIf="option.option_item_description === undefined"
+                      >{{ option }}
+                    </span>
+                  </div>
+                </td>
+                <td class="text-center">
+                  {{ question.score | number : ".2-2" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger btn-fill"
+          data-dismiss="modal"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- FIN DETALLE DE EVALUACIÓN-->
 
 <!-- SECCIÓN VISUALIZAR DETALLE DE PRACTICAS-->
-<div class="modal fade" id="exampleModalCenterPractices" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document" style="width: 80%;">
-		<div class="modal-content">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Detalle de Practica</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-12" style="text-align: right;">
-						<button (click)="exportToExcelPractices()" class="btn btn-success btn-fill">
-							<i class="fa fa-download"></i> Excel
-						</button>
-					</div>
-				</div>
-				<div class="fresh-datatables table-responsive">
-					<table #datatablesPractice id="datatablesPractice"
-					       class="table table-striped table-no-bordered table-hover"
-					       cellspacing="0" width="100%" style="width:100%">
-						<thead>
-						<tr>
-							<th> #</th>
-							<th>Pregunta</th>
-							<th> Nº de Intentos</th>
-							<th>Nº de Errores</th>
-							<th>Tiempo</th>
-							<th>Respuestas</th>
-							<!-- <th>Puntuación</th> -->
-						</tr>
-						</thead>
-						<tbody id="tBodyUnitEducational">
-						<tr *ngFor="let question of arrayQuestionsFromPractices; let i = index">
-							<td class="text-center">{{i + 1}}</td>
-							<td class="text-center">{{question.questionInformation[0].option_description | uppercase}}</td>
-							<td class="text-center">{{question.numberOfattempts}}</td>
-							<td class="text-center">{{question.numberOfErrors}}</td>
-							<td class="text-center">
-								{{question.time}} Seg.
-							</td>
-							<td class="text-center">
-								{{question.textReply}}.
-							</td>
-							<!-- <td class="text-center">
+<div
+  class="modal fade"
+  id="exampleModalCenterPractices"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="width: 80%"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <h4 class="modal-title">Detalle de Practica</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12" style="text-align: right">
+            <button
+              (click)="exportToExcelPractices()"
+              class="btn btn-success btn-fill"
+            >
+              <i class="fa fa-download"></i> Excel
+            </button>
+          </div>
+        </div>
+        <div class="fresh-datatables table-responsive">
+          <table
+            #datatablesPractice
+            id="datatablesPractice"
+            class="table table-striped table-no-bordered table-hover"
+            cellspacing="0"
+            width="100%"
+            style="width: 100%"
+          >
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pregunta</th>
+                <th>Nº de Intentos</th>
+                <th>Nº de Errores</th>
+                <th>Tiempo</th>
+                <th>Respuestas</th>
+                <!-- <th>Puntuación</th> -->
+              </tr>
+            </thead>
+            <tbody id="tBodyUnitEducational">
+              <tr
+                *ngFor="
+                  let question of arrayQuestionsFromPractices;
+                  let i = index
+                "
+              >
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">
+                  {{
+                    question.questionInformation[0].option_description
+                      | uppercase
+                  }}
+                </td>
+                <td class="text-center">{{ question.numberOfattempts }}</td>
+                <td class="text-center">{{ question.numberOfErrors }}</td>
+                <td class="text-center">{{ question.time }} Seg.</td>
+                <td class="text-center">{{ question.textReply }}.</td>
+                <!-- <td class="text-center">
 								<div *ngFor="let option of question.answers">
 									<span *ngIf="option.option_item_description !== undefined">{{option.option_item_description}} </span>
 									<span *ngIf="option.option_item_description === undefined">{{option}}  </span>
 								</div>
 							</td> -->
-							<!-- <td class="text-center">
+                <!-- <td class="text-center">
 							{{question.score | number: '.2-2'}}
 							</td> -->
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn  btn-danger btn-fill" data-dismiss="modal">Cerrar</button>
-			</div>
-		
-		
-		</div>
-	</div>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger btn-fill"
+          data-dismiss="modal"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- FIN DETALLE DE PRACTICAS-->
-<app-view-essay *ngIf="showEssayDetail" (isReturn)="return()" [essayId]="essayId" [student]="studentSelect"
-                [subjectId]="subject_id" [unitId]="unit_id" [classId]="classId"></app-view-essay>
+<app-view-essay
+  *ngIf="showEssayDetail"
+  (isReturn)="return()"
+  [essayId]="essayId"
+  [student]="studentSelect"
+  [subjectId]="subject_id"
+  [unitId]="unit_id"
+  [classId]="classId"
+></app-view-essay>

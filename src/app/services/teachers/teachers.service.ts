@@ -1,99 +1,110 @@
-import {Injectable, OnInit} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore'
+import { Injectable, OnInit } from "@angular/core";
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from "@angular/fire/firestore";
 
 /**Models */
-import {Teacher} from 'app/models/teacher/teacher.model'
-import {UnitEducational} from '../../models/class/class.documentUnitEducational';
-import {SendEmailService} from '../sendEmail/send-email.service';
+import { Teacher } from "app/models/teacher/teacher.model";
+import { UnitEducational } from "../../models/class/class.documentUnitEducational";
+import { SendEmailService } from "../sendEmail/send-email.service";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: "root",
 })
 export class TeachersService {
+  public infoUser: UnitEducational;
+  teacherCollection: AngularFirestoreCollection<Teacher>;
 
-    public infoUser: UnitEducational;
-    teacherCollection: AngularFirestoreCollection<Teacher>
+  constructor(
+    private db: AngularFirestore,
+    public sendEmailService: SendEmailService
+  ) {
+    this.teacherCollection = this.db.collection<Teacher>("teacher");
+  }
 
-    constructor(
-        private db: AngularFirestore,
-        public sendEmailService: SendEmailService
-    ) {
-        this.teacherCollection = this.db.collection<Teacher>('teacher');
+  OnInit() {
+    console.log("*** INICIANDO SERVICIO ***");
+  }
+
+  /**
+   * GUARDAR PROFESOR
+   * @param level
+   */
+  // public saveTeacher(teacher: Teacher, isNew: boolean, unit_educational_id) {
+  public saveTeacher(teacher: Teacher, isNew: boolean) {
+    console.log(teacher);
+    // teacher.teacher_unit_educational = [unit_educational_id];
+    const collection = this.db
+      .collection("teacher")
+      .doc(`${teacher.teacher_id}`);
+    if (isNew) {
+      this.sendEmailService.sendEmeilConfirRegisterProf(teacher);
+      return collection.set(teacher);
+    } else {
+      return collection.update(teacher);
     }
+  }
 
-    OnInit() {
-        console.log('*** INICIANDO SERVICIO ***');
+  public addUnitEducational(teacher: Teacher, isNew: boolean) {
+    const collection = this.db
+      .collection("teacher")
+      .doc(`${teacher.teacher_id}`);
+    if (isNew) {
+      this.sendEmailService.sendEmeilConfirRegisterProf(teacher);
+      return collection.set(teacher);
+    } else {
+      return collection.update(teacher);
     }
+  }
 
-    /**
-     * GUARDAR PROFESOR
-     * @param level
-     */
-    public saveTeacher(teacher: Teacher, isNew: boolean, unit_educational_id) {
-        console.log(teacher);
-        teacher.teacher_unit_educational = [unit_educational_id];
-        const collection = this.db.collection('teacher').doc(`${teacher.teacher_id}`);
-        if (isNew) {
-            this.sendEmailService.sendEmeilConfirRegisterProf(teacher);
-            return collection.set(teacher);
-        } else {
-            return collection.update(teacher)
-        }
-    }
+  /**
+   * OBTENER LISTA DE PROFESORES
+   */
 
-    public addUnitEducational(teacher: Teacher, isNew: boolean) {
-        const collection = this.db.collection('teacher').doc(`${teacher.teacher_id}`);
-        if (isNew) {
-            this.sendEmailService.sendEmeilConfirRegisterProf(teacher);
-            return collection.set(teacher);
-        } else {
-            return collection.update(teacher)
-        }
-    }
-
-    /**
-     * OBTENER LISTA DE PROFESORES
-     */
-
-    public getAllTeachers(unit_educational_id) {
-        console.log(unit_educational_id)
-        return this
-            .db
-            .collection<Teacher>('teacher',
-                ref => ref.where('teacher_unit_educational',
-                    'array-contains',
-                    unit_educational_id)
-            ).valueChanges();
-    }
+  // public getAllTeachers(unit_educational_id) {
+  public getAllTeachers() {
+    // console.log(unit_educational_id);
+    return (
+      this.db
+        // .collection<Teacher>("teacher", (ref) =>
+        //   ref.where(
+        //     "teacher_unit_educational",
+        //     "array-contains",
+        //     unit_educational_id
+        //   )
+        // )
+        .collection<Teacher>("teacher")
+        .valueChanges()
+    );
+  }
 
   /**
    * BUCSAR UN PROFESOR POR SU EMAIL.
    * @param teacherEmail
    */
-    public findTeacherEmail(teacherEmail: string) {
-        return this
-            .db
-            .collection<Teacher>('teacher',
-                ref => ref
-                    .where(
-                        'teacher_email',
-                        '==',
-                        teacherEmail)
-            ).valueChanges();
-    }
+  public findTeacherEmail(teacherEmail: string) {
+    return this.db
+      .collection<Teacher>("teacher", (ref) =>
+        ref.where("teacher_email", "==", teacherEmail)
+      )
+      .valueChanges();
+  }
 
-    /**
-     * ELIMINAR DOCENTE
-     * @param teacher
-     */
-    public deleteTeacher(teacher: Teacher) {
-        const collection = this.db.collection('teacher').doc(`${teacher.teacher_id}`);
-        return collection.update({
-            'teacher_status': false,
-        });
-    }
+  /**
+   * ELIMINAR DOCENTE
+   * @param teacher
+   */
+  public deleteTeacher(teacher: Teacher) {
+    const collection = this.db
+      .collection("teacher")
+      .doc(`${teacher.teacher_id}`);
+    return collection.update({
+      teacher_status: false,
+    });
+  }
 
-    public getTeacherById(teacherId: string) {
-        return this.db.collection('teacher').doc(`${teacherId}`).valueChanges()
-    }
+  public getTeacherById(teacherId: string) {
+    return this.db.collection("teacher").doc(`${teacherId}`).valueChanges();
+  }
 }
