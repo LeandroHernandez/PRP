@@ -24,7 +24,8 @@ export class ChipsComponent implements OnInit, OnDestroy {
   public chipToEdit: IChip | null = null;
   public chipForm: FormGroup = this._fb.group({
     name: ["", [Validators.required]],
-    parameters: [[], [Validators.required]],
+    // parameters: [[], [Validators.required]],
+    parameters: [[]],
     accessPublicChip: [false],
   });
   public libraries_date = new Librariesdate();
@@ -105,6 +106,8 @@ export class ChipsComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
+    localStorage.removeItem("chip");
+    localStorage.removeItem("modal");
     return this.cancelEmitter.emit(true);
   }
 

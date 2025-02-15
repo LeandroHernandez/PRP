@@ -96,12 +96,30 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px 150px;
-    /* width: 100%; */
-    width: 350px;
+    width: 100%;
+    /* width: 350px; */
     max-width: 90%;
     /* justify-content: space-between; */
     justify-content: center;
     align-items: center;
+  }
+
+  & .chip-buttons {
+    width: 100%;
+    display: grid;
+    gap: 20px;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr min-content;
+    justify-content: center;
+
+    .submit-button {
+      width: fit-content;
+      margin: auto;
+    }
+
+    .dropdown-with-icons {
+      justify-self: end;
+    }
   }
 }
 

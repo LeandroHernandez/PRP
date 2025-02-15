@@ -4,29 +4,39 @@
   <header class="header">
     <h3 class="title">Fichas</h3>
     <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
-    <input
-      type="text"
-      class="filter-input"
-      placeholder="Buscar"
-      [(ngModel)]="chipsValueFilter"
-    />
-    <!-- <input
-      type="text"
-      class="form-control"
-      placeholder="Buscar"
-      aria-label="Buscar"
-      aria-describedby="basic-addon1"
-    /> -->
+    <div class="interaction_div">
+      <input
+        type="text"
+        class="filter-input"
+        placeholder="Buscar"
+        [(ngModel)]="chipsValueFilter"
+      />
+      <!-- <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar"
+        aria-label="Buscar"
+        aria-describedby="basic-addon1"
+      /> -->
+      <div class="header-actions">
+        <button
+          type="button"
+          class="button btn-basic2"
+          (click)="showModal('chips')"
+        >
+          Agregar Ficha
+        </button>
+        <button
+          type="button"
+          class="button-metrics btn-basic"
+          (click)="showModal('parameters')"
+        >
+          Métricas <i class="fa fa-cog" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
   </header>
   <section class="content-section">
-    <div class="content-actions">
-      <button type="button" class="button" (click)="showModal('chips')">
-        Agregar Ficha
-      </button>
-      <button type="button" class="button" (click)="showModal('parameters')">
-        Metricas <i class="fa fa-cog" aria-hidden="true"></i>
-      </button>
-    </div>
     <p *ngIf="!searchFinish">Cargando ...</p>
     <p *ngIf="chips.length <= 0 && searchFinish">No existen fichas</p>
     <div *ngIf="chips.length > 0" class="chipsList">

@@ -163,9 +163,16 @@ export class ParameterRegisterComponent implements OnInit {
   public onSubmit(): void {
     if (!this.parameterForm.valid || this.sections.length <= 0) {
       console.log("Invalid Form");
+      console.log({ form: this.parameterForm });
       this._nzMessageSvc.warning(
         "El formulario no es valido, por favor rectifique los valores"
       );
+
+      if (this.parameterForm.controls["finalResult"].errors.required) {
+        this._nzMessageSvc.warning(
+          "Resultado Final sin valor, debe especificar algún valor en el campo Resultado Final"
+        );
+      }
       return;
     }
 
@@ -193,6 +200,7 @@ export class ParameterRegisterComponent implements OnInit {
           this.parameterForm.reset();
           this.finalResult.setValue([]);
         }
+        this.close();
       })
       .catch((error) => {
         console.log({ error });
@@ -518,18 +526,29 @@ export class ParameterRegisterComponent implements OnInit {
   }
 
   public calcSubsectionItemsValidator(i?: number): boolean {
-    const list: Array<number | string> = i
-      ? this.sections.controls[i].get("calcSubsectionItems").value
-      : this.finalResult.value;
+    // const list: Array<number | string> = i
+    //   ? this.sections.controls[i].get("calcSubsectionItems").value
+    //   : this.finalResult.value;
+
+    const control =
+      i !== undefined
+        ? this.sections.controls[i].get("calcSubsectionItems")
+        : this.finalResult;
+
+    const list: Array<number | string> = control.value;
 
     if (
       typeof list[0] === "string" ||
       typeof list[list.length - 1] === "string" ||
       this.isConsecutiveSameType(list)
     ) {
+      control.setErrors({
+        invalidOrder: "El orden de los elementos es incorrecto.",
+      });
       return true;
     }
 
+    // control.setErrors(null);
     return false;
   }
 }

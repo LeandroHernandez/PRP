@@ -1,38 +1,46 @@
 <!-- <p>parameter-register works!</p> -->
 
 <div class="parameters-register-container">
-  <h5 class="title">
-    {{ parameterToEdit ? "Metrica" : "Nombre de la metrica" }}
-  </h5>
   <form
     action=""
     class="form"
     [formGroup]="parameterForm"
     (ngSubmit)="onSubmit()"
   >
-    <div class="form-content-header">
-      <label class="label-name">
-        Nombre del parametro
-        <input
-          type="text"
-          class="input parameter-name"
-          placeholder="Ingresar el nombre"
-          formControlName="name"
-        />
-      </label>
-      <label class="label-level">
-        Nivel
-        <select class="select" formControlName="level">
-          <option [value]="level.level_id" *ngFor="let level of levels">
-            {{ level.level_name }}
-          </option>
-        </select>
-      </label>
-    </div>
     <div formArrayName="sections" class="parameterSections">
       <!-- class="parameterSections-list" -->
-      <div *ngFor="let section of sections.controls; let i = index">
-        <div [formGroupName]="i">
+      <div
+        *ngFor="let section of sections.controls; let i = index"
+        [class]="i === 0 ? 'first-form-row' : ''"
+      >
+        <div
+          [formGroupName]="i"
+          [class]="i === 0 ? 'first-form-row-content' : ''"
+        >
+          <div *ngIf="i === 0" class="form-content-header">
+            <h5 class="title">
+              {{ parameterToEdit ? "Metrica" : "Nombre de la metrica" }}
+            </h5>
+            <form [formGroup]="parameterForm" class="fields">
+              <label class="label-name">
+                Nombre del parametro
+                <input
+                  type="text"
+                  class="input parameter-name"
+                  placeholder="Ingresar el nombre"
+                  formControlName="name"
+                />
+              </label>
+              <label class="label-level">
+                Nivel
+                <select class="select" formControlName="level">
+                  <option [value]="level.level_id" *ngFor="let level of levels">
+                    {{ level.level_name }}
+                  </option>
+                </select>
+              </label>
+            </form>
+          </div>
           <!-- [nzTitle]="getSectionName(i)"  -->
           <!-- class="parameter-card invalid" -->
           <ng-template #headerTemplate>
@@ -46,7 +54,15 @@
               }} 
               "
             >
-              <p>{{ getSectionName(i) }}</p>
+              <!-- <p>{{ getSectionName(i) }}</p> -->
+              <!-- placeholder="Escribir Titulo&#10; de la Metrica" -->
+              <input
+                placeholder="Escribir Titulo de la Metrica"
+                formControlName="name"
+                (ngModelChange)="changeName()"
+                class="card-title {{ i === 0 ? 'disabled' : '' }}"
+                [disabled]="i === 0"
+              />
               <p>{{ getSectionType(i) }}</p>
             </div>
           </ng-template>
@@ -57,12 +73,6 @@
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <div class="sections-options">
-                <textarea
-                  *ngIf="i > 0"
-                  placeholder="Escribir Titulo&#10; de la Metrica"
-                  formControlName="name"
-                  (ngModelChange)="changeName()"
-                ></textarea>
                 <label
                   nz-checkbox
                   formControlName="constant"
@@ -74,13 +84,22 @@
                 >
                   Constante
                 </label>
-                <i
+                <!-- <i
                   title="Eliminar parametro"
                   class="fa fa-trash form-section-delete-button"
                   aria-hidden="true"
                   (click)="removeSection(i)"
                   *ngIf="i > 0"
-                ></i>
+                  ></i> -->
+                <span
+                  title="Eliminar parametro"
+                  class="form-section-delete-button"
+                  aria-hidden="true"
+                  (click)="removeSection(i)"
+                  *ngIf="i > 0"
+                >
+                  Eliminar
+                </span>
               </div>
             </nz-dropdown-menu>
           </ng-template>
@@ -127,7 +146,11 @@
                   <textarea
                     rows="2"
                     nz-input
-                    placeholder="Sin valor"
+                    [placeholder]="
+                      i === 0
+                        ? 'Por favor ingrese la información que servira como detalle de esta métrica'
+                        : 'Sin valor'
+                    "
                     type="text"
                     [nzDisabled]="getSectionConstant(i) ? false : true"
                     formControlName="value"
@@ -336,100 +359,6 @@
           </nz-card>
         </div>
       </div>
-      <!--  -->
-      <!-- <div
-        *ngFor="let section of sections.controls; let i = index"
-        class="parameterSections-list"
-      >
-        <div class="section-formGroup" [formGroupName]="i">
-          <header class="form-section-header">
-            <textarea
-              placeholder="Escribir Titulo&#10; de la Metrica"
-              formControlName="name"
-              (ngModelChange)="changeName()"
-            ></textarea>
-            <i
-              class="fa fa-trash form-section-delete-button"
-              aria-hidden="true"
-              (click)="removeSection(i)"
-            ></i>
-            <label nz-checkbox formControlName="constant">Constante</label>
-          </header>
-          <div class="form-section-body">
-            <input
-              class="name-of-section-input"
-              type="text"
-              placeholder="Número"
-              formControlName="type"
-              disabled
-            />
-            <label
-              *ngIf="sections.value[i].type === 'Número'"
-              class="number-type-label"
-            >
-              Tipo
-            </label>
-            <div
-              class="calc-subsection"
-              *ngIf="sections.value[i].type === 'Calculo'"
-            >
-              <label
-                class="calc-subsection-label-item"
-                *ngFor="
-                  let calcSubsection of section.controls['calcSubsectionItems']
-                    .value
-                "
-              >
-                {{ calcSubsection }}
-              </label>
-              <details class="calc-add-details">
-                <summary class="add-calc-subsection-summary">
-                  <i class="fa fa-plus-circle" aria-hidden="true"> </i>
-                </summary>
-                <div class="calc-options-div">
-                  <details
-                    *ngFor="let calcItem of typesOfCalcSubsections"
-                    class="calc-options-details"
-                  >
-                    <summary>
-                      {{ calcItem.label }}
-                      <i class="fa fa-caret-right" aria-hidden="true"></i>
-                    </summary>
-                    <div class="cal-subsection-options">
-                      <div
-                        *ngFor="let option of calcItem.options; let j = index"
-                      >
-                          (click)="
-                            option !== '' ? addCalcSubsection(i, option) : false
-                          "
-                        <label
-                          class="{{ i === j ? 'dont-show' : '' }}"
-                        >
-                          {{ option !== "" ? option : "-SIN NOMBRE" }}
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      <!-- <button
-        type="button"
-        class="addSection-button"
-        (click)="showTypes = !showTypes"
-      >
-        Agregar Parametro
-        <div *ngIf="showTypes" class="types-of-parameters-sections">
-          <label
-            *ngFor="let type of typesOfParametersSections"
-            (click)="addSection(type)"
-            >{{ type }}</label
-          >
-        </div>
-      </button> -->
       <button
         nz-button
         nzType="primary"
@@ -454,7 +383,7 @@
     </div>
     <ng-template #headerTemplate2>
       <div class="section-header-texts">
-        <p>Resultado Final</p>
+        <p class="finalResult_p">Resultado Final</p>
         <!-- <p>{{ getSectionType(i) }}</p> -->
       </div>
     </ng-template>

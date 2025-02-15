@@ -35,14 +35,24 @@
   padding: 5px 10px;
 }
 
+.interaction_div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
 /*  */
 
 .content-section {
   border-top: 3px solid rgba(128, 128, 128, 0.3);
+  padding-top: 30px;
   width: 100%;
 }
 
-.content-actions {
+.header-actions {
+  height: 100%;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -51,17 +61,27 @@
   gap: 30px;
 }
 
-.content-actions .button {
-  background-color: rgb(250, 24, 37);
+.header-actions button[class^="button"] {
+  background-color: #00ba56;
   color: #ffffff;
   outline: none;
-  border: none;
+  border: 1px solid #5664ff;
+  box-shadow: 0 0 1px 0 #83b8f8, 0 5px 3px -1px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 2px 10px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-.content-actions .button:nth-child(2) {
-  background-color: rebeccapurple;
+.header-actions button[class*="metrics"] {
+  background-color: #9747ff;
+  .fa-cog {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+  }
 }
 
 .chipsList {
@@ -85,7 +105,7 @@
   margin: 0;
   cursor: pointer;
   font-size: 22px;
-  transition: .2s transform ease-out;
+  transition: 0.2s transform ease-out;
 
   &:hover {
     transform: translateY(-5%) scale(1.1);

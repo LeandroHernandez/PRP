@@ -3,7 +3,7 @@ import { ChipsComponent } from "app/layouts/admin/modal/chips/chips.component";
 import { ParametersComponent } from "app/layouts/admin/modal/parameters/parameters.component";
 import { IChip } from "app/models/interfaces/chip";
 import { ChipsService } from "app/services/chips/chips.service";
-import { NzModalService } from "ng-zorro-antd/modal";
+import { NzModalRef, NzModalService } from "ng-zorro-antd/modal";
 
 @Component({
   selector: "app-player-chips-and-parameters",
@@ -15,8 +15,10 @@ export class PlayerChipsAndParametersComponent implements OnInit {
   public searchFinish: boolean = false;
   public chipsValueFilter: string = "";
 
-  constructor(private _chipsSvc: ChipsService,
-    private modalService: NzModalService) {}
+  constructor(
+    private _chipsSvc: ChipsService,
+    private modalService: NzModalService
+  ) {}
 
   ngOnInit(): void {
     localStorage.removeItem("chip");
@@ -41,35 +43,41 @@ export class PlayerChipsAndParametersComponent implements OnInit {
   showModal(content: string): void {
     // localStorage.setItem("modal", content);
 
-    if (content === 'chips') {
-      this.modalService.create({
-        nzTitle: 'Fichas',
+    if (content === "chips") {
+      const modal: NzModalRef<ChipsComponent, any> = this.modalService.create({
+        nzTitle: "Fichas",
         nzContent: ChipsComponent,
         nzFooter: null,
         nzStyle: {
-          top: '50%',
-          transform: 'translateY(-50%)'
+          top: "50%",
+          transform: "translateY(-50%)",
         },
-        nzBodyStyle: { 
-          maxHeight: '85vh',
-          overflowY: 'auto' 
-        }
+        nzBodyStyle: {
+          maxHeight: "85vh",
+          overflowY: "auto",
+          overflowX: "hidden",
+        },
       });
+
+      if (modal.componentInstance)
+        modal.componentInstance.cancelEmitter.subscribe(() => {
+          modal.close();
+        });
     }
 
-    if (content === 'parameters') {
+    if (content === "parameters") {
       this.modalService.create({
-        nzTitle: 'Registro de Metricas',
+        nzTitle: "Registro de Metricas",
         nzContent: ParametersComponent,
         nzFooter: null,
         nzStyle: {
-          top: '50%',
-          transform: 'translateY(-50%)'
+          top: "50%",
+          transform: "translateY(-50%)",
         },
-        nzBodyStyle: { 
-          maxHeight: '85vh',
-          overflowY: 'auto' 
-        }
+        nzBodyStyle: {
+          maxHeight: "85vh",
+          overflowY: "auto",
+        },
       });
     }
   }

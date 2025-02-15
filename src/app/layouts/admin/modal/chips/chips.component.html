@@ -50,7 +50,11 @@
           ></i>
         </div>
       </div>
-      <div class="buttons">
+      <div class="buttons {{ chip ? 'chip-buttons' : '' }}">
+        <button *ngIf="!chip" type="button" class="button" (click)="cancel()">
+          Cancelar
+        </button>
+        <button type="submit" class="button submit-button">Guardar</button>
         <div *ngIf="chip" class="dropdown dropdown-with-icons">
           <i
             class="fa fa-trash-o dropdown-toggle"
@@ -68,8 +72,6 @@
             Eliminar
           </button>
         </div>
-        <button *ngIf="!chip" type="button" class="button" (click)="cancel()" >Cancelar</button>
-        <button type="submit" class="button submit-button">Guardar</button>
       </div>
     </div>
   </form>

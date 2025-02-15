@@ -13,17 +13,24 @@
           placeholder="Buscar"
           class="input filter"
           /> -->
-        <select
+        <!-- <select
           *ngIf="parameters.length > 0"
           title="Metricas"
           class="select filter"
           placeholder="Buscar"
           [(ngModel)]="parametersValueFilter"
-        >
+          >
           <option *ngFor="let parameter of parameters" [value]="parameter.name">
             {{ parameter.name }}
           </option>
-        </select>
+        </select> -->
+        <input
+          *ngIf="parameters.length > 0"
+          type="text"
+          class="select filter"
+          placeholder="Buscar"
+          [(ngModel)]="parametersValueFilter"
+        />
         <i
           *ngIf="parametersValueFilter !== ''"
           class="fa fa-times-circle clear-filter"
@@ -184,14 +191,20 @@
         (closeEmitter)="getParameters(); close()"
       ></app-parameter-register>
     </div> -->
-    <nz-modal 
-      [nzStyle]="{ width: '90%', maxHeight: '90vh', top: '50%', transform: 'translateY(-50%)'}"
-      [(nzVisible)]="
-        registerAction" nzTitle="{{parameterToEdit ? 'Edición' : 'Registro'}} de Metrica
-        " 
+    <nz-modal
+      [nzStyle]="{
+        width: '90%',
+        maxHeight: '90vh',
+        top: '50%',
+        transform: 'translateY(-50%)'
+      }"
       (nzOnCancel)="registerAction = false; parameterToEdit = null"
       (nzOnOk)="registerAction = false; parameterToEdit = null"
-      [nzBodyStyle]="{ maxHeight: '70vh', overflowY: 'auto' }"
+      [(nzVisible)]="registerAction"
+      nzTitle="{{ parameterToEdit ? 'Edición' : 'Registro' }} de Metrica
+        "
+      [nzBodyStyle]="{ maxHeight: '80vh', overflowY: 'auto' }"
+      [nzFooter]="null"
     >
       <!-- <ng-container *nzModalContent>
       </ng-container> -->
